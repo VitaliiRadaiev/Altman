@@ -1,0 +1,3120 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Altman</title>
+
+    <script>
+        let element = document.querySelector('html');
+        if (element) {
+            let zoom = 1;
+            const setFontSize = () => {
+                let baseWidth = 1440;
+                let baseFontSize = 16;
+                let screenWidth = element.clientWidth;
+                let screenHeight = element.clientHeight;
+                let maxHeight = screenWidth * 0.4817;
+                let value;
+                let heightOffset = (screenHeight / maxHeight) > 1 ? 1 : screenHeight / maxHeight;
+
+                if (screenWidth <= baseWidth) {
+                    let scaleFactor = 10;
+                    value = (baseFontSize + (screenWidth - baseWidth) * scaleFactor / baseWidth) * zoom;
+                } else {
+                    let scaleFactor = 10;
+                    value = ((baseFontSize + (screenWidth - baseWidth) * scaleFactor / baseWidth) * heightOffset) * zoom;
+                    
+                    if(value < 16) value = 16;
+                }
+
+                element.style.fontSize = value + 'px';
+            }
+
+            setFontSize();
+            window.addEventListener('resize', setFontSize);
+
+            document.addEventListener('wheel', function (event) {
+                if (document.documentElement.clientWidth < 1024) return;
+
+                if (event.ctrlKey || event.metaKey) {
+                    if (event.deltaY < 0) {
+                        zoom += 0.1
+                        setFontSize();
+                    } else {
+                        zoom -= 0.1
+                        setFontSize();
+                    }
+                    event.preventDefault();
+                }
+            }, { passive: false });
+        }
+    </script>
+
+    <style>
+        .page-loaded .page-loader {
+            display: none;
+        }
+
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 100;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            color: #6c3c87;
+        }
+
+        .lds-roller,
+        .lds-roller div,
+        .lds-roller div:after {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .lds-roller {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .lds-roller div {
+            -webkit-animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            -webkit-transform-origin: 40px 40px;
+            -ms-transform-origin: 40px 40px;
+            transform-origin: 40px 40px;
+        }
+
+        .lds-roller div:after {
+            content: " ";
+            display: block;
+            position: absolute;
+            width: 7.2px;
+            height: 7.2px;
+            border-radius: 50%;
+            background: currentColor;
+            margin: -3.6px 0 0 -3.6px;
+        }
+
+        .lds-roller div:nth-child(1) {
+            -webkit-animation-delay: -0.036s;
+            animation-delay: -0.036s;
+        }
+
+        .lds-roller div:nth-child(1):after {
+            top: 62.62742px;
+            left: 62.62742px;
+        }
+
+        .lds-roller div:nth-child(2) {
+            -webkit-animation-delay: -0.072s;
+            animation-delay: -0.072s;
+        }
+
+        .lds-roller div:nth-child(2):after {
+            top: 67.71281px;
+            left: 56px;
+        }
+
+        .lds-roller div:nth-child(3) {
+            -webkit-animation-delay: -0.108s;
+            animation-delay: -0.108s;
+        }
+
+        .lds-roller div:nth-child(3):after {
+            top: 70.90963px;
+            left: 48.28221px;
+        }
+
+        .lds-roller div:nth-child(4) {
+            -webkit-animation-delay: -0.144s;
+            animation-delay: -0.144s;
+        }
+
+        .lds-roller div:nth-child(4):after {
+            top: 72px;
+            left: 40px;
+        }
+
+        .lds-roller div:nth-child(5) {
+            -webkit-animation-delay: -0.18s;
+            animation-delay: -0.18s;
+        }
+
+        .lds-roller div:nth-child(5):after {
+            top: 70.90963px;
+            left: 31.71779px;
+        }
+
+        .lds-roller div:nth-child(6) {
+            -webkit-animation-delay: -0.216s;
+            animation-delay: -0.216s;
+        }
+
+        .lds-roller div:nth-child(6):after {
+            top: 67.71281px;
+            left: 24px;
+        }
+
+        .lds-roller div:nth-child(7) {
+            -webkit-animation-delay: -0.252s;
+            animation-delay: -0.252s;
+        }
+
+        .lds-roller div:nth-child(7):after {
+            top: 62.62742px;
+            left: 17.37258px;
+        }
+
+        .lds-roller div:nth-child(8) {
+            -webkit-animation-delay: -0.288s;
+            animation-delay: -0.288s;
+        }
+
+        .lds-roller div:nth-child(8):after {
+            top: 56px;
+            left: 12.28719px;
+        }
+
+        @-webkit-keyframes lds-roller {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes lds-roller {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @media print {
+
+            header,
+            footer {
+                display: none;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
+    <script defer src="./assets/js/vendors.js"></script>
+    <script defer src="./assets/js/main.js"></script>
+</head>
+
+<body>
+    <div class="page-loader">
+    <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+</div>
+
+    <header data-header class="sticky z-40 top-0 left-0 w-full bg-white shadow-[0_3px_10px_0px_rgba(0,0,0,0.04)]">
+    <a href="#" class="text-center bg-purple---main-0 text-white flex items-center justify-center py-1 px-4 min-h-[30px] capitalize text-[14px] leading-[1.5em] tracking-[0.02em] lg:min-h-[2.1875rem] lg:text-[1rem] transition-colors hover:text-app-gray-300-0">
+        הצטרפו למועדון וקבלו 15% הנחה!
+    </a>
+
+    <div class="container relative z-3">
+        <div class="flex flex-wrap justify-between items-center pt-[5px] gap-x-2 lg:flex-nowrap lg:justify-normal lg:px-0">
+            <div class="flex lg:gap-2 lg:order-3">
+                <button data-action="open-mobile-menu" class="flex items-center justify-center w-10 h-10 rounded-full transition hover:bg-app-gray-100-0 -mr-2 lg:hidden">
+                    <img class="w-6 h-6" src="assets/images/icons/burger.svg" alt="">
+                </button>
+                <div class="hidden font-semibold text-[1rem] leading-none lg:flex items-center">
+                    צהריים טובים עומר
+                </div>
+                <a href="#" class="flex items-center justify-center w-10 h-10 rounded-full transition hover:bg-app-gray-100-0">
+                    <img class="w-6 h-6" src="assets/images/icons/user.svg" alt="">
+                </a>
+                <a href="./cart.html" data-tooltip="סל הקניות" data-tooltip-placement="bottom" class=" [&.show-message_.cart-message]:opacity-100 [&.show-message_.cart-message]:scale-100 flex items-center justify-center w-10 h-10 rounded-full transition hover:bg-app-gray-100-0 relative">
+                    <span class="absolute top-0 right-0 flex items-center justify-center bg-purple---main-0 min-w-3 h-3 rounded-full text-white text-[12px] leading-none tracking-[0.01em] px-[2px] lg:min-w-4 lg:h-4 lg:text-[0.875rem] lg:-translate-y-[20%]">2</span>
+                    <img class="w-6 h-6" src="assets/images/icons/bag.svg" alt="">
+
+                    <div class="cart-message absolute z-2 top-[calc(100%+0.375rem)] left-1/2 -translate-x-1/2 text-white bg-purple---main-0 text-[0.75rem] lg:text-base flex items-center gap-1 whitespace-nowrap rounded-full py-1 px-4 pointer-events-none transition opacity-0 scale-0">
+                        <span class="icon-play-full absolute text-[0.5rem] lg:text-[0.625rem] text-purple---main-0 top-0 left-1/2 -translate-x-1/2 -translate-y-[70%] -rotate-90"></span>
+                        <span class="icon-check"></span>
+                        המוצר נוסף לסל
+                    </div>
+                </a>
+            </div>
+            <a href="#" class="flex items-center justify-center h-[28px] lg:order-1 lg:h-10">
+                <img class="h-full w-auto" src="assets/images/logos/Logo.png" alt="">
+            </a>
+            <a dir="ltr" href="./contact-us.html" class="flex items-center justify-center min-w-10 h-10 rounded-full transition hover:text-purple---main-0 px-1 text-app-gray-400-0 leading-[1.5em] tracking-[0.01em] lg:order-4">
+                *6505
+            </a>
+
+            <!-- Main search -->
+            <div data-main-search class="basis-full relative py-[6px] mt-[5px] lg:order-2 lg:mt-0 lg:max-w-[39.375rem] lg:mx-auto lg:px-[10px]">
+                <span class="absolute top-0 left-1/2 h-[1px] bg-app-gray-100-0 w-[100vw] -translate-x-1/2 -translate-y-1/2 lg:hidden"></span>
+                
+                <form class="main-search-wrap relative flex items-center h-9 rounded-full border border-app-gray-300-0 px-[7px] lg:h-10 lg:px-2 lg:gap-2">
+                    <button class="shrink-0 grow-0 h-9 w-9 flex items-center justify-center rounded-full transition hover:bg-app-gray-200-0">
+                        <img class="h-6 w-6" src="assets/images/icons/search.svg" alt="">
+                    </button>
+
+                    <input class="shrink grow border-none h-full text-black-0 placeholder:text-app-gray-400-0 bg-transparent" type="text" placeholder="חיפוש">
+                    
+                    <button type="button" class="btn-clear shrink-0 grow-0 h-9 w-9 flex items-center justify-center rounded-full transition hover:bg-app-gray-200-0">
+                        <img class="h-6 w-6" src="assets/images/icons/x-mark.svg" alt="">
+                    </button>
+                </form>
+
+                <!-- search result -->
+                <div class="search-result shadow-[0_3px_10px_0px_rgba(0,0,0,0.04)] bg-white rounded-[0.75rem] absolute top-[calc(100%+0.25rem)] left-1/2 -translate-x-1/2 w-full lg:w-[41.9rem] lg:top-full">
+                    <button data-action="close-search-result" class="absolute z-6 top-3 left-2 size-10 rounded-full flex items-center justify-center lg:hidden bg-white">
+                        <img class="h-6 w-auto" src="assets/images/icons/x-mark.svg" alt="">
+                    </button>
+                    <div class="search-result-scroll-container overflow-y-auto h-full">
+                        <div class="overflow-hidden">
+                            <div class="border-b last:border-none border-app-gray-200-0 py-6 px-6 lg:px-[2.8125rem]">
+                                <h3 class="text-base leading-[1.69em] capitalize font-semibold">מוצרים</h3>
+
+                                <div class="swiper !overflow-visible mt-[12px]" data-slider="default-slider" data-slides-count="3" data-gap="8" data-gap-lg="20">
+                                    <div class="swiper-wrapper [&_.swiper-slide]:w-auto">
+                                        <div class="swiper-slide">
+                                            <a href="#" class="flex flex-col items-center w-[132px] h-full p-2 gap-1 bg-yellow-01-0 rounded-[5px] lg:w-full lg:gap-[0.5625rem] lg:rounded-[0.375rem] lg:p-3 transition hover:bg-yellow-02-0">
+                                                <div class="h-[116px] w-full flex items-center justify-center lg:h-[9.3125rem]">
+                                                    <img class="w-auto h-auto max-h-full max-w-full" src="assets/images/searched-product-1.png" alt="">
+                                                </div>
+                                                <span class="flex items-center justify-center min-h-5 px-2 border border-purple---main-0 rounded-[6px] text-purple---main-0 text-center text-[14px] leading-none">
+                                                    40% הנחה
+                                                </span>
+                                                <h4 class="mt-auto text-[14px] font-semibold leading-[1.93em] capitalize">
+                                                    Energy Complex    
+                                                </h4>
+                                            </a>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <a href="#" class="flex flex-col items-center w-[132px] h-full p-2 gap-1 bg-yellow-01-0 rounded-[5px] lg:w-full lg:gap-[0.5625rem] lg:rounded-[0.375rem] lg:p-3 transition hover:bg-yellow-02-0">
+                                                <div class="h-[116px] w-full flex items-center justify-center lg:h-[9.3125rem]">
+                                                    <img class="w-auto h-auto max-h-full max-w-full" src="assets/images/searched-product-1.png" alt="">
+                                                </div>
+                                        
+                                                <h4 class="mt-auto text-[14px] font-semibold leading-[1.93em] capitalize">
+                                                    Energy Complex    
+                                                </h4>
+                                            </a>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <a href="#" class="flex flex-col items-center w-[132px] h-full p-2 gap-1 bg-yellow-01-0 rounded-[5px] lg:w-full lg:gap-[0.5625rem] lg:rounded-[0.375rem] lg:p-3 transition hover:bg-yellow-02-0">
+                                                <div class="h-[116px] w-full flex items-center justify-center lg:h-[9.3125rem]">
+                                                    <img class="w-auto h-auto max-h-full max-w-full" src="assets/images/searched-product-1.png" alt="">
+                                                </div>
+                                                <span class="flex items-center justify-center min-h-5 px-2 border border-purple---main-0 rounded-[6px] text-purple---main-0 text-center text-[14px] leading-none">
+                                                    40% הנחה
+                                                </span>
+                                                <h4 class="mt-auto text-[14px] font-semibold leading-[1.93em] capitalize">
+                                                    Energy Complex    
+                                                </h4>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-left left-0 -translate-x-1/2 top-[50%] [&.swiper-button-disabled]:hidden -translate-y-1/2 z-4 hidden absolute lg:flex items-center justify-center size-10 rounded-full bg-white shadow-default transition hover:bg-app-gray-100-0">
+    <img src="assets/images/icons/arrow-left.svg" alt="">
+</button>
+<button type="button" class="btn-right right-0 translate-x-1/2 top-[50%] [&.swiper-button-disabled]:hidden -translate-y-1/2 z-4 hidden absolute lg:flex items-center justify-center size-10 rounded-full bg-white shadow-default transition hover:bg-app-gray-100-0">
+    <img src="assets/images/icons/arrow-right.svg" alt="">
+</button>
+                                </div>
+
+                                <div class="mt-12"></div>
+
+                                <h3 class="text-base leading-[1.69em] capitalize font-semibold">כתבות</h3>
+                                <div class="swiper !overflow-visible mt-[12px]" data-slider="default-slider" data-slides-count="3" data-gap="8" data-gap-lg="20">
+                                    <div class="swiper-wrapper [&_.swiper-slide]:w-auto">
+                                        <div class="swiper-slide">
+                                            <a href="#" class="flex flex-col w-[148px] gap-2 lg:w-full [&_img]:hover:opacity-80">
+                                                <div class="size-[148px] rounded-[0.375rem] block lg:size-[11.25rem] overflow-hidden bg-[#000]">
+                                                    <img class="h-full w-full object-cover transition-opacity" src="assets/images/searched-post-1.jpg" alt="">
+                                                </div>
+                                                <span class="text-[14px] lg:text-base">
+                                                    למי כדאי לקחת פרוביוטיקה ואיך תדעו איזה לבחור?
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <a href="#" class="flex flex-col w-[148px] gap-2 lg:w-full [&_img]:hover:opacity-80">
+                                                <div class="size-[148px] rounded-[0.375rem] block lg:size-[11.25rem] overflow-hidden bg-[#000]">
+                                                    <img class="h-full w-full object-cover transition-opacity" src="assets/images/searched-post-2.jpg" alt="">
+                                                </div>
+                                                <span class="text-[14px] lg:text-base">
+                                                    למי כדאי לקחת פרוביוטיקה ואיך תדעו איזה לבחור?
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <a href="#" class="flex flex-col w-[148px] gap-2 lg:w-full [&_img]:hover:opacity-80">
+                                                <div class="size-[148px] rounded-[0.375rem] block lg:size-[11.25rem] overflow-hidden bg-[#000]">
+                                                    <img class="h-full w-full object-cover transition-opacity" src="assets/images/searched-post-3.jpg" alt="">
+                                                </div>
+                                                <span class="text-[14px] lg:text-base">
+                                                    למי כדאי לקחת פרוביוטיקה ואיך תדעו איזה לבחור?
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <a href="#" class="flex flex-col w-[148px] gap-2 lg:w-full [&_img]:hover:opacity-80">
+                                                <div class="size-[148px] rounded-[0.375rem] block lg:size-[11.25rem] overflow-hidden bg-[#000]">
+                                                    <img class="h-full w-full object-cover transition-opacity" src="assets/images/searched-post-1.jpg" alt="">
+                                                </div>
+                                                <span class="text-[14px] lg:text-base">
+                                                    למי כדאי לקחת פרוביוטיקה ואיך תדעו איזה לבחור?
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <a href="#" class="flex flex-col w-[148px] gap-2 lg:w-full [&_img]:hover:opacity-80">
+                                                <div class="size-[148px] rounded-[0.375rem] block lg:size-[11.25rem] overflow-hidden bg-[#000]">
+                                                    <img class="h-full w-full object-cover transition-opacity" src="assets/images/searched-post-1.jpg" alt="">
+                                                </div>
+                                                <span class="text-[14px] lg:text-base">
+                                                    למי כדאי לקחת פרוביוטיקה ואיך תדעו איזה לבחור?
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-left left-0 -translate-x-1/2 top-[5.625rem] [&.swiper-button-disabled]:hidden -translate-y-1/2 z-4 hidden absolute lg:flex items-center justify-center size-10 rounded-full bg-white shadow-default transition hover:bg-app-gray-100-0">
+    <img src="assets/images/icons/arrow-left.svg" alt="">
+</button>
+<button type="button" class="btn-right right-0 translate-x-1/2 top-[5.625rem] [&.swiper-button-disabled]:hidden -translate-y-1/2 z-4 hidden absolute lg:flex items-center justify-center size-10 rounded-full bg-white shadow-default transition hover:bg-app-gray-100-0">
+    <img src="assets/images/icons/arrow-right.svg" alt="">
+</button>
+                                </div>
+                            </div>
+                            <a href="#" class="border-b last:border-none border-app-gray-200-0 px-6 flex items-center justify-between min-h-[60px] lg:px-[2.8125rem] lg:min-h-[4.625rem] transition hover:bg-app-gray-100-0">
+                                <span class="text-base leading-[1.69em] capitalize font-semibold ml-auto">לכל התוצאות</span>
+                                <img src="assets/images/icons/chevron-left.svg" alt="">
+                            </a>
+                            <div class="border-b last:border-none border-app-gray-200-0 px-6 py-6 lg:px-[2.8125rem]">
+                                <h3 class="text-base leading-[1.69em] capitalize font-semibold">חיפושים פופולריים</h3>
+                                <div class="flex flex-wrap gap-2 mt-[12px]">
+                                    <a href="#" class="flex items-center justify-center rounded-full min-h-10 py-2 px-[12px] text-[1.125rem] leading-none tracking-[0.01em] bg-app-gray-100-0 transition hover:bg-app-gray-200-0"> צמחים </a>
+                                    <a href="#" class="flex items-center justify-center rounded-full min-h-10 py-2 px-[12px] text-[1.125rem] leading-none tracking-[0.01em] bg-app-gray-100-0 transition hover:bg-app-gray-200-0"> ברזל </a>
+                                    <a href="#" class="flex items-center justify-center rounded-full min-h-10 py-2 px-[12px] text-[1.125rem] leading-none tracking-[0.01em] bg-app-gray-100-0 transition hover:bg-app-gray-200-0"> עייפות </a>
+                                    <a href="#" class="flex items-center justify-center rounded-full min-h-10 py-2 px-[12px] text-[1.125rem] leading-none tracking-[0.01em] bg-app-gray-100-0 transition hover:bg-app-gray-200-0"> פרוביוטיקה </a>
+                                    <a href="#" class="flex items-center justify-center rounded-full min-h-10 py-2 px-[12px] text-[1.125rem] leading-none tracking-[0.01em] bg-app-gray-100-0 transition hover:bg-app-gray-200-0"> נשירת שיער </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Desk navigation -->
+    <div data-desk-nav class="hidden lg:block relative py-[5px] border-t border-app-gray-100-0">
+        <div class="container">
+            <ul class="nav-list flex gap-6 justify-center flex-wrap">
+                <li>
+                    <a href="#" data-show-nav-tab-by-id="1" class="flex items-center justify-center min-h-10 rounded-full py-[0.375rem] px-5 transition [&.active]:bg-app-gray-100-0 text-[1.125rem] capitalize hover:bg-app-gray-100-0">
+                        כתבות
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-show-nav-tab-by-id="2" class="flex items-center justify-center min-h-10 rounded-full py-[0.375rem] px-5 transition [&.active]:bg-app-gray-100-0 text-[1.125rem] capitalize hover:bg-app-gray-100-0">
+                        חנות
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center justify-center min-h-10 rounded-full py-[0.375rem] px-5 transition [&.active]:bg-app-gray-100-0 text-[1.125rem] capitalize hover:bg-app-gray-100-0">
+                        תחומים
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center justify-center min-h-10 rounded-full py-[0.375rem] px-5 transition [&.active]:bg-app-gray-100-0 text-[1.125rem] capitalize hover:bg-app-gray-100-0">
+                        התאמת מוצרים
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-show-nav-tab-by-id="3" class="flex items-center justify-center min-h-10 rounded-full py-[0.375rem] px-5 transition [&.active]:bg-app-gray-100-0 text-[1.125rem] capitalize hover:bg-app-gray-100-0">
+                        אודות
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-show-nav-tab-by-id="4" class="flex items-center justify-center min-h-10 rounded-full py-[0.375rem] px-5 transition [&.active]:bg-app-gray-100-0 text-[1.125rem] capitalize hover:bg-app-gray-100-0">
+                        עוד
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center justify-center min-h-10 rounded-full py-[0.375rem] px-5 transition [&.active]:bg-app-gray-100-0 text-[1.125rem] capitalize hover:bg-app-gray-100-0">
+                        צרו קשר
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Navigation tabs -->
+        <div class="nav-tabs absolute top-full left-0 w-full flex justify-center px-4 pointer-events-none">
+            <div data-nav-tab-id="1" class="[&:not(.active)]:hidden pt-2 pointer-events-auto">
+                <div class="nav-tab bg-white py-9 px-[3.125rem] shadow-default rounded-[0.75rem]">
+                    <div class="flex gap-14 flex-wrap">
+                        <div class="grid grid-cols-[repeat(3,11.75rem)] gap-14 shrink-0 grow-0">
+                            <div class="col-span-2">
+                                <h3 class="pr-8 text-base leading-[1.69em] capitalize font-semibold">
+                                    כתבות לפי תחום עניין
+                                </h3>
+                                <div class="pr-8 my-[0.625rem]">
+                                    <hr class="border-app-gray-100-0">
+                                </div>
+                                <ul class="flex flex-wrap gap-x-8">
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            שיער
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            ויטמינים ומינרלים
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            חורף
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            מולטי ויטמין
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            מפרקים ותנועה
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            אומגה 3
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            פרוביוטיקה ועיכול
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            מגנזיום
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            הרגעה
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            ברזל
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            בריאות העור
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            טראומיל
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            צמחים
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="">
+                                <h3 class="pr-8 text-base leading-[1.69em] capitalize font-semibold">
+                                    כתבות לפי קהל יעד                                
+                                </h3>
+                                <div class="pr-8 my-[0.625rem]">
+                                    <hr class="border-app-gray-100-0">
+                                </div>
+                                <ul class="flex flex-wrap gap-x-8">
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            נשים
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            גברים
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            ילדים
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            הריון
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            פורמולות מיוחדות 50+
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="w-[18.25rem] shrink-0 grow-0">
+                            <div data-slider="nav-tab-slider">
+    <div class="swiper rounded-[0.75rem] [&_img]:hover:opacity-60 [&_.content]:hover:translate-y-0">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide rounded-[0.75rem] overflow-hidden">
+                <a href="#" class="block bg-[#000] relative h-[18.25rem] ">
+                    <img class="absolute top-0 left-0 w-full h-full opacity-80 z-1 object-cover transition-opacity"
+                        src="assets/images/mobile-menu-post.jpg" alt="">
+                    <div class="z-2 relative w-full h-full flex flex-col justify-end text-white px-3 py-4 items-start">
+                        <div class="content transition-transform translate-y-[calc(4.125rem+1px)] relative z-2">
+                            <h3 class="font-semibold text-base leading-[1.69em] capitalize mb-1">
+                                לארוז תיק לחדר לידה - רשימת הציוד
+                            </h3>
+                            <span class="btn-default bg-white text-black-0 min-w-[8.125rem] hover-default">
+                                לקריאה
+                            </span>
+                        </div>
+                        <span
+                            class="absolute z-1 left-0 -bottom-3 h-16 w-full bg-gradient-to-t from-[rgba(0,0,0,0.7)] to-transparent"></span>
+                    </div>
+                </a>
+            </div>
+            <div class="swiper-slide rounded-[0.75rem] overflow-hidden">
+                <a href="#" class="block bg-[#000] relative h-[18.25rem] ">
+                    <img class="absolute top-0 left-0 w-full h-full opacity-80 z-1 object-cover transition-opacity"
+                        src="assets/images/mobile-menu-post.jpg" alt="">
+                    <div class="z-2 relative w-full h-full flex flex-col justify-end text-white px-3 py-4 items-start">
+                        <div class="content transition-transform translate-y-[calc(4.125rem+1px)] relative z-2">
+                            <h3 class="font-semibold text-base leading-[1.69em] capitalize mb-1">
+                                לארוז תיק לחדר לידה - רשימת הציוד
+                            </h3>
+                            <span class="btn-default bg-white text-black-0 min-w-[8.125rem] hover-default">
+                                לקריאה
+                            </span>
+                        </div>
+                        <span
+                            class="absolute z-1 left-0 -bottom-3 h-16 w-full bg-gradient-to-t from-[rgba(0,0,0,0.7)] to-transparent"></span>
+                    </div>
+                </a>
+            </div>
+            <div class="swiper-slide rounded-[0.75rem] overflow-hidden">
+                <a href="#" class="block bg-[#000] relative h-[18.25rem] ">
+                    <img class="absolute top-0 left-0 w-full h-full opacity-80 z-1 object-cover transition-opacity"
+                        src="assets/images/mobile-menu-post.jpg" alt="">
+                    <div class="z-2 relative w-full h-full flex flex-col justify-end text-white px-3 py-4 items-start">
+                        <div class="content transition-transform translate-y-[calc(4.125rem+1px)] relative z-2">
+                            <h3 class="font-semibold text-base leading-[1.69em] capitalize mb-1">
+                                לארוז תיק לחדר לידה - רשימת הציוד
+                            </h3>
+                            <span class="btn-default bg-white text-black-0 min-w-[8.125rem] hover-default">
+                                לקריאה
+                            </span>
+                        </div>
+                        <span
+                            class="absolute z-1 left-0 -bottom-3 h-16 w-full bg-gradient-to-t from-[rgba(0,0,0,0.7)] to-transparent"></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <button class="btn-left left-1 pr-[2px] [&.swiper-button-disabled]:hidden absolute top-1/2 -translate-y-1/2 z-4 size-10 flex items-center justify-center rounded-full transition hover:bg-white/70 cursor-pointer">
+            <img class="h-6 w-6" src="assets/images/icons/chevron-left-white.svg" alt="">
+        </button>
+        <button class="btn-right right-1 pl-[2px] [&.swiper-button-disabled]:hidden absolute top-1/2 -translate-y-1/2 z-4 size-10 flex items-center justify-center rounded-full transition hover:bg-white/70 cursor-pointer">
+            <img class="h-6 w-6" src="assets/images/icons/chevron-right-white.svg" alt="">
+        </button>
+    </div>
+    <div class="mt-3">
+        <div style="--bullet-color: var(--purple---super-light);" class="swiper-pagination pagination"></div>
+    </div>
+</div>
+                        </div>
+                    </div>
+                    <div class="pt-4 mt-5 border-t border-app-gray-100-0">
+                        <a href="#" class="btn-default bg-purple---main-0 text-white hover-default">
+                            כל הכתבות
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div data-nav-tab-id="2" class="[&:not(.active)]:hidden pt-2 pointer-events-auto">
+                <div class="nav-tab bg-white py-9 px-[3.125rem] shadow-default rounded-[0.75rem]">
+                    <div class="flex gap-14 flex-wrap">
+                        <div class="grid grid-cols-[repeat(4,11.75rem)] gap-14 shrink-0 grow-0">
+                            <div class="col-span-2">
+                                <h3 class="pr-8 text-base leading-[1.69em] capitalize font-semibold">
+                                    כתבות לפי תחום עניין
+                                </h3>
+                                <div class="pr-8 my-[0.625rem]">
+                                    <hr class="border-app-gray-100-0">
+                                </div>
+                                <ul class="flex flex-wrap gap-x-8">
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            שיער
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            ויטמינים ומינרלים
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            חורף
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            מולטי ויטמין
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            מפרקים ותנועה
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            אומגה 3
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            פרוביוטיקה ועיכול
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            מגנזיום
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            הרגעה
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            ברזל
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            בריאות העור
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            טראומיל
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            צמחים
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="">
+                                <h3 class="pr-8 text-base leading-[1.69em] capitalize font-semibold">
+                                    כתבות לפי קהל יעד                                
+                                </h3>
+                                <div class="pr-8 my-[0.625rem]">
+                                    <hr class="border-app-gray-100-0">
+                                </div>
+                                <ul class="flex flex-wrap gap-x-8">
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            נשים
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            גברים
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            ילדים
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            הריון
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            פורמולות מיוחדות 50+
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="">
+                                <h3 class="pr-8 text-base leading-[1.69em] capitalize font-semibold">
+                                    המומלצים של                                
+                                </h3>
+                                <div class="pr-8 my-[0.625rem]">
+                                    <hr class="border-app-gray-100-0">
+                                </div>
+                                <ul class="flex flex-wrap gap-x-8">
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            מאיה ורטהיימר
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            דנית גרינברג
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            עינב כהן
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="w-[18.25rem] shrink-0 grow-0">
+                            <div data-slider="nav-tab-slider">
+    <div class="swiper rounded-[0.75rem] [&_img]:hover:opacity-60 [&_.content]:hover:translate-y-0">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide rounded-[0.75rem] overflow-hidden">
+                <a href="#" class="block bg-[#000] relative h-[18.25rem] ">
+                    <img class="absolute top-0 left-0 w-full h-full opacity-80 z-1 object-cover transition-opacity"
+                        src="assets/images/mobile-menu-post.jpg" alt="">
+                    <div class="z-2 relative w-full h-full flex flex-col justify-end text-white px-3 py-4 items-start">
+                        <div class="content transition-transform translate-y-[calc(4.125rem+1px)] relative z-2">
+                            <h3 class="font-semibold text-base leading-[1.69em] capitalize mb-1">
+                                לארוז תיק לחדר לידה - רשימת הציוד
+                            </h3>
+                            <span class="btn-default bg-white text-black-0 min-w-[8.125rem] hover-default">
+                                לקריאה
+                            </span>
+                        </div>
+                        <span
+                            class="absolute z-1 left-0 -bottom-3 h-16 w-full bg-gradient-to-t from-[rgba(0,0,0,0.7)] to-transparent"></span>
+                    </div>
+                </a>
+            </div>
+            <div class="swiper-slide rounded-[0.75rem] overflow-hidden">
+                <a href="#" class="block bg-[#000] relative h-[18.25rem] ">
+                    <img class="absolute top-0 left-0 w-full h-full opacity-80 z-1 object-cover transition-opacity"
+                        src="assets/images/mobile-menu-post.jpg" alt="">
+                    <div class="z-2 relative w-full h-full flex flex-col justify-end text-white px-3 py-4 items-start">
+                        <div class="content transition-transform translate-y-[calc(4.125rem+1px)] relative z-2">
+                            <h3 class="font-semibold text-base leading-[1.69em] capitalize mb-1">
+                                לארוז תיק לחדר לידה - רשימת הציוד
+                            </h3>
+                            <span class="btn-default bg-white text-black-0 min-w-[8.125rem] hover-default">
+                                לקריאה
+                            </span>
+                        </div>
+                        <span
+                            class="absolute z-1 left-0 -bottom-3 h-16 w-full bg-gradient-to-t from-[rgba(0,0,0,0.7)] to-transparent"></span>
+                    </div>
+                </a>
+            </div>
+            <div class="swiper-slide rounded-[0.75rem] overflow-hidden">
+                <a href="#" class="block bg-[#000] relative h-[18.25rem] ">
+                    <img class="absolute top-0 left-0 w-full h-full opacity-80 z-1 object-cover transition-opacity"
+                        src="assets/images/mobile-menu-post.jpg" alt="">
+                    <div class="z-2 relative w-full h-full flex flex-col justify-end text-white px-3 py-4 items-start">
+                        <div class="content transition-transform translate-y-[calc(4.125rem+1px)] relative z-2">
+                            <h3 class="font-semibold text-base leading-[1.69em] capitalize mb-1">
+                                לארוז תיק לחדר לידה - רשימת הציוד
+                            </h3>
+                            <span class="btn-default bg-white text-black-0 min-w-[8.125rem] hover-default">
+                                לקריאה
+                            </span>
+                        </div>
+                        <span
+                            class="absolute z-1 left-0 -bottom-3 h-16 w-full bg-gradient-to-t from-[rgba(0,0,0,0.7)] to-transparent"></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <button class="btn-left left-1 pr-[2px] [&.swiper-button-disabled]:hidden absolute top-1/2 -translate-y-1/2 z-4 size-10 flex items-center justify-center rounded-full transition hover:bg-white/70 cursor-pointer">
+            <img class="h-6 w-6" src="assets/images/icons/chevron-left-white.svg" alt="">
+        </button>
+        <button class="btn-right right-1 pl-[2px] [&.swiper-button-disabled]:hidden absolute top-1/2 -translate-y-1/2 z-4 size-10 flex items-center justify-center rounded-full transition hover:bg-white/70 cursor-pointer">
+            <img class="h-6 w-6" src="assets/images/icons/chevron-right-white.svg" alt="">
+        </button>
+    </div>
+    <div class="mt-3">
+        <div style="--bullet-color: var(--purple---super-light);" class="swiper-pagination pagination"></div>
+    </div>
+</div>
+                        </div>
+                    </div>
+                    <div class="pt-4 mt-5 border-t border-app-gray-100-0">
+                        <a href="#" class="btn-default bg-purple---main-0 text-white hover-default">
+                            כל הכתבות
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div data-nav-tab-id="3" class="[&:not(.active)]:hidden pt-2 pointer-events-auto">
+                <div class="nav-tab bg-white py-9 px-[3.125rem] shadow-default rounded-[0.75rem]">
+
+                    <div class="flex gap-14">
+                        <div class="grid grid-cols-[repeat(1,11.75rem)] gap-14 shrink-0 grow-0">
+                            <div class="">
+                                <ul class="flex flex-wrap gap-x-8">
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            מי אנחנו
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            קריירה באלטמן
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            איתור חנויות
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="shrink grow">
+                            <div class="overflow-hidden h-[22.68rem] rounded-[0.75rem]">
+                                <img class="h-full w-full object-cover" src="assets/images/nav-tab-img-1.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-nav-tab-id="4" class="[&:not(.active)]:hidden pt-2 pointer-events-auto">
+                <div class="nav-tab bg-white py-9 px-[3.125rem] shadow-default rounded-[0.75rem]">
+
+                    <div class="flex gap-14">
+                        <div class="grid grid-cols-[repeat(2,11.75rem)] gap-14 shrink-0 grow-0">
+                            <div class="">
+                                <h3 class="pr-8 text-base leading-[1.69em] capitalize font-semibold">
+                                    מחשבונים
+                                </h3>
+                                <div class="pr-8 my-[0.625rem]">
+                                    <hr class="border-app-gray-100-0">
+                                </div>
+                                <ul class="flex flex-wrap gap-x-8">
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            מחשבון ויטמינים ומינרלים
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            מחשבון הריון
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            מחשבון BMI
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            מחשבון BMR
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            מחשבון קלוריות
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="">
+                                <h3 class="pr-8 text-base leading-[1.69em] capitalize font-semibold">
+                                    עוד
+                                </h3>
+                                <div class="pr-8 my-[0.625rem]">
+                                    <hr class="border-app-gray-100-0">
+                                </div>
+                                <ul class="flex flex-wrap gap-x-8">
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            המומחים שלנו
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            מתכונים
+                                        </a>
+                                    </li>
+                                    <li class="w-[11.75rem]">
+                                        <a href="#" class="pr-8 flex items-center relative min-h-10 text-base transition-none hover:text-purple---main-0 [&_img]:hover:opacity-100">
+                                            <img class="absolute right-0 top-1/2 -translate-y-1/2 h-6 w-6 transition-opacity opacity-0" src="assets/images/icons/Man-circle.svg" alt="">
+                                            מועדון אלטמן
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="shrink grow">
+                            <div class="overflow-hidden h-[22.68rem] rounded-[0.75rem]">
+                                <img class="h-full w-full object-cover" src="assets/images/nav-tab-img-2.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+<div data-overlay class="fixed bg-[rgba(17,17,17,0.24)] z-30 top-0 left-0 w-full h-full backdrop-blur-[4px] [&:not(.active)]:hidden"></div>
+
+<!-- Mobile menu -->
+<div data-mobile-menu class="fixed top-0 left-full w-full h-dvh bg-white z-50">
+    <div class="layer main-layer h-full flex flex-col justify-between gap-8">
+        <div class="px-4 pt-[6rem] relative">
+            <div class="absolute top-9 px-[4rem] left-0 w-full font-semibold text-[1.5rem] text-center">
+                צהריים טובים עומר
+            </div>
+            <button data-action="close-mobile-menu" class="absolute top-8 right-4 shadow-[0_3px_10px_0px_rgba(0,0,0,0.16)] bg-white rounded-full size-10 flex items-center justify-center">
+                <img class="size-6" src="assets/images/icons/x-mark.svg" alt="">
+            </button>
+            <a href="#">
+                <img  class="h-9 w-auto" src="assets/images/logos/Logo.svg" alt="">
+            </a>
+        </div>
+        <div class="h-full overflow-y-auto px-4 pb-8 flex flex-col gap-8">
+            <ul class="flex flex-col gap-3">
+                <li>
+                    <a data-show-sublayer-by-id="1" href="#" class="flex items-center min-h-10 gap-2 text-base">
+                        כתבות
+                    </a>
+                </li>
+                <li>
+                    <a data-show-sublayer-by-id="2" href="#" class="flex items-center min-h-10 gap-2 text-base">
+                        חנות
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center min-h-10 gap-2 text-base">
+                        התאמת מוצרים
+                    </a>
+                </li>
+                <li>
+                    <a data-show-sublayer-by-id="3" href="#" class="flex items-center min-h-10 gap-2 text-base">
+                        אודות
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center min-h-10 gap-2 text-base">
+                        צרו קשר
+                    </a>
+                </li>
+                <li>
+                    <a data-show-sublayer-by-id="4" href="#" class="flex items-center min-h-10 gap-2 text-base">
+                        עוד
+                    </a>
+                </li>
+            </ul>
+            <hr class="border-app-gray-100-0">
+            <ul class="flex flex-col gap-3">
+                <li>
+                    <a href="#" class="flex items-center min-h-10 gap-2 text-base">
+                        <img class="size-6 shrink-0 grow-0" src="assets/images/icons/user.svg" alt="">
+                        התחברות / הרשמה
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center min-h-10 gap-2 text-base">
+                        <img class="size-6 shrink-0 grow-0" src="assets/images/icons/bag.svg" alt="">
+                        עגלה
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div data-sublayer="1" class="layer sublayer h-full w-full flex flex-col justify-between gap-8 absolute top-0 left-full bg-white">
+        <div class="px-4 pt-8 flex flex-col gap-8 relative">
+            <button data-action="close-sublayer" class="shadow-[0_3px_10px_0px_rgba(0,0,0,0.16)] bg-white rounded-full size-10 flex items-center justify-center absolute top-8 right-4 click">
+                <img class="size-6" src="assets/images/icons/chevron-right.svg" alt="">
+            </button>
+            <h2 class="flex px-12 items-center justify-center min-h-10 font-semibold text-[18px] capitalize">
+                כתבות 
+            </h2>
+        </div>
+        <div class="h-full overflow-y-auto px-4 pb-8 flex flex-col gap-8">
+            <div>
+                <h3 class="text-base leading-[1.69em] capitalize font-semibold">
+                    כתבות לפי תחום עניין
+                </h3>
+                <hr class="h-[1px] bg-app-gray-200-0 my-3">
+                <ul class="grid grid-cols-2 gap-x-4 gap-y-3">
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Winter-circle.svg" alt="">
+                            חורף
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Hair-circle.svg" alt="">
+                            שיער
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Probiotics&digestion-circle.svg" alt="">
+                            פרוביוטיקה ועיכול
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Plant-circle.svg" alt="">
+                            צמחים
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Relax-circle.svg" alt="">
+                            הרגעה
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Joints&tmovement-circle.svg" alt="">
+                            מפרקים ותנועה
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Vitamins&minerals-circle.svg" alt="">
+                            ויטמינים ומינרלים
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Traumil-circle.svg" alt="">
+                            טראומיל
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Omega-circle.svg" alt="">
+                            אומגה 3
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Multivitamins-circle.svg" alt="">
+                            מולטי ויטמין
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Iron-circle.svg" alt="">
+                            ברזל
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/MAgnesium-circle.svg" alt="">
+                            מגנזיום
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Skincare-circle.svg" alt="">
+                            בריאות העור
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-base leading-[1.69em] capitalize font-semibold">
+                    כתבות לפי קהל יעד
+                </h3>
+                <hr class="h-[1px] bg-app-gray-200-0 my-3">
+                <ul class="grid grid-cols-2 gap-x-4 gap-y-3">
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Man-circle.svg" alt="">
+                            גברים
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Woman-circle.svg" alt="">
+                            נשים
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Pregnancy-circle.svg" alt="">
+                            הריון
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Kids-circle.svg" alt="">
+                            ילדים
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Special formula-circle.svg" alt="">
+                            גילאי 50+
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <a href="#" class="btn-default bg-purple---main-0 text-white">
+                כל הכתבות
+            </a>
+            <a href="#" class="block bg-[#000] relative overflow-hidden rounded-[12px] min-h-[364px]">
+                <img class="absolute top-0 left-0 w-full h-full opacity-80 z-1 object-cover" src="assets/images/mobile-menu-post.jpg" alt="">
+                <div class="z-2 relative w-full h-full flex flex-col justify-end text-white p-3 items-start">
+                    <h3 class="font-semibold text-base leading-[1.69em] capitalize">
+                        לארוז תיק לחדר לידה - רשימת הציוד
+                    </h3>
+                    <span class="btn-default bg-white text-black-0">
+                        לקריאה
+                    </span>
+                </div> 
+            </a>
+        </div>
+    </div>
+
+    <div data-sublayer="2" class="layer sublayer h-full w-full flex flex-col justify-between gap-8 absolute top-0 left-full bg-white">
+        <div class="px-4 pt-8 flex flex-col gap-8 relative">
+            <button data-action="close-sublayer" class="shadow-[0_3px_10px_0px_rgba(0,0,0,0.16)] bg-white rounded-full size-10 flex items-center justify-center absolute top-8 right-4 click">
+                <img class="size-6" src="assets/images/icons/chevron-right.svg" alt="">
+            </button>
+            <h2 class="flex px-12 items-center justify-center min-h-10 font-semibold text-[18px] capitalize">
+                חנות 
+            </h2>
+        </div>
+        <div class="h-full overflow-y-auto px-4 pb-8 flex flex-col gap-8">
+            <div>
+                <h3 class="text-base leading-[1.69em] capitalize font-semibold">
+                    כתבות לפי תחום עניין
+                </h3>
+                <hr class="h-[1px] bg-app-gray-200-0 my-3">
+                <ul class="grid grid-cols-2 gap-x-4 gap-y-3">
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Winter-circle.svg" alt="">
+                            חורף
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Hair-circle.svg" alt="">
+                            שיער
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Probiotics&digestion-circle.svg" alt="">
+                            פרוביוטיקה ועיכול
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Plant-circle.svg" alt="">
+                            צמחים
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Relax-circle.svg" alt="">
+                            הרגעה
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Joints&tmovement-circle.svg" alt="">
+                            מפרקים ותנועה
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Vitamins&minerals-circle.svg" alt="">
+                            ויטמינים ומינרלים
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Traumil-circle.svg" alt="">
+                            טראומיל
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Omega-circle.svg" alt="">
+                            אומגה 3
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Multivitamins-circle.svg" alt="">
+                            מולטי ויטמין
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Iron-circle.svg" alt="">
+                            ברזל
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/MAgnesium-circle.svg" alt="">
+                            מגנזיום
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Skincare-circle.svg" alt="">
+                            בריאות העור
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <a href="#" class="btn-default bg-purple---main-0 text-white">
+                כל הכתבות
+            </a>
+            <a href="#" class="block bg-[#000] relative overflow-hidden rounded-[12px] min-h-[364px]">
+                <img class="absolute top-0 left-0 w-full h-full opacity-80 z-1 object-cover" src="assets/images/mobile-menu-post.jpg" alt="">
+                <div class="z-2 relative w-full h-full flex flex-col justify-end text-white p-3 items-start">
+                    <h3 class="font-semibold text-base leading-[1.69em] capitalize">
+                        לארוז תיק לחדר לידה - רשימת הציוד
+                    </h3>
+                    <span class="btn-default bg-white text-black-0">
+                        לקריאה
+                    </span>
+                </div> 
+            </a>
+        </div>
+    </div>
+
+    <div data-sublayer="3" class="layer sublayer h-full w-full flex flex-col justify-between gap-8 absolute top-0 left-full bg-white">
+        <div class="px-4 pt-8 flex flex-col gap-8 relative">
+            <button data-action="close-sublayer" class="shadow-[0_3px_10px_0px_rgba(0,0,0,0.16)] bg-white rounded-full size-10 flex items-center justify-center absolute top-8 right-4 click">
+                <img class="size-6" src="assets/images/icons/chevron-right.svg" alt="">
+            </button>
+            <h2 class="flex px-12 items-center justify-center min-h-10 font-semibold text-[18px] capitalize">
+                אודות 
+            </h2>
+        </div>
+        <div class="h-full overflow-y-auto px-4 pb-8 flex flex-col gap-8">
+            <div>
+                <h3 class="text-base leading-[1.69em] capitalize font-semibold">
+                    כתבות לפי תחום עניין
+                </h3>
+                <hr class="h-[1px] bg-app-gray-200-0 my-3">
+                <ul class="grid grid-cols-2 gap-x-4 gap-y-3">
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Winter-circle.svg" alt="">
+                            חורף
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Hair-circle.svg" alt="">
+                            שיער
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Probiotics&digestion-circle.svg" alt="">
+                            פרוביוטיקה ועיכול
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Plant-circle.svg" alt="">
+                            צמחים
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Relax-circle.svg" alt="">
+                            הרגעה
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Joints&tmovement-circle.svg" alt="">
+                            מפרקים ותנועה
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Vitamins&minerals-circle.svg" alt="">
+                            ויטמינים ומינרלים
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Traumil-circle.svg" alt="">
+                            טראומיל
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Omega-circle.svg" alt="">
+                            אומגה 3
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Multivitamins-circle.svg" alt="">
+                            מולטי ויטמין
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Iron-circle.svg" alt="">
+                            ברזל
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/MAgnesium-circle.svg" alt="">
+                            מגנזיום
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Skincare-circle.svg" alt="">
+                            בריאות העור
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-base leading-[1.69em] capitalize font-semibold">
+                    כתבות לפי קהל יעד
+                </h3>
+                <hr class="h-[1px] bg-app-gray-200-0 my-3">
+                <ul class="grid grid-cols-2 gap-x-4 gap-y-3">
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Man-circle.svg" alt="">
+                            גברים
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Woman-circle.svg" alt="">
+                            נשים
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Pregnancy-circle.svg" alt="">
+                            הריון
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Kids-circle.svg" alt="">
+                            ילדים
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Special formula-circle.svg" alt="">
+                            גילאי 50+
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <a href="#" class="btn-default bg-purple---main-0 text-white">
+                כל הכתבות
+            </a>
+            <a href="#" class="block bg-[#000] relative overflow-hidden rounded-[12px] min-h-[364px]">
+                <img class="absolute top-0 left-0 w-full h-full opacity-80 z-1 object-cover" src="assets/images/mobile-menu-post.jpg" alt="">
+                <div class="z-2 relative w-full h-full flex flex-col justify-end text-white p-3 items-start">
+                    <h3 class="font-semibold text-base leading-[1.69em] capitalize">
+                        לארוז תיק לחדר לידה - רשימת הציוד
+                    </h3>
+                    <span class="btn-default bg-white text-black-0">
+                        לקריאה
+                    </span>
+                </div> 
+            </a>
+        </div>
+    </div>
+
+    <div data-sublayer="4" class="layer sublayer h-full w-full flex flex-col justify-between gap-8 absolute top-0 left-full bg-white">
+        <div class="px-4 pt-8 flex flex-col gap-8 relative">
+            <button data-action="close-sublayer" class="shadow-[0_3px_10px_0px_rgba(0,0,0,0.16)] bg-white rounded-full size-10 flex items-center justify-center absolute top-8 right-4 click">
+                <img class="size-6" src="assets/images/icons/chevron-right.svg" alt="">
+            </button>
+            <h2 class="flex px-12 items-center justify-center min-h-10 font-semibold text-[18px] capitalize">
+                עוד 
+            </h2>
+        </div>
+        <div class="h-full overflow-y-auto px-4 pb-8 flex flex-col gap-8">
+            <div>
+                <h3 class="text-base leading-[1.69em] capitalize font-semibold">
+                    כתבות לפי תחום עניין
+                </h3>
+                <hr class="h-[1px] bg-app-gray-200-0 my-3">
+                <ul class="grid grid-cols-2 gap-x-4 gap-y-3">
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Winter-circle.svg" alt="">
+                            חורף
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Hair-circle.svg" alt="">
+                            שיער
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Probiotics&digestion-circle.svg" alt="">
+                            פרוביוטיקה ועיכול
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Plant-circle.svg" alt="">
+                            צמחים
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Relax-circle.svg" alt="">
+                            הרגעה
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Joints&tmovement-circle.svg" alt="">
+                            מפרקים ותנועה
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Vitamins&minerals-circle.svg" alt="">
+                            ויטמינים ומינרלים
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Traumil-circle.svg" alt="">
+                            טראומיל
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Omega-circle.svg" alt="">
+                            אומגה 3
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Multivitamins-circle.svg" alt="">
+                            מולטי ויטמין
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Iron-circle.svg" alt="">
+                            ברזל
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/MAgnesium-circle.svg" alt="">
+                            מגנזיום
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 min-h-10 ">
+                            <img src="assets/images/icons/Skincare-circle.svg" alt="">
+                            בריאות העור
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <a href="#" class="btn-default bg-purple---main-0 text-white">
+                כל הכתבות
+            </a>
+            <a href="#" class="block bg-[#000] relative overflow-hidden rounded-[12px] min-h-[364px]">
+                <img class="absolute top-0 left-0 w-full h-full opacity-80 z-1 object-cover" src="assets/images/mobile-menu-post.jpg" alt="">
+                <div class="z-2 relative w-full h-full flex flex-col justify-end text-white p-3 items-start">
+                    <h3 class="font-semibold text-base leading-[1.69em] capitalize">
+                        לארוז תיק לחדר לידה - רשימת הציוד
+                    </h3>
+                    <span class="btn-default bg-white text-black-0">
+                        לקריאה
+                    </span>
+                </div> 
+            </a>
+        </div>
+    </div>
+</div>
+
+    <button data-scroll-up class="hidden fixed z-10 bottom-20 right-[1.875rem] lg:flex flex-col items-center gap-1 text-purple---main-0 [&:not(.active)]:invisible [&:not(.active)]:opacity-0 [&_.icon-arrow-up]:hover:bg-purple---main-0 [&_.icon-arrow-up]:hover:text-white [&_.text-up]:hover:-translate-y-[2px]">
+    <span class="text-up text-[1rem] leading-[1.14em] transition-transform duration-300">
+        חזרו<br>למעלה
+    </span>
+    <span class="icon-arrow-up size-10 rounded-full flex items-center justify-center border border-current transition duration-300"></span>
+</button>
+    <button data-scroll-up class="hidden fixed z-10 bottom-20 left-[1.875rem] lg:flex flex-col items-center gap-1 text-purple---main-0 [&_.icon-message]:hover:bg-purple---main-0 [&_.icon-message]:hover:text-white [&_.text-up]:hover:-translate-y-[2px]">
+    <span class="text-up text-[1rem] leading-[1.14em] transition-transform duration-300">
+        צרו<br>קשר
+    </span>
+    <span class="icon-message size-10 rounded-full flex items-center justify-center border border-current text-[1.125rem] transition duration-300"></span>
+</button>
+
+    <main>
+        <div class="container mt-6 lg:mt-10">
+            <ul class="flex flex-wrap text-[0.75rem] leading-[2.5em] capitalize [&>li>a]:after:content-['/'] [&>li>a]:after:mr-[0.35em] [&>li>a]:text-app-gray-350-0 [&>li>a]:transition-colors hover:[&>li>a]:text-purple---main-0 [&>li:not(:first-child)]:mr-[0.4em] lg:text-[1rem] lg:leading-normal">
+    
+        <li><a href="#">עמוד הבית</a></li>
+    
+        <li>מחשבון BMI</li>
+    
+</ul>
+        </div>
+
+        <div class="pt-3 lg:py-10 overflow-hidden">
+            <div class="container">
+                
+<!-- 
+    ** MODIFICATORS
+    box--bg-purple-light  -- default 
+    box--bg-yellow-light
+
+    box--image-sm
+    box--image-md -- default
+    box--image-lg
+
+    box--image-right -- default
+    box--image-left
+ -->
+<div class="content-in-color-box-with-image-v2 @container ">
+    <div class="content-in-color-box-with-image-v2__inner">
+        <div class="content-in-color-box-with-image-v2__body">
+            <div class="content-in-color-box-with-image-v2__media-container">
+                <div class="content-in-color-box-with-image-v2__img ibg">
+                    <img src="assets/images/bmi-calculator-img.jpg" alt="">
+                </div>
+            </div>
+            <div class="content-in-color-box-with-image-v2__content">
+
+
+
+                <div class="max-w-[32.5rem]">
+                    <h2 class="text-[1.875rem] leading-[1.27em] font-semibold lg:text-[3.125rem] lg:leading-[1.2em]">
+                        מחשבון BMI
+                    </h2>
+
+                    <div class="prose text-base lg:mt-2">
+                        <p>
+                            לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קונסקטורר אדיפיסינג אלית. סת אלמנקום ניסי נון ניבאה. דס איאקוליס וולופטה דיאם. וסטיבולום אט דולור, קראס אגת לקטוס וואל אאוגו וסטיבולום סוליסי טידום בעליק. קונדימנטום קורוס בליקרה, נונסטי קלובר בריקנה סטום, לפריקך תצטריק לרטי.
+                        </p>
+                    </div>
+                </div>
+                            </div>
+        </div>
+        <div class="content-in-color-box-with-image-v2__bg-cover"></div>
+    </div>
+</div>
+            </div>
+        </div>
+
+        <section class="py-[30px] lg:pt-[3.125rem] lg:pb-[5.625rem]"  id="quiz-result">
+            <div class="container-sm">
+                <div class="mx-auto max-w-[43.75rem]">
+                    <h3 class="text-[1.25rem] font-semibold leading-normal text-center lg:text-[1.5rem]">
+                        ה-BMI שלך הוא 18.85
+                    </h3>
+                    <div class="text-base text-center mt-2 flex flex-col gap-2">
+                        <p>
+                            ערך זה מוגדר כ״משקל תקין״ ביחס לגובה. עם זאת חשוב לזכור שמדד זה לא מעיד בהכרח על הרכב גוף ופיזור שומן תקין ולהרכב יש השפעה אדירה על בריאותנו.
+                        </p>
+                    </div>
+
+                    <div class="mt-6 lg:mt-[3.125rem]">
+                        <div class="lg-max:-mx-4 lg-max:px-4 overflow-hidden">
+                            <div class="pt-12 relative grid grid-cols-4 gap-[2px] mx-auto max-w-[35.375rem]">
+                                <div style="right: 31%;" class="absolute h-12 w-[2.625rem] top-0 translate-x-1/2 left-auto">
+                                    <img class="h-full w-auto" src="assets/images/icons/pin-logo.svg" alt="">
+                                </div>
+    
+                                <div class="">
+                                    <div class="scale h-5 bg-purple---super-light-0 rounded-r-full"></div>
+                                    <div class="text-center text-[0.75rem] leading-[1.75em] lg:leading-loose">
+                                        תת משקל
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="scale h-5 bg-purple---light-0"></div>
+                                    <div class="text-center text-[0.75rem] leading-[1.75em] lg:leading-loose">
+                                        משקל תקין
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="scale h-5 bg-[#8d73a5]"></div>
+                                    <div class="text-center text-[0.75rem] leading-[1.75em] lg:leading-loose">
+                                        עודף משקל
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="scale h-5 bg-purple---main-0 rounded-l-full"></div>
+                                    <div class="text-center text-[0.75rem] leading-[1.75em] lg:leading-loose">
+                                        השמנת יתר
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
+                    <div class="text-center mt-6 lg:mt-10">
+                        <a href="./bmi-calculator.html#quiz" class="btn-default text-white bg-purple---main-0 hover-default min-w-[8.75rem] lg:min-w-0">
+                            התחל מחדש
+                        </a>
+                    </div>
+
+                    <div class="mt-6 lg:mt-10">
+                        <div class="text-base text-app-gray-400-0 text-center mx-auto max-w-[38.375rem]">
+                            על מנת לקבל תמונה מלאה יותר, מומלץ למדוד גם את היקף המותניים שמשקף את פיזור השומן בגוף, מדד בריאותי חשוב שמעיד על הסיכון לתחלואה כרונית.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Posts slider -->
+<section class="posts-slider py-[30px] lg:py-10 overflow-hidden">
+    <div class="container text-center">
+        <h2 class="text-[1.5rem] leading-[1.67em] font-semibold capitalize title-with-logo lg:text-[1.875rem] lg:leading-[1.27em]">
+            כתבות שיכולות לעניין אותך
+        </h2>
+        
+    </div>
+    <div class="container mt-4 lg:mt-8">
+        <div class="swiper !overflow-visible" data-slider="default-slider" data-slides-count="4" data-gap="16" data-gap-lg="24">
+            <div class="swiper-wrapper [&_.swiper-slide]:w-[292px]">
+                <div class="swiper-slide">
+                    <div class="post-card flex flex-col h-full [&_.post-card-img]:hover:scale-[1.02] [&_.post-card-title]:hover:text-purple---main-0">
+    <div class="post-card-image-wrap relative h-[18.25rem] rounded-[0.75rem] overflow-hidden translateZ-0">
+        <div class="absolute top-0 right-0 z-2 p-2 flex gap-2 flex-wrap">
+            
+                <span class="bg-white/70 rounded-[0.375rem] min-h-5 px-2 inline-flex items-center text-[1rem] leading-none">
+                    כתבה
+                </span>
+            
+        </div>
+        <a href="#">
+            <img class="post-card-img absolute z-1 top-0 left-0 w-full h-full object-cover transition-transform duration-300" src="assets/images/post-card-img-1.jpg" alt="">
+        </a>
+        <div class="absolute z-2 right-0 bottom-0 p-2 flex gap-1 flex-wrap">
+            
+                <a href="#" class="rounded-full px-3 min-h-5 bg-purple---super-light-0 text-[1rem] text-purple---main-0 transition duration-300 hover:bg-purple---main-0 hover:text-white">
+                    פרוביוטיקה
+                </a>
+            
+                <a href="#" class="rounded-full px-3 min-h-5 bg-purple---super-light-0 text-[1rem] text-purple---main-0 transition duration-300 hover:bg-purple---main-0 hover:text-white">
+                    ויטמינים ומינרלים
+                </a>
+            
+        </div>
+
+        
+    </div>
+    <a href="#" class="post-card-title block font-semibold text-black-0 text-[1.125rem] leading-normal capitalize mt-5 transition-colors duration-300">
+        לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית להאמית
+    </a>
+    <div class="post-card-text text-base mt-1 text-app-gray-400-0">
+        לפרומי בלוף קינץ תתיח לרעח. לת צשחמי צש בליא, מנסוטו צמלח לביקו ננבי, צמוק לורם איפסום דולור סיט אמט קונסטרד...
+    </div>
+    <div class="mt-1"></div>
+    <div class="post-card-author flex items-center gap-2 mt-auto min-h-[3.125rem]">
+        
+            <img class="post-card-avatar grow-0 shrink-0 size-[3.125rem] rounded-full object-cover" src="assets/images/post-card-avatar-1.png" alt="">
+        
+
+        <div class="text-[1rem] flex items-center gap-[0.2em]">
+
+            <strong>דניאל רון</strong> <span class="text-app-gray-400-0 text-[1.5em]">·</span>דיאטנית קלינית
+
+        </div>
+    </div>
+</div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="post-card flex flex-col h-full [&_.post-card-img]:hover:scale-[1.02] [&_.post-card-title]:hover:text-purple---main-0">
+    <div class="post-card-image-wrap relative h-[18.25rem] rounded-[0.75rem] overflow-hidden translateZ-0">
+        <div class="absolute top-0 right-0 z-2 p-2 flex gap-2 flex-wrap">
+            
+                <span class="bg-white/70 rounded-[0.375rem] min-h-5 px-2 inline-flex items-center text-[1rem] leading-none">
+                    כתבה
+                </span>
+            
+        </div>
+        <a href="#">
+            <img class="post-card-img absolute z-1 top-0 left-0 w-full h-full object-cover transition-transform duration-300" src="assets/images/post-card-img-2.jpg" alt="">
+        </a>
+        <div class="absolute z-2 right-0 bottom-0 p-2 flex gap-1 flex-wrap">
+            
+                <a href="#" class="rounded-full px-3 min-h-5 bg-purple---super-light-0 text-[1rem] text-purple---main-0 transition duration-300 hover:bg-purple---main-0 hover:text-white">
+                    פורמולות מיוחדות 50+
+                </a>
+            
+        </div>
+
+        
+    </div>
+    <a href="#" class="post-card-title block font-semibold text-black-0 text-[1.125rem] leading-normal capitalize mt-5 transition-colors duration-300">
+        לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית להאמית
+    </a>
+    <div class="post-card-text text-base mt-1 text-app-gray-400-0">
+        לפרומי בלוף קינץ תתיח לרעח. לת צשחמי צש בליא, מנסוטו צמלח לביקו ננבי, צמוק לורם איפסום דולור סיט אמט קונסטרד...
+    </div>
+    <div class="mt-1"></div>
+    <div class="post-card-author flex items-center gap-2 mt-auto min-h-[3.125rem]">
+        
+            <img class="post-card-avatar grow-0 shrink-0 size-[3.125rem] rounded-full object-cover" src="assets/images/post-card-avatar-2.png" alt="">
+        
+
+        <div class="text-[1rem] flex items-center gap-[0.2em]">
+
+            <strong>דניאל רון</strong> <span class="text-app-gray-400-0 text-[1.5em]">·</span>דיאטנית קלינית
+
+        </div>
+    </div>
+</div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="post-card flex flex-col h-full [&_.post-card-img]:hover:scale-[1.02] [&_.post-card-title]:hover:text-purple---main-0">
+    <div class="post-card-image-wrap relative h-[18.25rem] rounded-[0.75rem] overflow-hidden translateZ-0">
+        <div class="absolute top-0 right-0 z-2 p-2 flex gap-2 flex-wrap">
+            
+                <span class="bg-white/70 rounded-[0.375rem] min-h-5 px-2 inline-flex items-center text-[1rem] leading-none">
+                    כתבה
+                </span>
+            
+        </div>
+        <a href="#">
+            <img class="post-card-img absolute z-1 top-0 left-0 w-full h-full object-cover transition-transform duration-300" src="assets/images/post-card-img-3.jpg" alt="">
+        </a>
+        <div class="absolute z-2 right-0 bottom-0 p-2 flex gap-1 flex-wrap">
+            
+                <a href="#" class="rounded-full px-3 min-h-5 bg-purple---super-light-0 text-[1rem] text-purple---main-0 transition duration-300 hover:bg-purple---main-0 hover:text-white">
+                    פרוביוטיקה
+                </a>
+            
+                <a href="#" class="rounded-full px-3 min-h-5 bg-purple---super-light-0 text-[1rem] text-purple---main-0 transition duration-300 hover:bg-purple---main-0 hover:text-white">
+                    בריאות העור
+                </a>
+            
+        </div>
+
+        
+    </div>
+    <a href="#" class="post-card-title block font-semibold text-black-0 text-[1.125rem] leading-normal capitalize mt-5 transition-colors duration-300">
+        לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית להאמית
+    </a>
+    <div class="post-card-text text-base mt-1 text-app-gray-400-0">
+        לפרומי בלוף קינץ תתיח לרעח. לת צשחמי צש בליא, מנסוטו צמלח לביקו ננבי, צמוק לורם איפסום דולור סיט אמט קונסטרד...
+    </div>
+    <div class="mt-1"></div>
+    <div class="post-card-author flex items-center gap-2 mt-auto min-h-[3.125rem]">
+        
+            <img class="post-card-avatar grow-0 shrink-0 size-[3.125rem] rounded-full object-cover" src="assets/images/post-card-avatar-3.png" alt="">
+        
+
+        <div class="text-[1rem] flex items-center gap-[0.2em]">
+
+            <strong>דניאל רון</strong> <span class="text-app-gray-400-0 text-[1.5em]">·</span>דיאטנית קלינית
+
+        </div>
+    </div>
+</div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="post-card flex flex-col h-full [&_.post-card-img]:hover:scale-[1.02] [&_.post-card-title]:hover:text-purple---main-0">
+    <div class="post-card-image-wrap relative h-[18.25rem] rounded-[0.75rem] overflow-hidden translateZ-0">
+        <div class="absolute top-0 right-0 z-2 p-2 flex gap-2 flex-wrap">
+            
+                <span class="bg-white/70 rounded-[0.375rem] min-h-5 px-2 inline-flex items-center text-[1rem] leading-none">
+                    וידאו
+                </span>
+            
+        </div>
+        <a href="#">
+            <img class="post-card-img absolute z-1 top-0 left-0 w-full h-full object-cover transition-transform duration-300" src="assets/images/post-card-img-4.jpg" alt="">
+        </a>
+        <div class="absolute z-2 right-0 bottom-0 p-2 flex gap-1 flex-wrap">
+            
+                <a href="#" class="rounded-full px-3 min-h-5 bg-purple---super-light-0 text-[1rem] text-purple---main-0 transition duration-300 hover:bg-purple---main-0 hover:text-white">
+                    ילדים
+                </a>
+            
+        </div>
+
+        
+            <span class="absolute z-3 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-10 flex items-center justify-center rounded-full bg-white/70 backdrop-blur-[2px]">
+                <img class="h-4 w-4 ml-[2px]" src="assets/images/icons/play.svg" alt="">
+            </span>
+        
+    </div>
+    <a href="#" class="post-card-title block font-semibold text-black-0 text-[1.125rem] leading-normal capitalize mt-5 transition-colors duration-300">
+        לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית להאמית
+    </a>
+    <div class="post-card-text text-base mt-1 text-app-gray-400-0">
+        לפרומי בלוף קינץ תתיח לרעח. לת צשחמי צש בליא, מנסוטו צמלח לביקו ננבי, צמוק לורם איפסום דולור סיט אמט קונסטרד...
+    </div>
+    <div class="mt-1"></div>
+    <div class="post-card-author flex items-center gap-2 mt-auto min-h-[3.125rem]">
+        
+
+        <div class="text-[1rem] flex items-center gap-[0.2em]">
+
+            <strong>דניאל רון</strong> <span class="text-app-gray-400-0 text-[1.5em]">·</span>דיאטנית קלינית
+
+        </div>
+    </div>
+</div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="post-card flex flex-col h-full [&_.post-card-img]:hover:scale-[1.02] [&_.post-card-title]:hover:text-purple---main-0">
+    <div class="post-card-image-wrap relative h-[18.25rem] rounded-[0.75rem] overflow-hidden translateZ-0">
+        <div class="absolute top-0 right-0 z-2 p-2 flex gap-2 flex-wrap">
+            
+                <span class="bg-white/70 rounded-[0.375rem] min-h-5 px-2 inline-flex items-center text-[1rem] leading-none">
+                    כתבה
+                </span>
+            
+        </div>
+        <a href="#">
+            <img class="post-card-img absolute z-1 top-0 left-0 w-full h-full object-cover transition-transform duration-300" src="assets/images/post-card-img-5.jpg" alt="">
+        </a>
+        <div class="absolute z-2 right-0 bottom-0 p-2 flex gap-1 flex-wrap">
+            
+                <a href="#" class="rounded-full px-3 min-h-5 bg-purple---super-light-0 text-[1rem] text-purple---main-0 transition duration-300 hover:bg-purple---main-0 hover:text-white">
+                    נשים
+                </a>
+            
+        </div>
+
+        
+    </div>
+    <a href="#" class="post-card-title block font-semibold text-black-0 text-[1.125rem] leading-normal capitalize mt-5 transition-colors duration-300">
+        לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית להאמית
+    </a>
+    <div class="post-card-text text-base mt-1 text-app-gray-400-0">
+        לפרומי בלוף קינץ תתיח לרעח. לת צשחמי צש בליא, מנסוטו צמלח לביקו ננבי, צמוק לורם איפסום דולור סיט אמט קונסטרד...
+    </div>
+    <div class="mt-1"></div>
+    <div class="post-card-author flex items-center gap-2 mt-auto min-h-[3.125rem]">
+        
+            <img class="post-card-avatar grow-0 shrink-0 size-[3.125rem] rounded-full object-cover" src="assets/images/post-card-avatar-1.png" alt="">
+        
+
+        <div class="text-[1rem] flex items-center gap-[0.2em]">
+
+            <strong>דניאל רון</strong> <span class="text-app-gray-400-0 text-[1.5em]">·</span>דיאטנית קלינית
+
+        </div>
+    </div>
+</div>
+                </div>
+            </div>
+            <button type="button" class="btn-left left-0 -translate-x-1/2 top-[9.125rem] [&.swiper-button-disabled]:hidden -translate-y-1/2 z-4 hidden absolute lg:flex items-center justify-center size-10 rounded-full bg-white shadow-default transition hover:bg-app-gray-100-0">
+    <img src="assets/images/icons/arrow-left.svg" alt="">
+</button>
+<button type="button" class="btn-right right-0 translate-x-1/2 top-[9.125rem] [&.swiper-button-disabled]:hidden -translate-y-1/2 z-4 hidden absolute lg:flex items-center justify-center size-10 rounded-full bg-white shadow-default transition hover:bg-app-gray-100-0">
+    <img src="assets/images/icons/arrow-right.svg" alt="">
+</button>
+        </div>
+        
+    </div>
+</section>
+
+          <!-- Best sellers slider -->
+<section data-products-observer style="background: var(--yellow-gradient)" class="best-sellers-slider py-[30px] lg:py-10 overflow-hidden">
+    <div class="container text-center">
+        <h2 class="text-[1.5rem] leading-[1.67em] font-semibold capitalize title-with-logo lg:text-[1.875rem] lg:leading-[1.27em]">
+            מוצרים שיכולים להתאים לך
+        </h2>
+        
+    </div>
+    <div class="container mt-4 lg:mt-8">
+        <div class="swiper !overflow-visible" data-slider="default-slider" data-slides-count="4" data-gap="8" data-gap-lg="24">
+            <div class="swiper-wrapper [&_.swiper-slide]:w-[160px]">
+                <div class="swiper-slide">
+                    <div data-product-hover-container
+    class="product-card h-full flex flex-col relative px-2 lg:px-[1rem] py-4 bg-yellow-02-0 rounded-[0.75rem] text-center [&_.product-title]:hover:text-purple---main-0">
+    <div class="absolute top-[0.625rem] lg:top-4 left-0 right-0 px-[0.625rem] lg:px-4 z-2 flex justify-between gap-2 flex-wrap">
+        <div class="product-card-tags flex flex-col gap-2 items-start">
+            <!-- <span
+                class="flex items-center justify-center min-h-5 px-[0.457rem] border border-purple---main-0 rounded-[0.375rem] text-purple---main-0 text-center text-[0.875rem] leading-none">
+                40% הנחה
+            </span> -->
+        </div>
+
+        <!-- use active class -->
+        <button data-tooltip="שמירה"
+            class="@@inWishList toggle-wishlist [&.active_.icon-heart]:opacity-0 [&.active_.icon-heart-full]:opacity-100 [&.active]:text-purple---main-0 relative flex items-center justify-center size-5 text-[1rem] lg:text-[1.25rem] transition duration-300 [&_.icon-heart]:hover:opacity-0 [&_.icon-heart-full]:hover:opacity-100">
+            <span class="icon-heart relative z-1 transition-opacity duration-300"></span>
+            <span
+                class="icon-heart-full absolute z-2 top-0 left-0 w-full h-full transition-opacity duration-300 opacity-0 text-purple---main-0"></span>
+        </button>
+
+    </div>
+    <a href="#" class="h-[9.25rem] lg:h-[15.625rem] lg:mt-0">
+        <div class="images-container lg:pt-2">
+            <img class="main-image" src="assets/images/product-main-img-1x-1.png" srcset="assets/images/product-main-img-2x-1.png 2x" alt="">
+            
+            <img class="second-image" src="assets/images/product-second-img-1x-1.png" srcset="assets/images/product-second-img-2x-1.png 2x" alt="">
+            
+            
+            <img class="third-image" src="assets/images/product-third-img-1x-1.png" srcset="assets/images/product-third-img-2x-1.png 2x" alt="">
+            
+        </div>
+    </a>
+    <a href="#" class="product-title mt-2 font-semibold text-[1.125rem] leading-normal transition-colors">
+        Energy Complex
+    </a>
+    <div class="text-[1rem]">
+        לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג
+    </div>
+    <div class="mt-auto">
+        <div class="price flex items-center justify-center gap-2 flex-wrap">
+    <span class="font-semibold leading-[1.69em] capitalize">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                116
+            </bdi>
+        </span>
+    </span>
+    <span class="text-[1rem] tracking-[0.02em] leading-[1.71em] text-app-gray-350-0 font-extralight line-through">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                139
+            </bdi>
+        </span>
+    </span>
+</div>
+    </div>
+    <div class="mt-[0.56rem]">
+        <a href="#"
+            class="btn-default bg-purple---main-0 hover-default text-white min-w-[7.5625rem] w-full lg:w-auto [&.btn-default]:px-3 font-light">
+            הוספה לסל
+        </a>
+    </div>
+</div>
+                </div>
+                <div class="swiper-slide">
+                    <div data-product-hover-container
+    class="product-card h-full flex flex-col relative px-2 lg:px-[1rem] py-4 bg-yellow-02-0 rounded-[0.75rem] text-center [&_.product-title]:hover:text-purple---main-0">
+    <div class="absolute top-[0.625rem] lg:top-4 left-0 right-0 px-[0.625rem] lg:px-4 z-2 flex justify-between gap-2 flex-wrap">
+        <div class="product-card-tags flex flex-col gap-2 items-start">
+            <!-- <span
+                class="flex items-center justify-center min-h-5 px-[0.457rem] border border-purple---main-0 rounded-[0.375rem] text-purple---main-0 text-center text-[0.875rem] leading-none">
+                40% הנחה
+            </span> -->
+        </div>
+
+        <!-- use active class -->
+        <button data-tooltip="שמירה"
+            class="@@inWishList toggle-wishlist [&.active_.icon-heart]:opacity-0 [&.active_.icon-heart-full]:opacity-100 [&.active]:text-purple---main-0 relative flex items-center justify-center size-5 text-[1rem] lg:text-[1.25rem] transition duration-300 [&_.icon-heart]:hover:opacity-0 [&_.icon-heart-full]:hover:opacity-100">
+            <span class="icon-heart relative z-1 transition-opacity duration-300"></span>
+            <span
+                class="icon-heart-full absolute z-2 top-0 left-0 w-full h-full transition-opacity duration-300 opacity-0 text-purple---main-0"></span>
+        </button>
+
+    </div>
+    <a href="#" class="h-[9.25rem] lg:h-[15.625rem] lg:mt-0">
+        <div class="images-container lg:pt-2">
+            <img class="main-image" src="assets/images/product-main-img-1x-2.png" srcset="assets/images/product-main-img-2x-2.png 2x" alt="">
+            
+            <img class="second-image" src="assets/images/product-second-img-1x-2.png" srcset="assets/images/product-second-img-2x-2.png 2x" alt="">
+            
+            
+        </div>
+    </a>
+    <a href="#" class="product-title mt-2 font-semibold text-[1.125rem] leading-normal transition-colors">
+        Energy Complex
+    </a>
+    <div class="text-[1rem]">
+        לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג
+    </div>
+    <div class="mt-auto">
+        <div class="price flex items-center justify-center gap-2 flex-wrap">
+    <span class="font-semibold leading-[1.69em] capitalize">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                116
+            </bdi>
+        </span>
+    </span>
+    <span class="text-[1rem] tracking-[0.02em] leading-[1.71em] text-app-gray-350-0 font-extralight line-through">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                139
+            </bdi>
+        </span>
+    </span>
+</div>
+    </div>
+    <div class="mt-[0.56rem]">
+        <a href="#"
+            class="btn-default bg-purple---main-0 hover-default text-white min-w-[7.5625rem] w-full lg:w-auto [&.btn-default]:px-3 font-light">
+            הוספה לסל
+        </a>
+    </div>
+</div>
+                </div>
+                <div class="swiper-slide">
+                    <div data-product-hover-container
+    class="product-card h-full flex flex-col relative px-2 lg:px-[1rem] py-4 bg-yellow-02-0 rounded-[0.75rem] text-center [&_.product-title]:hover:text-purple---main-0">
+    <div class="absolute top-[0.625rem] lg:top-4 left-0 right-0 px-[0.625rem] lg:px-4 z-2 flex justify-between gap-2 flex-wrap">
+        <div class="product-card-tags flex flex-col gap-2 items-start">
+            <!-- <span
+                class="flex items-center justify-center min-h-5 px-[0.457rem] border border-purple---main-0 rounded-[0.375rem] text-purple---main-0 text-center text-[0.875rem] leading-none">
+                40% הנחה
+            </span> -->
+        </div>
+
+        <!-- use active class -->
+        <button data-tooltip="שמירה"
+            class="@@inWishList toggle-wishlist [&.active_.icon-heart]:opacity-0 [&.active_.icon-heart-full]:opacity-100 [&.active]:text-purple---main-0 relative flex items-center justify-center size-5 text-[1rem] lg:text-[1.25rem] transition duration-300 [&_.icon-heart]:hover:opacity-0 [&_.icon-heart-full]:hover:opacity-100">
+            <span class="icon-heart relative z-1 transition-opacity duration-300"></span>
+            <span
+                class="icon-heart-full absolute z-2 top-0 left-0 w-full h-full transition-opacity duration-300 opacity-0 text-purple---main-0"></span>
+        </button>
+
+    </div>
+    <a href="#" class="h-[9.25rem] lg:h-[15.625rem] lg:mt-0">
+        <div class="images-container lg:pt-2">
+            <img class="main-image" src="assets/images/product-main-img-1x-3.png" srcset="assets/images/product-main-img-2x-3.png 2x" alt="">
+            
+            <img class="second-image" src="assets/images/product-second-img-1x-3.png" srcset="assets/images/product-second-img-2x-3.png 2x" alt="">
+            
+            
+            <img class="third-image" src="assets/images/product-third-img-1x-3.png" srcset="assets/images/product-third-img-2x-3.png 2x" alt="">
+            
+        </div>
+    </a>
+    <a href="#" class="product-title mt-2 font-semibold text-[1.125rem] leading-normal transition-colors">
+        Energy Complex
+    </a>
+    <div class="text-[1rem]">
+        לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג
+    </div>
+    <div class="mt-auto">
+        <div class="price flex items-center justify-center gap-2 flex-wrap">
+    <span class="font-semibold leading-[1.69em] capitalize">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                116
+            </bdi>
+        </span>
+    </span>
+    <span class="text-[1rem] tracking-[0.02em] leading-[1.71em] text-app-gray-350-0 font-extralight line-through">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                139
+            </bdi>
+        </span>
+    </span>
+</div>
+    </div>
+    <div class="mt-[0.56rem]">
+        <a href="#"
+            class="btn-default bg-purple---main-0 hover-default text-white min-w-[7.5625rem] w-full lg:w-auto [&.btn-default]:px-3 font-light">
+            הוספה לסל
+        </a>
+    </div>
+</div>
+                </div>
+                <div class="swiper-slide">
+                    <div data-product-hover-container
+    class="product-card h-full flex flex-col relative px-2 lg:px-[1rem] py-4 bg-yellow-02-0 rounded-[0.75rem] text-center [&_.product-title]:hover:text-purple---main-0">
+    <div class="absolute top-[0.625rem] lg:top-4 left-0 right-0 px-[0.625rem] lg:px-4 z-2 flex justify-between gap-2 flex-wrap">
+        <div class="product-card-tags flex flex-col gap-2 items-start">
+            <!-- <span
+                class="flex items-center justify-center min-h-5 px-[0.457rem] border border-purple---main-0 rounded-[0.375rem] text-purple---main-0 text-center text-[0.875rem] leading-none">
+                40% הנחה
+            </span> -->
+        </div>
+
+        <!-- use active class -->
+        <button data-tooltip="שמירה"
+            class="@@inWishList toggle-wishlist [&.active_.icon-heart]:opacity-0 [&.active_.icon-heart-full]:opacity-100 [&.active]:text-purple---main-0 relative flex items-center justify-center size-5 text-[1rem] lg:text-[1.25rem] transition duration-300 [&_.icon-heart]:hover:opacity-0 [&_.icon-heart-full]:hover:opacity-100">
+            <span class="icon-heart relative z-1 transition-opacity duration-300"></span>
+            <span
+                class="icon-heart-full absolute z-2 top-0 left-0 w-full h-full transition-opacity duration-300 opacity-0 text-purple---main-0"></span>
+        </button>
+
+    </div>
+    <a href="#" class="h-[9.25rem] lg:h-[15.625rem] lg:mt-0">
+        <div class="images-container lg:pt-2">
+            <img class="main-image" src="assets/images/product-main-img-1x-4.png" srcset="assets/images/product-main-img-2x-4.png 2x" alt="">
+            
+            <img class="second-image" src="assets/images/product-second-img-1x-4.png" srcset="assets/images/product-second-img-2x-4.png 2x" alt="">
+            
+            
+        </div>
+    </a>
+    <a href="#" class="product-title mt-2 font-semibold text-[1.125rem] leading-normal transition-colors">
+        Energy Complex
+    </a>
+    <div class="text-[1rem]">
+        לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג
+    </div>
+    <div class="mt-auto">
+        <div class="price flex items-center justify-center gap-2 flex-wrap">
+    <span class="font-semibold leading-[1.69em] capitalize">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                116
+            </bdi>
+        </span>
+    </span>
+    <span class="text-[1rem] tracking-[0.02em] leading-[1.71em] text-app-gray-350-0 font-extralight line-through">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                139
+            </bdi>
+        </span>
+    </span>
+</div>
+    </div>
+    <div class="mt-[0.56rem]">
+        <a href="#"
+            class="btn-default bg-purple---main-0 hover-default text-white min-w-[7.5625rem] w-full lg:w-auto [&.btn-default]:px-3 font-light">
+            הוספה לסל
+        </a>
+    </div>
+</div>
+                </div>
+                <div class="swiper-slide">
+                    <div data-product-hover-container
+    class="product-card h-full flex flex-col relative px-2 lg:px-[1rem] py-4 bg-yellow-02-0 rounded-[0.75rem] text-center [&_.product-title]:hover:text-purple---main-0">
+    <div class="absolute top-[0.625rem] lg:top-4 left-0 right-0 px-[0.625rem] lg:px-4 z-2 flex justify-between gap-2 flex-wrap">
+        <div class="product-card-tags flex flex-col gap-2 items-start">
+            <!-- <span
+                class="flex items-center justify-center min-h-5 px-[0.457rem] border border-purple---main-0 rounded-[0.375rem] text-purple---main-0 text-center text-[0.875rem] leading-none">
+                40% הנחה
+            </span> -->
+        </div>
+
+        <!-- use active class -->
+        <button data-tooltip="שמירה"
+            class="@@inWishList toggle-wishlist [&.active_.icon-heart]:opacity-0 [&.active_.icon-heart-full]:opacity-100 [&.active]:text-purple---main-0 relative flex items-center justify-center size-5 text-[1rem] lg:text-[1.25rem] transition duration-300 [&_.icon-heart]:hover:opacity-0 [&_.icon-heart-full]:hover:opacity-100">
+            <span class="icon-heart relative z-1 transition-opacity duration-300"></span>
+            <span
+                class="icon-heart-full absolute z-2 top-0 left-0 w-full h-full transition-opacity duration-300 opacity-0 text-purple---main-0"></span>
+        </button>
+
+    </div>
+    <a href="#" class="h-[9.25rem] lg:h-[15.625rem] lg:mt-0">
+        <div class="images-container lg:pt-2">
+            <img class="main-image" src="assets/images/product-main-img-1x-1.png" srcset="assets/images/product-main-img-2x-1.png 2x" alt="">
+            
+            <img class="second-image" src="assets/images/product-second-img-1x-1.png" srcset="assets/images/product-second-img-2x-1.png 2x" alt="">
+            
+            
+            <img class="third-image" src="assets/images/product-third-img-1x-1.png" srcset="assets/images/product-third-img-2x-1.png 2x" alt="">
+            
+        </div>
+    </a>
+    <a href="#" class="product-title mt-2 font-semibold text-[1.125rem] leading-normal transition-colors">
+        Energy Complex
+    </a>
+    <div class="text-[1rem]">
+        לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג
+    </div>
+    <div class="mt-auto">
+        <div class="price flex items-center justify-center gap-2 flex-wrap">
+    <span class="font-semibold leading-[1.69em] capitalize">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                116
+            </bdi>
+        </span>
+    </span>
+    <span class="text-[1rem] tracking-[0.02em] leading-[1.71em] text-app-gray-350-0 font-extralight line-through">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                139
+            </bdi>
+        </span>
+    </span>
+</div>
+    </div>
+    <div class="mt-[0.56rem]">
+        <a href="#"
+            class="btn-default bg-purple---main-0 hover-default text-white min-w-[7.5625rem] w-full lg:w-auto [&.btn-default]:px-3 font-light">
+            הוספה לסל
+        </a>
+    </div>
+</div>
+                </div>
+                <div class="swiper-slide">
+                    <div data-product-hover-container
+    class="product-card h-full flex flex-col relative px-2 lg:px-[1rem] py-4 bg-yellow-02-0 rounded-[0.75rem] text-center [&_.product-title]:hover:text-purple---main-0">
+    <div class="absolute top-[0.625rem] lg:top-4 left-0 right-0 px-[0.625rem] lg:px-4 z-2 flex justify-between gap-2 flex-wrap">
+        <div class="product-card-tags flex flex-col gap-2 items-start">
+            <!-- <span
+                class="flex items-center justify-center min-h-5 px-[0.457rem] border border-purple---main-0 rounded-[0.375rem] text-purple---main-0 text-center text-[0.875rem] leading-none">
+                40% הנחה
+            </span> -->
+        </div>
+
+        <!-- use active class -->
+        <button data-tooltip="שמירה"
+            class="@@inWishList toggle-wishlist [&.active_.icon-heart]:opacity-0 [&.active_.icon-heart-full]:opacity-100 [&.active]:text-purple---main-0 relative flex items-center justify-center size-5 text-[1rem] lg:text-[1.25rem] transition duration-300 [&_.icon-heart]:hover:opacity-0 [&_.icon-heart-full]:hover:opacity-100">
+            <span class="icon-heart relative z-1 transition-opacity duration-300"></span>
+            <span
+                class="icon-heart-full absolute z-2 top-0 left-0 w-full h-full transition-opacity duration-300 opacity-0 text-purple---main-0"></span>
+        </button>
+
+    </div>
+    <a href="#" class="h-[9.25rem] lg:h-[15.625rem] lg:mt-0">
+        <div class="images-container lg:pt-2">
+            <img class="main-image" src="assets/images/product-main-img-1x-2.png" srcset="assets/images/product-main-img-2x-2.png 2x" alt="">
+            
+            <img class="second-image" src="assets/images/product-second-img-1x-2.png" srcset="assets/images/product-second-img-2x-2.png 2x" alt="">
+            
+            
+        </div>
+    </a>
+    <a href="#" class="product-title mt-2 font-semibold text-[1.125rem] leading-normal transition-colors">
+        Energy Complex
+    </a>
+    <div class="text-[1rem]">
+        לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג
+    </div>
+    <div class="mt-auto">
+        <div class="price flex items-center justify-center gap-2 flex-wrap">
+    <span class="font-semibold leading-[1.69em] capitalize">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                116
+            </bdi>
+        </span>
+    </span>
+    <span class="text-[1rem] tracking-[0.02em] leading-[1.71em] text-app-gray-350-0 font-extralight line-through">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                139
+            </bdi>
+        </span>
+    </span>
+</div>
+    </div>
+    <div class="mt-[0.56rem]">
+        <a href="#"
+            class="btn-default bg-purple---main-0 hover-default text-white min-w-[7.5625rem] w-full lg:w-auto [&.btn-default]:px-3 font-light">
+            הוספה לסל
+        </a>
+    </div>
+</div>
+                </div>
+                <div class="swiper-slide">
+                    <div data-product-hover-container
+    class="product-card h-full flex flex-col relative px-2 lg:px-[1rem] py-4 bg-yellow-02-0 rounded-[0.75rem] text-center [&_.product-title]:hover:text-purple---main-0">
+    <div class="absolute top-[0.625rem] lg:top-4 left-0 right-0 px-[0.625rem] lg:px-4 z-2 flex justify-between gap-2 flex-wrap">
+        <div class="product-card-tags flex flex-col gap-2 items-start">
+            <!-- <span
+                class="flex items-center justify-center min-h-5 px-[0.457rem] border border-purple---main-0 rounded-[0.375rem] text-purple---main-0 text-center text-[0.875rem] leading-none">
+                40% הנחה
+            </span> -->
+        </div>
+
+        <!-- use active class -->
+        <button data-tooltip="שמירה"
+            class="@@inWishList toggle-wishlist [&.active_.icon-heart]:opacity-0 [&.active_.icon-heart-full]:opacity-100 [&.active]:text-purple---main-0 relative flex items-center justify-center size-5 text-[1rem] lg:text-[1.25rem] transition duration-300 [&_.icon-heart]:hover:opacity-0 [&_.icon-heart-full]:hover:opacity-100">
+            <span class="icon-heart relative z-1 transition-opacity duration-300"></span>
+            <span
+                class="icon-heart-full absolute z-2 top-0 left-0 w-full h-full transition-opacity duration-300 opacity-0 text-purple---main-0"></span>
+        </button>
+
+    </div>
+    <a href="#" class="h-[9.25rem] lg:h-[15.625rem] lg:mt-0">
+        <div class="images-container lg:pt-2">
+            <img class="main-image" src="assets/images/product-main-img-1x-3.png" srcset="assets/images/product-main-img-2x-3.png 2x" alt="">
+            
+            <img class="second-image" src="assets/images/product-second-img-1x-3.png" srcset="assets/images/product-second-img-2x-3.png 2x" alt="">
+            
+            
+            <img class="third-image" src="assets/images/product-third-img-1x-3.png" srcset="assets/images/product-third-img-2x-3.png 2x" alt="">
+            
+        </div>
+    </a>
+    <a href="#" class="product-title mt-2 font-semibold text-[1.125rem] leading-normal transition-colors">
+        Energy Complex
+    </a>
+    <div class="text-[1rem]">
+        לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג
+    </div>
+    <div class="mt-auto">
+        <div class="price flex items-center justify-center gap-2 flex-wrap">
+    <span class="font-semibold leading-[1.69em] capitalize">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                116
+            </bdi>
+        </span>
+    </span>
+    <span class="text-[1rem] tracking-[0.02em] leading-[1.71em] text-app-gray-350-0 font-extralight line-through">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                139
+            </bdi>
+        </span>
+    </span>
+</div>
+    </div>
+    <div class="mt-[0.56rem]">
+        <a href="#"
+            class="btn-default bg-purple---main-0 hover-default text-white min-w-[7.5625rem] w-full lg:w-auto [&.btn-default]:px-3 font-light">
+            הוספה לסל
+        </a>
+    </div>
+</div>
+                </div>
+                <div class="swiper-slide">
+                    <div data-product-hover-container
+    class="product-card h-full flex flex-col relative px-2 lg:px-[1rem] py-4 bg-yellow-02-0 rounded-[0.75rem] text-center [&_.product-title]:hover:text-purple---main-0">
+    <div class="absolute top-[0.625rem] lg:top-4 left-0 right-0 px-[0.625rem] lg:px-4 z-2 flex justify-between gap-2 flex-wrap">
+        <div class="product-card-tags flex flex-col gap-2 items-start">
+            <!-- <span
+                class="flex items-center justify-center min-h-5 px-[0.457rem] border border-purple---main-0 rounded-[0.375rem] text-purple---main-0 text-center text-[0.875rem] leading-none">
+                40% הנחה
+            </span> -->
+        </div>
+
+        <!-- use active class -->
+        <button data-tooltip="שמירה"
+            class="@@inWishList toggle-wishlist [&.active_.icon-heart]:opacity-0 [&.active_.icon-heart-full]:opacity-100 [&.active]:text-purple---main-0 relative flex items-center justify-center size-5 text-[1rem] lg:text-[1.25rem] transition duration-300 [&_.icon-heart]:hover:opacity-0 [&_.icon-heart-full]:hover:opacity-100">
+            <span class="icon-heart relative z-1 transition-opacity duration-300"></span>
+            <span
+                class="icon-heart-full absolute z-2 top-0 left-0 w-full h-full transition-opacity duration-300 opacity-0 text-purple---main-0"></span>
+        </button>
+
+    </div>
+    <a href="#" class="h-[9.25rem] lg:h-[15.625rem] lg:mt-0">
+        <div class="images-container lg:pt-2">
+            <img class="main-image" src="assets/images/product-main-img-1x-4.png" srcset="assets/images/product-main-img-2x-4.png 2x" alt="">
+            
+            <img class="second-image" src="assets/images/product-second-img-1x-4.png" srcset="assets/images/product-second-img-2x-4.png 2x" alt="">
+            
+            
+        </div>
+    </a>
+    <a href="#" class="product-title mt-2 font-semibold text-[1.125rem] leading-normal transition-colors">
+        Energy Complex
+    </a>
+    <div class="text-[1rem]">
+        לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג
+    </div>
+    <div class="mt-auto">
+        <div class="price flex items-center justify-center gap-2 flex-wrap">
+    <span class="font-semibold leading-[1.69em] capitalize">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                116
+            </bdi>
+        </span>
+    </span>
+    <span class="text-[1rem] tracking-[0.02em] leading-[1.71em] text-app-gray-350-0 font-extralight line-through">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₪</span>
+                139
+            </bdi>
+        </span>
+    </span>
+</div>
+    </div>
+    <div class="mt-[0.56rem]">
+        <a href="#"
+            class="btn-default bg-purple---main-0 hover-default text-white min-w-[7.5625rem] w-full lg:w-auto [&.btn-default]:px-3 font-light">
+            הוספה לסל
+        </a>
+    </div>
+</div>
+                </div>
+            </div>
+            <button type="button" class="btn-left left-0 -translate-x-1/2 top-[50%] [&.swiper-button-disabled]:hidden -translate-y-1/2 z-4 hidden absolute lg:flex items-center justify-center size-10 rounded-full bg-white shadow-default transition hover:bg-app-gray-100-0">
+    <img src="assets/images/icons/arrow-left.svg" alt="">
+</button>
+<button type="button" class="btn-right right-0 translate-x-1/2 top-[50%] [&.swiper-button-disabled]:hidden -translate-y-1/2 z-4 hidden absolute lg:flex items-center justify-center size-10 rounded-full bg-white shadow-default transition hover:bg-app-gray-100-0">
+    <img src="assets/images/icons/arrow-right.svg" alt="">
+</button>
+        </div>
+        
+    </div>
+</section>
+
+        <section class="py-[30px] lg:pb-10 lg:pt-0">
+            <div class="container">
+                <h2 class="text-[1.5rem] font-semibold text-center lg:text-[1.875rem] lg:leading-[1.27em]">
+                    מחשבונים נוספים
+                </h2>
+
+                <div class="mt-4 lg:mt-6 grid gap-4 md:grid-cols-2 lg:gap-6">
+                    <div class="relative [&_img]:hover:scale-[1.02]">
+                        <div class="!absolute z-1 overflow-hidden top-0 left-0 w-full h-full ibg rounded-[0.375rem] lg:rounded-[0.75rem]">
+                            <picture>
+                                <source srcset="assets/images/thin-banner-img-3-desk.jpg" media="(min-width: 576px)" >
+                                <img class="transition-transform duration-300"  src="assets/images/thin-banner-img-3-mob.jpg" alt="img">
+                            </picture>
+                        </div>
+                        <div class="relative z-2 min-h-[8.875rem] py-6 px-9 lg:px-[4.5rem]">
+                            <div class="text-[1.5rem] font-semibold">
+                                מחשבון BMR
+                            </div>
+                            <div class="mt-2">
+                                <a href="#" class="btn-default bg-white hover-default min-w-[9.125rem]">
+                                    כניסה למחשבון
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative [&_img]:hover:scale-[1.02]">
+                        <div class="!absolute z-1 overflow-hidden top-0 left-0 w-full h-full ibg rounded-[0.375rem] lg:rounded-[0.75rem]">
+                            <picture>
+                                <source srcset="assets/images/thin-banner-img-2-desk.jpg" media="(min-width: 576px)" >
+                                <img class="transition-transform duration-300"  src="assets/images/thin-banner-img-2-mob.jpg" alt="img">
+                            </picture>
+                        </div>
+                        <div class="relative z-2 min-h-[8.875rem] py-6 px-9 lg:px-[4.5rem]">
+                            <div class="text-[1.5rem] font-semibold">
+                                מחשבון קלוריות
+                            </div>
+                            <div class="mt-2">
+                                <a href="#" class="btn-default bg-white hover-default min-w-[9.125rem]">
+                                    התחל 
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="lg:py-7 bg-yellow-02-0">
+            <div class="container">
+                <form action="/">
+                    <div
+                        class="pt-6 pb-[30px] -mx-4 px-4 bg-yellow-02-0 flex flex-col gap-[30px] lg:rounded-[0.75rem] md:flex-row-reverse lg:gap-0 lg:mx-0 xl:py-10 lg:px-0">
+                        <div class="md:basis-[48%] md:shrink-0 md:grow-0 lg:basis-[41.93%] lg:px-4 xl:px-10">
+                            <h3 class="text-[1.25rem] font-semibold leading-normal">
+                                צרו קשר עם המומחיות שלנו
+                            </h3>
+                            <div class="text-base mt-2">
+                                תוספי תזונה זו המומחיות שלנו, מוזמנים להתייעץ איתנו.
+                            </div>
+
+                            <div class="mt-6 lg:mt-10 relative z-10 grid grid-cols-6 gap-y-4 gap-x-2">
+                                <div class="col-span-3">
+                                    
+
+
+    <div class="input-wrap " data-use-input-label>
+        <input type="text" placeholder="*שם פרטי" class="input " required>
+        <div class="input-label">
+            <span>
+                *שם פרטי
+            </span>
+        </div>
+    </div>
+
+                                </div>
+                                <div class="col-span-3">
+                                    
+
+
+    <div class="input-wrap " data-use-input-label>
+        <input type="text" placeholder="*שם משפחה" class="input " required>
+        <div class="input-label">
+            <span>
+                *שם משפחה
+            </span>
+        </div>
+    </div>
+
+                                </div>
+                                <div class="col-span-6">
+                                    
+    <div class="input-wrap " data-use-input-label data-mask="+999 (99) 999-9999">
+        <input type="text" placeholder="*טלפון" class="input " required>
+        <div class="input-label">
+            <span>
+                *טלפון
+            </span>
+        </div>
+    </div>
+
+
+
+                                </div>
+
+                                <div class="col-span-6 relative z-10">
+                                    <div data-use-select-label class="select-wrap">
+                                        <div class="select-label">
+                                            <span>
+                                                נושא
+                                            </span>
+                                        </div>
+
+                                        <div class="select-border-wrap">
+                                            <div class="select-label">
+                                                <span>
+                                                    נושא
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <select name="" class="_select">
+                                            <option value="" selected>
+                                                נושא
+                                            </option>
+                                            <option value="1">
+                                                1 נושא
+                                            </option>
+                                            <option value="2">
+                                                2 נושא
+                                            </option>
+                                            <option value="3">
+                                                3 נושא
+                                            </option>
+                                            <option value="4">
+                                                4 נושא
+                                            </option>
+                                            <option value="5">
+                                                5 נושא
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-span-6">
+                                    <div class="input-wrap" data-use-input-file-label>
+                                        <label class="file-input file-input-styled _files-selected">
+                                            <input type="file" accept=".jpg, .pdf, .png, .doc, .pdf" multiple
+                                                name="files">
+                                            <div class="file-input-text w-full">
+                                                <img class="img-svg" src="assets/images/icons/clip.svg" alt="">
+                                            </div>
+                                        </label>
+                                        <div class="input-label">
+                                            <span>
+                                                העלאת קובץ
+                                            </span>
+                                        </div>
+                                        <div class="input-border-wrap">
+                                            <div class="input-label">
+                                                <span>
+                                                    העלאת קובץ
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="file-list">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-span-6">
+                                    <div class="textarea-wrap" data-use-textarea-label>
+    <textarea placeholder="ההודעה שלך" class="textarea" ></textarea>
+    <div class="textarea-label">
+        <span>
+            ההודעה שלך
+        </span>
+    </div>
+</div>
+                                </div>
+                            </div>
+
+                            <div class="mt-10 text-center">
+                                <button class="btn-default text-white bg-purple---main-0 hover-default w-full">
+                                    שליחה
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div class="md:shrink md:grow lg:px-4 xl:px-10">
+                            <div
+                                class="ibg h-0 pb-[76%] overflow-hidden rounded-[0.75rem] lg:h-full lg:pb-0 lg:min-h-[25rem]">
+                                <img src="assets/images/about-us-form-img.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <section style="background: var(--purple-yellow-gradient);" class="subscription-block">
+    <div class="container-sm !max-w-[47.25rem]">
+        <div class="flex flex-col items-center gap-[10px] min-h-[7.875rem] py-4 lg:flex-row lg:gap-4 lg:py-[1.875rem]">
+            <div class="text-center lg:shrink lg:grow lg:text-start">
+                <h2 class="text-[18px] font-semibold capitalize leading-normal lg:text-[1.875rem] lg:leading-[1.27em]"> 
+                    הצטרפו לניוזלטר שלנו
+                </h2>
+                <div class="text-[14px] lg:text-base">
+                    לקבלת עדכונים על אורח חיים בריא ומבצעים ייחודיים
+                </div>
+            </div>
+            <a href="#" class="btn-default bg-white hover-default min-w-[160px] lg:shrink-0 lg:grow-0 lg:min-w-[18.75rem]">
+                הרשמה
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer class="footer pt-2 pb-6 lg:pt-[3.125rem]">
+    <div class="container">
+
+        <nav class="lg:flex lg:gap-10 lg:flex-wrap" data-footer-nav>
+            <div class="footer-nav-item shrink-0 grow-0 lg:w-[16.25rem]">
+                <div class="footer-nav-head min-h-[49px] flex items-center text-[14px] font-semibold capitalize lg:text-[1.125rem] leading-[1.69em] pr-[13.5px] lg:min-h-[1.6875rem] lg:pr-0">
+                    תחומים
+                </div>
+                <div class="footer-nav-list hidden px-[13.5px] pb-[16px] lg:!block lg:px-0 lg:pb-0 lg:py-[0.625rem] lg:border-t lg:border-app-gray-200-0 lg:mt-[0.625rem]">
+                    <ul class="grid gap-y-2 gap-x-10 lg:grid-cols-2">
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                שיער
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                גברים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                חורף
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                נשים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                פרוביוטיקה ועיכול
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                ילדים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מולטי ויטמין
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                הריון
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                ויטמינים ומינרלים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                גילאי 50+
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                אומגה 3
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                בריאות העור
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מגנזיום
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                הרגעה
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                ברזל
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                צמחים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                טראומיל
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מפרקים ותנועה
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-nav-item shrink grow lg:max-w-[12.8125rem]">
+                <div class="footer-nav-head min-h-[49px] flex items-center text-[14px] font-semibold capitalize lg:text-[1.125rem] leading-[1.69em] pr-[13.5px] lg:min-h-[1.6875rem] lg:pr-0">
+                    תוכן
+                </div>
+                <div class="footer-nav-list hidden px-[13.5px] pb-[16px] lg:!block lg:px-0 lg:pb-0 lg:py-[0.625rem] lg:border-t lg:border-app-gray-200-0 lg:mt-[0.625rem]">
+                    <ul class="grid gap-y-2 gap-x-10">
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                כתבות
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מוצרים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                תחומים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מתכונים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                המומחים של אלטמן
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מועדון אלטמן
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מועדון הריון
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-nav-item shrink grow lg:max-w-[12.8125rem]">
+                <div class="footer-nav-head min-h-[49px] flex items-center text-[14px] font-semibold capitalize lg:text-[1.125rem] leading-[1.69em] pr-[13.5px] lg:min-h-[1.6875rem] lg:pr-0">
+                    כלים ושירותים
+                </div>
+                <div class="footer-nav-list hidden px-[13.5px] pb-[16px] lg:!block lg:px-0 lg:pb-0 lg:py-[0.625rem] lg:border-t lg:border-app-gray-200-0 lg:mt-[0.625rem]">
+                    <ul class="grid gap-y-2 gap-x-10">
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                התאמת מוצרים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מחשבון ויטמינים ומינרלים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מחשבון הריון
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מחשבון BMI
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מחשבון BMR
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מחשבון קלוריות
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-nav-item shrink grow lg:max-w-[12.8125rem]">
+                <div class="footer-nav-head min-h-[49px] flex items-center text-[14px] font-semibold capitalize lg:text-[1.125rem] leading-[1.69em] pr-[13.5px] lg:min-h-[1.6875rem] lg:pr-0">
+                    מידע כללי
+                </div>
+                <div class="footer-nav-list hidden px-[13.5px] pb-[16px] lg:!block lg:px-0 lg:pb-0 lg:py-[0.625rem] lg:border-t lg:border-app-gray-200-0 lg:mt-[0.625rem]">
+                    <ul class="grid gap-y-2 gap-x-10">
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                הצהרת נגישות
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                תנאי שימוש
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מדיניות פרטיות
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מדיניות פרטיות
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מדיניות החזרות והחלפות
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מדיניות משלוחים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                ביטול עסקה
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-nav-item shrink grow lg:max-w-[12.8125rem]">
+                <div class="footer-nav-head min-h-[49px] flex items-center text-[14px] font-semibold capitalize lg:text-[1.125rem] leading-[1.69em] pr-[13.5px] lg:min-h-[1.6875rem] lg:pr-0">
+                    אודות
+                </div>
+                <div class="footer-nav-list hidden px-[13.5px] pb-[16px] lg:!block lg:px-0 lg:pb-0 lg:py-[0.625rem] lg:border-t lg:border-app-gray-200-0 lg:mt-[0.625rem]">
+                    <ul class="grid gap-y-2 gap-x-10">
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מי אנחנו
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                איתור חנויות
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                קריירה
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="mt-9 flex flex-col items-center gap-9 lg:mt-6 lg:border-t lg:border-app-gray-200-0 lg:pt-6 lg:flex-row lg:justify-between">
+
+            <ul class="flex flex-wrap justify-center gap-3 lg:gap-4">
+                <li class="lg-max:order-1 lg-max:basis-full">
+                    <a href="#" class="h-[3.125rem] png-center">
+                        <img src="assets/images/logos/title-logo.svg" alt="">
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="size-[3.125rem] rounded-full shadow-default text-purple---main-0 bg-white hover-default flex items-center justify-center">
+                        <img class="img-svg h-[1.875rem] w-auto" src="assets/images/icons/instagram.svg" alt="">
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="size-[3.125rem] rounded-full shadow-default text-purple---main-0 bg-white hover-default flex items-center justify-center">
+                        <img class="img-svg h-[1.875rem] w-auto" src="assets/images/icons/facebook.svg" alt="">
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="size-[3.125rem] rounded-full shadow-default text-purple---main-0 bg-white hover-default flex items-center justify-center">
+                        <img class="img-svg h-[1.875rem] w-auto" src="assets/images/icons/tiktok.svg" alt="">
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="size-[3.125rem] rounded-full shadow-default text-purple---main-0 bg-white hover-default flex items-center justify-center">
+                        <img class="img-svg h-[1.875rem] w-auto" src="assets/images/icons/youtube.svg" alt="">
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="btn-default bg-white hover-default">
+                        צרו קשר
+                    </a>
+                </li>
+            </ul>
+
+            <div>
+                <div class="text-[1rem] text-app-gray-400-0">
+                    הקנייה באתר מאובטחת על פי תקן                
+                </div>
+                <ul class="flex justify-center gap-2 flex-wrap mt-1">
+                    <li>
+                        <a href="#">
+                            <img class="h-7 w-auto" src="assets/images/icons/paypal.svg" alt="">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img class="h-7 w-auto" src="assets/images/icons/mastercard.svg" alt="">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img class="h-7 w-auto" src="assets/images/icons/visa.svg" alt="">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img class="h-7 w-auto" src="assets/images/icons/american-express.svg" alt="">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-9 border-t border-app-gray-200-0 pt-4 lg:border-none lg:mt-[3.25rem] lg:pt-0">
+            <div class="text-[1rem] text-app-gray-500-0 lg:flex lg:items-center lg:justify-between">
+                <div class="text-center">
+                    © כל הזכויות שמורות לאלטמן בריאות
+                </div>
+                <div class="flex items-center justify-center gap-2 mt-2">
+                    <a href="#">
+                        <img class="h-[1.07em] w-auto" src="assets/images/logos/purple-logo.svg" alt="">
+                    </a>
+                    <span>powered by</span>
+                </div>
+            </div>
+            <div class="text-[1rem] text-app-gray-400-0 text-justify mt-4">
+                המידע המפורט להלן הינו מידע מקצועי כללי, לצרכי העשרה, בהסתמך על מחקרים קיימים, שניתן בידי איש מקצוע בשיתוף עם אלטמן בריאות. אין המדובר בהמלצה לרכישת מוצר כלשהו ממוצריה של אלטמן, או בהצהרה לגבי יעילותם או תכונותיהם. מוצריה של אלטמן הם אינם תרופה ואינם מיועדים לרפא מחלה כלשהי. ההסתמכות על המידע המפורט להלן היא על אחריות הקורא בלבד ומומלץ להתייעץ עם רופא מוסמך טרם רכישת מוצר כלשהו.
+            </div>
+        </div>
+
+    </div>
+</footer>
+</body>
+
+</html>

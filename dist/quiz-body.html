@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl" >
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Altman</title>
+
+    <script>
+        let element = document.querySelector('html');
+        if (element) {
+            let zoom = 1;
+            const setFontSize = () => {
+                let baseWidth = 1440;
+                let baseFontSize = 16;
+                let screenWidth = element.clientWidth;
+                let screenHeight = element.clientHeight;
+                let maxHeight = screenWidth * 0.4817;
+                let value;
+                let heightOffset = (screenHeight / maxHeight) > 1 ? 1 : screenHeight / maxHeight;
+
+                if (screenWidth <= baseWidth) {
+                    let scaleFactor = 10;
+                    value = (baseFontSize + (screenWidth - baseWidth) * scaleFactor / baseWidth) * zoom;
+                } else {
+                    let scaleFactor = 10;
+                    value = ((baseFontSize + (screenWidth - baseWidth) * scaleFactor / baseWidth) * heightOffset) * zoom;
+                    
+                    if(value < 16) value = 16;
+                }
+
+                element.style.fontSize = value + 'px';
+            }
+
+            setFontSize();
+            window.addEventListener('resize', setFontSize);
+
+            document.addEventListener('wheel', function (event) {
+                if (document.documentElement.clientWidth < 1024) return;
+
+                if (event.ctrlKey || event.metaKey) {
+                    if (event.deltaY < 0) {
+                        zoom += 0.1
+                        setFontSize();
+                    } else {
+                        zoom -= 0.1
+                        setFontSize();
+                    }
+                    event.preventDefault();
+                }
+            }, { passive: false });
+        }
+    </script>
+
+    <style>
+        .page-loaded .page-loader {
+            display: none;
+        }
+
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 100;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            color: #6c3c87;
+        }
+
+        .lds-roller,
+        .lds-roller div,
+        .lds-roller div:after {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .lds-roller {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .lds-roller div {
+            -webkit-animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            -webkit-transform-origin: 40px 40px;
+            -ms-transform-origin: 40px 40px;
+            transform-origin: 40px 40px;
+        }
+
+        .lds-roller div:after {
+            content: " ";
+            display: block;
+            position: absolute;
+            width: 7.2px;
+            height: 7.2px;
+            border-radius: 50%;
+            background: currentColor;
+            margin: -3.6px 0 0 -3.6px;
+        }
+
+        .lds-roller div:nth-child(1) {
+            -webkit-animation-delay: -0.036s;
+            animation-delay: -0.036s;
+        }
+
+        .lds-roller div:nth-child(1):after {
+            top: 62.62742px;
+            left: 62.62742px;
+        }
+
+        .lds-roller div:nth-child(2) {
+            -webkit-animation-delay: -0.072s;
+            animation-delay: -0.072s;
+        }
+
+        .lds-roller div:nth-child(2):after {
+            top: 67.71281px;
+            left: 56px;
+        }
+
+        .lds-roller div:nth-child(3) {
+            -webkit-animation-delay: -0.108s;
+            animation-delay: -0.108s;
+        }
+
+        .lds-roller div:nth-child(3):after {
+            top: 70.90963px;
+            left: 48.28221px;
+        }
+
+        .lds-roller div:nth-child(4) {
+            -webkit-animation-delay: -0.144s;
+            animation-delay: -0.144s;
+        }
+
+        .lds-roller div:nth-child(4):after {
+            top: 72px;
+            left: 40px;
+        }
+
+        .lds-roller div:nth-child(5) {
+            -webkit-animation-delay: -0.18s;
+            animation-delay: -0.18s;
+        }
+
+        .lds-roller div:nth-child(5):after {
+            top: 70.90963px;
+            left: 31.71779px;
+        }
+
+        .lds-roller div:nth-child(6) {
+            -webkit-animation-delay: -0.216s;
+            animation-delay: -0.216s;
+        }
+
+        .lds-roller div:nth-child(6):after {
+            top: 67.71281px;
+            left: 24px;
+        }
+
+        .lds-roller div:nth-child(7) {
+            -webkit-animation-delay: -0.252s;
+            animation-delay: -0.252s;
+        }
+
+        .lds-roller div:nth-child(7):after {
+            top: 62.62742px;
+            left: 17.37258px;
+        }
+
+        .lds-roller div:nth-child(8) {
+            -webkit-animation-delay: -0.288s;
+            animation-delay: -0.288s;
+        }
+
+        .lds-roller div:nth-child(8):after {
+            top: 56px;
+            left: 12.28719px;
+        }
+
+        @-webkit-keyframes lds-roller {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes lds-roller {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @media print {
+
+            header,
+            footer {
+                display: none;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
+    <script defer src="./assets/js/vendors.js"></script>
+    <script defer src="./assets/js/main.js"></script>
+</head>
+  <body>
+    <div class="page-loader">
+    <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+</div>
+
+    <main style="background-image: var(--purple-yellow-gradient);">
+        <form action="/" id="form-personal-quiz">
+            <div class="relative flex justify-center items-center py-3 px-4 min-h-16 lg:min-h-[4.5rem] lg:px-10 mx-auto max-w-[90rem]">
+                <a href="#">
+                    <img class="h-[1.875rem] lg:h-[2.375rem] w-auto block" src="assets/images/logos/title-logo.svg" alt="">
+                </a>
+
+                <a href="#"
+                    class="absolute top-1/2 right-4 -translate-y-1/2 icon-chevron-right pl-[2px] flex items-center justify-center size-10 rounded-full bg-white shadow-default transition duration-300 text-[1.5rem] hover:text-white hover:bg-purple---main-0 hover:translate-x-[2px] lg:right-10"></a>
+            </div> 
+            <div class="px-4 pt-4 pb-9 lg:pt-[0.375rem] lg:px-10 lg:pb-10 ">
+                <div class="bg-white rounded-[0.375rem] lg:rounded-[0.75rem] shadow-default p-4 lg:p-[3.75rem] min-h-[calc(100dvh-4rem-3.25rem)] lg:min-h-[calc(100dvh-4.5rem-2.875rem)] mx-auto max-w-[85rem]">
+
+                    <div data-quiz="personal-quiz" data-start-screen="0" class="relative">
+                        <div class="quiz-body">
+                            <div class="mx-auto max-w-[38rem]">
+                                <div class="progress-line flex flex-col justify-center h-8">
+    <div class="h-1 rounded-full bg-app-gray-100-0 lg:h-[0.375rem]">
+        <div style="width: 0%;" data-line class=" h-full relative rounded-full bg-purple---main-0 transition-[width] duration-300">
+            <div class="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center p-[0.375rem] size-6 lg:size-8 rounded-full bg-purple---main-0 text-white">
+                <img class="h-auto w-auto max-h-full max-w-full" src="assets/images/logos/mini-white.svg" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+                            </div>
+                            <div class="swiper main-slider !p-4 !-m-4">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <div class="quiz-screen pt-10 lg:pt-[3.75rem] flex flex-col mx-auto max-w-[51.125rem] lg-max:min-h-[calc(100dvh-4rem-3.25rem-2.5rem-2rem)]">
+                                            <h3 class="text-base font-semibold capitalize text-center lg:text-[1.5rem]">
+                                                לורם איפסום דולור סיט אמט 
+                                                <br>
+    לורם איפסום איפסום דולור סיט אמט?
+                                            </h3>
+                                            
+                                            <div class="mt-6 lg:mt-10 lg:mb-0 w-full mx-auto max-w-[24.875rem] grid grid-cols-2 gap-4">
+                                                <div class="col-span-2">
+                                                    <div class="input-wrap" data-use-input-label data-action="toggle-class-by-match-req-exp" data-classes="disabled" data-reg-exp="email" data-target="#btn-continue-screen-0">
+                                                        <input type="email" placeholder="*דוא'ל" class="input">
+                                                        <div class="input-label">
+                                                            <span>
+                                                                *דוא'ל
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+    
+                                            <div class="mt-4 mb-6 w-full mx-auto max-w-[24.875rem] [&_.checkbox-indicator]:text-[1rem] [&_.checkbox-indicator]:top-[0.14em] [&_.checkbox-text]:text-[0.75rem] [&_.checkbox-text]:leading-[1.83em] [&_.checkbox-text]:tracking-[0.02em]">
+                                                <label class="checkbox-wrap checkbox-wrap-default cursor-pointer select-none">
+    <input type="checkbox" >
+    <div class="checkbox-indicator"></div>
+    <div class="checkbox-text">
+        אני מאשר.ת קבלת חומר פרסומי מאלטמן, הכולל עדכונים על מבצעים והטבות בדוא`ל/SMS
+    </div>
+</label>
+                                            </div>
+                    
+                                            <div class="mt-auto flex justify-center gap-4 lg:mt-10">
+                                                <button id="btn-continue-screen-0" type="button" data-action="next-quiz-screen"
+                                                    class="disabled btn-default text-white bg-purple---main-0 hover-default min-w-[8.75rem]">
+                                                    המשך
+                                                </button>
+                                            </div>
+    
+                                            <div class="mt-6 lg:mt-10 w-full mx-auto max-w-[40rem]">
+                                                <div class="text-center text-[0.75rem] leading-[1.83em] tracking-[0.02em] text-app-gray-400-0">
+                                                    *דיסקליימר של 2 שורות טקסט דיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסט
+    דיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסט
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="quiz-screen pt-10 lg:pt-[3.75rem] flex flex-col mx-auto max-w-[51.125rem] lg-max:min-h-[calc(100dvh-4rem-3.25rem-2.5rem-2rem)]">
+                                            <h3 class="text-base font-semibold capitalize text-center lg:text-[1.5rem]">
+                                                לורם איפסום דולור סיט אמט 
+                                                <br>
+    לורם איפסום איפסום דולור סיט אמט?
+                                            </h3>
+                                            
+                                            <div class="mt-6 mb-6 lg:mt-10 lg:mb-0 w-full mx-auto max-w-[24.875rem] grid grid-cols-2 gap-4">
+                                                <div class="col-span-2">
+                                                    <div class="input-wrap" data-use-input-label>
+                                                        <input type="text" placeholder="*שם פרטי" class="input" data-validation="required">
+                                                        <div class="input-label">
+                                                            <span>
+                                                                *שם פרטי
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <div class="input-wrap" data-use-input-label>
+                                                        <input type="text" placeholder="*שם משפחה" class="input" data-validation="required">
+                                                        <div class="input-label">
+                                                            <span>
+                                                                *שם משפחה
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-span-2 relative z-10">
+                                                    <div data-use-select-label class="select-wrap">
+                                                        <div class="select-label">
+                                                            <span>
+                                                                לורם איפסום
+                                                            </span>
+                                                        </div>
+                                                    
+                                                        <div class="select-border-wrap">
+                                                            <div class="select-label">
+                                                                <span>
+                                                                    לורם איפסום
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    
+                                                        <select name="" class="_select">
+                                                            <option value="" selected>לורם איפסום</option>
+                                                            <option value="1">
+                                                                1 נושא
+                                                            </option>
+                                                            <option value="2">
+                                                                2 נושא
+                                                            </option>
+                                                            <option value="3">
+                                                                3 נושא
+                                                            </option>
+                                                            <option value="4">
+                                                                4 נושא
+                                                            </option>
+                                                            <option value="5">
+                                                                5 נושא
+                                                            </option>
+                        
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <div class="textarea-wrap" data-use-textarea-label>
+    <textarea placeholder="פירוט" class="textarea" ></textarea>
+    <div class="textarea-label">
+        <span>
+            פירוט
+        </span>
+    </div>
+</div>
+                                                </div>
+                                            </div>
+    
+                                            <div class="mt-auto flex justify-center gap-4 lg:mt-10">
+                                                <button id="btn-continue-screen-1" type="button" data-action="next-quiz-screen"
+                                                    class=" btn-default text-white bg-purple---main-0 hover-default">
+                                                    המשך
+                                                </button>
+                                            </div>
+    
+                                            <div class="mt-6 lg:mt-10 w-full mx-auto max-w-[40rem]">
+                                                <div class="text-center text-[0.75rem] leading-[1.83em] tracking-[0.02em] text-app-gray-400-0">
+                                                    *דיסקליימר של 2 שורות טקסט דיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסט
+    דיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסט
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="quiz-screen pt-10 lg:pt-[3.75rem] flex flex-col mx-auto max-w-[51.125rem] lg-max:min-h-[calc(100dvh-4rem-3.25rem-2.5rem-2rem)]">
+                                            <h3 class="text-base font-semibold capitalize text-center lg:text-[1.5rem]">
+                                                לורם איפסום דולור סיט אמט 
+                                                <br>
+    לורם איפסום איפסום דולור סיט אמט?
+                                            </h3>
+                                            
+                                            <div class="mt-6 mb-6 lg:mt-10 lg:mb-0 w-full mx-auto max-w-[25rem] flex flex-wrap justify-center gap-1 lg:gap-4">
+                                                <label class="block basis-[6.5625rem] lg:basis-[7.0625rem] grow-0 shrink-0">
+                                                    <input type="radio" name="radio-screen-2" data-validation="required" data-group="radio-screen-2" 
+                                                    class="invisible opacity-0 absolute -z-1 [&:checked~.cnt]:shadow-default [&:checked~.cnt]:border-purple---main-0 [&:checked~.cnt]:opacity-100 [&.error~.cnt]:border-design-red-0">
+                                                    
+                                                    <div class="cnt flex flex-col items-center gap-2 bg-white border border-purple---super-light-0 rounded-[0.375rem] py-4 px-2 cursor-pointer transition hover:opacity-100 min-h-full duration-300 opacity-60">
+                                                        <div style="background-image: var(--purple-yellow-gradient);" class="size-[3.75rem] rounded-full flex items-center justify-center png-center p-2">
+                                                            <img src="assets/images/quiz-icon-1.svg" alt="">
+                                                        </div>
+                                                        <div class="text text-[1rem] break-words text-center">
+                                                            לורם איפסום
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                                <label class="block basis-[6.5625rem] lg:basis-[7.0625rem] grow-0 shrink-0">
+                                                    <input type="radio" name="radio-screen-2" data-validation="required" data-group="radio-screen-2" 
+                                                    class="invisible opacity-0 absolute -z-1 [&:checked~.cnt]:shadow-default [&:checked~.cnt]:border-purple---main-0 [&:checked~.cnt]:opacity-100 [&.error~.cnt]:border-design-red-0">
+                                                    
+                                                    <div class="cnt flex flex-col items-center gap-2 bg-white border border-purple---super-light-0 rounded-[0.375rem] py-4 px-2 cursor-pointer transition hover:opacity-100 min-h-full duration-300 opacity-60">
+                                                        <div style="background-image: var(--purple-yellow-gradient);" class="size-[3.75rem] rounded-full flex items-center justify-center png-center p-2">
+                                                            <img src="assets/images/quiz-icon-1.svg" alt="">
+                                                        </div>
+                                                        <div class="text text-[1rem] break-words text-center">
+                                                            לורם איפסום
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                                <label class="block basis-[6.5625rem] lg:basis-[7.0625rem] grow-0 shrink-0">
+                                                    <input type="radio" name="radio-screen-2" data-validation="required" data-group="radio-screen-2" 
+                                                    class="invisible opacity-0 absolute -z-1 [&:checked~.cnt]:shadow-default [&:checked~.cnt]:border-purple---main-0 [&:checked~.cnt]:opacity-100 [&.error~.cnt]:border-design-red-0">
+                                                    
+                                                    <div class="cnt flex flex-col items-center gap-2 bg-white border border-purple---super-light-0 rounded-[0.375rem] py-4 px-2 cursor-pointer transition hover:opacity-100 min-h-full duration-300 opacity-60">
+                                                        <div style="background-image: var(--purple-yellow-gradient);" class="size-[3.75rem] rounded-full flex items-center justify-center png-center p-2">
+                                                            <img src="assets/images/quiz-icon-1.svg" alt="">
+                                                        </div>
+                                                        <div class="text text-[1rem] break-words text-center">
+                                                            לורם איפסום
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </div>
+    
+                                            <div class="mt-auto flex justify-center gap-4 lg:mt-10">
+                                                <button id="btn-continue-screen-2" type="button" data-action="next-quiz-screen"
+                                                    class=" btn-default text-white bg-purple---main-0 hover-default">
+                                                    המשך
+                                                </button>
+                                            </div>
+    
+                                            <div class="mt-6 lg:mt-10 w-full mx-auto max-w-[40rem]">
+                                                <div class="text-center text-[0.75rem] leading-[1.83em] tracking-[0.02em] text-app-gray-400-0">
+                                                    *דיסקליימר של 2 שורות טקסט דיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסט
+    דיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסט
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="quiz-screen pt-10 lg:pt-[3.75rem] flex flex-col mx-auto max-w-[51.125rem] lg-max:min-h-[calc(100dvh-4rem-3.25rem-2.5rem-2rem)]">
+                                            <h3 class="text-base font-semibold capitalize text-center lg:text-[1.5rem]">
+                                                לורם איפסום דולור סיט אמט 
+                                                <br>
+    לורם איפסום איפסום דולור סיט אמט?
+                                            </h3>
+    
+                                            <div class="mt-6 mb-6 lg:mt-10 lg:mb-0 grid gap-2 lg:gap-[3.125rem] lg:grid-cols-[1fr_48%] ">
+                                                <div class="w-full mx-auto max-w-[25rem] flex flex-wrap gap-1 lg:gap-4 @container self-start relative quiz-button-with-tooltip [&>*:nth-child(3n+1)_.tooltip-hover]:right-0 [&>*:nth-child(3n+3)_.tooltip-hover]:left-0 [&>*:nth-child(3n+2)_.tooltip-hover]:left-1/2 [&>*:nth-child(3n+2)_.tooltip-hover]:-translate-x-1/2">
+                                                    <label class="flex relative flex-col basis-[6.5625rem] lg:basis-[7.0625rem] grow-0 shrink-0 [&_.cnt_.icon-play-full]:hover:opacity-100 [&_.tooltip-hover]:hover:opacity-100">
+                                                        <input type="radio" name="radio-screen-3" data-validation="required" data-group="radio-screen-3"
+                                                        class="invisible opacity-0 absolute -z-1 [&:checked~.cnt]:shadow-default [&:checked~.cnt]:border-purple---main-0 [&:checked~.cnt]:opacity-100 [&.error~.cnt]:border-design-red-0 [&:checked~.text-wrap]:opacity-100 ">
+                                                        
+                                                        <div class="text-wrap mb-1 lg:mb-2 break-words opacity-0 mt-auto">
+                                                            <h4 class="text-base font-semibold">לורם איפסום</h4>
+                                                            <div class="text-[1rem] leading-normal">
+                                                                לורם איפסום?
+                                                            </div>
+                                                        </div>
+    
+                                                        <div class="cnt relative z-2 flex flex-col items-center gap-2 bg-white border border-purple---super-light-0 rounded-[0.375rem] py-4 px-2 cursor-pointer transition hover:opacity-100 duration-300 opacity-60">
+                                                            <div style="background-image: var(--purple-yellow-gradient);" class="size-[3.75rem] rounded-full flex items-center justify-center png-center p-2">
+                                                                <img src="assets/images/quiz-icon-1.svg" alt="">
+                                                            </div>
+                                                            <div class="text text-[1rem] break-words text-center">
+                                                                לורם איפסום
+                                                            </div>
+                                                            <span class="icon-play-full absolute z-2 text-[0.5rem] lg:text-[0.625rem] text-purple---super-light-0 top-full left-1/2 -translate-x-1/2 -rotate-90 transition-opacity duration-300 opacity-0"></span>
+                                                        </div>
+    
+                                                        <div class="tooltip-hover absolute z-1 top-[calc(100%+8px)] w-[100cqi] shadow-default text-[0.75rem] bg-purple---super-light-0 px-2 py-[3px] rounded-full text-purple---main-0 flex gap-2 items-center transition-opacity duration-300 opacity-0">
+                                                            <span class="icon-heart-full text-[1rem]"></span>
+                                                            לורם איפסום לורם איפסום לורם איפסום לורם איפסום לורם איפסום
+                                                        </div>
+                                                    </label>
+                                                    <label class="flex relative flex-col basis-[6.5625rem] lg:basis-[7.0625rem] grow-0 shrink-0 [&_.cnt_.icon-play-full]:hover:opacity-100 [&_.tooltip-hover]:hover:opacity-100">
+                                                        <input type="radio" name="radio-screen-3" data-validation="required" data-group="radio-screen-3"
+                                                        class="invisible opacity-0 absolute -z-1 [&:checked~.cnt]:shadow-default [&:checked~.cnt]:border-purple---main-0 [&:checked~.cnt]:opacity-100 [&.error~.cnt]:border-design-red-0 [&:checked~.text-wrap]:opacity-100 ">
+                                                        
+                                                        <div class="text-wrap mb-1 lg:mb-2 break-words opacity-0 mt-auto">
+                                                            <h4 class="text-base font-semibold">לורם איפסום</h4>
+                                                            <div class="text-[1rem] leading-normal">
+                                                                לורם איפסום?
+                                                            </div>
+                                                        </div>
+    
+                                                        <div class="cnt relative z-2 flex flex-col items-center gap-2 bg-white border border-purple---super-light-0 rounded-[0.375rem] py-4 px-2 cursor-pointer transition hover:opacity-100 duration-300 opacity-60">
+                                                            <div style="background-image: var(--purple-yellow-gradient);" class="size-[3.75rem] rounded-full flex items-center justify-center png-center p-2">
+                                                                <img src="assets/images/quiz-icon-1.svg" alt="">
+                                                            </div>
+                                                            <div class="text text-[1rem] break-words text-center">
+                                                                לורם איפסום
+                                                            </div>
+                                                            <span class="icon-play-full absolute z-2 text-[0.5rem] lg:text-[0.625rem] text-purple---super-light-0 top-full left-1/2 -translate-x-1/2 -rotate-90 transition-opacity duration-300 opacity-0"></span>
+                                                        </div>
+    
+                                                        <div class="tooltip-hover absolute z-1 top-[calc(100%+8px)] w-[100cqi] shadow-default text-[0.75rem] bg-purple---super-light-0 px-2 py-[3px] rounded-full text-purple---main-0 flex gap-2 items-center transition-opacity duration-300 opacity-0">
+                                                            <span class="icon-heart-full text-[1rem]"></span>
+                                                         איפסום לורם איפסום לורם איפסום
+                                                        </div>
+                                                    </label>
+                                                    <label class="flex relative flex-col basis-[6.5625rem] lg:basis-[7.0625rem] grow-0 shrink-0 [&_.cnt_.icon-play-full]:hover:opacity-100 [&_.tooltip-hover]:hover:opacity-100">
+                                                        <input type="radio" name="radio-screen-3" data-validation="required" data-group="radio-screen-3"
+                                                        class="invisible opacity-0 absolute -z-1 [&:checked~.cnt]:shadow-default [&:checked~.cnt]:border-purple---main-0 [&:checked~.cnt]:opacity-100 [&.error~.cnt]:border-design-red-0 [&:checked~.text-wrap]:opacity-100 ">
+                                                        
+                                                        <div class="text-wrap mb-1 lg:mb-2 break-words opacity-0 mt-auto">
+                                                            <h4 class="text-base font-semibold">לורם איפסום</h4>
+                                                            <div class="text-[1rem] leading-normal">
+                                                                לורם איפסום?
+                                                            </div>
+                                                        </div>
+    
+                                                        <div class="cnt relative z-2 flex flex-col items-center gap-2 bg-white border border-purple---super-light-0 rounded-[0.375rem] py-4 px-2 cursor-pointer transition hover:opacity-100 duration-300 opacity-60">
+                                                            <div style="background-image: var(--purple-yellow-gradient);" class="size-[3.75rem] rounded-full flex items-center justify-center png-center p-2">
+                                                                <img src="assets/images/quiz-icon-1.svg" alt="">
+                                                            </div>
+                                                            <div class="text text-[1rem] break-words text-center">
+                                                                לורם איפסום
+                                                            </div>
+                                                            <span class="icon-play-full absolute z-2 text-[0.5rem] lg:text-[0.625rem] text-purple---super-light-0 top-full left-1/2 -translate-x-1/2 -rotate-90 transition-opacity duration-300 opacity-0"></span>
+                                                        </div>
+    
+                                                        <div class="tooltip-hover absolute z-1 top-[calc(100%+8px)] w-[100cqi] shadow-default text-[0.75rem] bg-purple---super-light-0 px-2 py-[3px] rounded-full text-purple---main-0 flex gap-2 items-center transition-opacity duration-300 opacity-0">
+                                                            <span class="icon-heart-full text-[1rem]"></span>
+                                                            לורם איפסום לורם איפסום לורם איפסום לורם איפסום לורם איפסום
+                                                         איפסום לורם איפסום לורם איפסום
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="grid grid-cols-2 gap-4">
+                                                    <div class="col-span-2">
+                                                        
+
+
+    <div class="input-wrap " data-use-input-label>
+        <input type="text" placeholder="שם מלא" class="input " >
+        <div class="input-label">
+            <span>
+                שם מלא
+            </span>
+        </div>
+    </div>
+
+                                                    </div>
+                                                    <div class="col-span-2">
+                                                        
+
+
+    <div class="input-wrap " data-use-input-label>
+        <input type="text" placeholder="שם מלא" class="input " >
+        <div class="input-label">
+            <span>
+                שם מלא
+            </span>
+        </div>
+    </div>
+
+                                                    </div>
+                                                    <div class="col-span-2">
+                                                        
+
+
+    <div class="input-wrap " data-use-input-label>
+        <input type="text" placeholder="שם מלא" class="input " >
+        <div class="input-label">
+            <span>
+                שם מלא
+            </span>
+        </div>
+    </div>
+
+                                                    </div>
+                                                    <div class="col-span-2">
+                                                        
+
+
+    <div class="input-wrap " data-use-input-label>
+        <input type="text" placeholder="שם מלא" class="input " >
+        <div class="input-label">
+            <span>
+                שם מלא
+            </span>
+        </div>
+    </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+    
+                                            <div class="mt-auto flex justify-center gap-4 lg:mt-10">
+                                                <button id="btn-continue-screen-3" type="button" data-action="next-quiz-screen"
+                                                    class=" btn-default text-white bg-purple---main-0 hover-default">
+                                                    המשך
+                                                </button>
+                                            </div>
+    
+                                            <div class="mt-6 lg:mt-10 w-full mx-auto max-w-[40rem]">
+                                                <div class="text-center text-[0.75rem] leading-[1.83em] tracking-[0.02em] text-app-gray-400-0">
+                                                    *דיסקליימר של 2 שורות טקסט דיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסט
+    דיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסט
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="quiz-screen pt-10 lg:pt-[3.75rem] flex flex-col mx-auto max-w-[51.125rem] lg-max:min-h-[calc(100dvh-4rem-3.25rem-2.5rem-2rem)]">
+                                            <h3 class="text-base font-semibold capitalize text-center lg:text-[1.5rem]">
+                                                לורם איפסום דולור סיט אמט 
+                                                <br>
+    לורם איפסום איפסום דולור סיט אמט?
+                                            </h3>
+    
+                                            <div class="mt-6 mb-6 lg:mt-10 lg:mb-0">
+                                                <div class="flex flex-wrap justify-center gap-x-6 gap-y-6">
+                                                    <label
+                                                        class="block basis-[calc(33.333%-(1.5rem*2/3))] md:basis-[calc(20%-(1.5rem*4/5))]">
+                                                        <input type="radio" name="radio-screen-4" data-validation="required" data-group="radio-screen-4"
+                                                            class="invisible opacity-0 absolute -z-1 [&:checked~.cnt_.dot]:fill-purple---main-0 [&:checked~.cnt_.radio-icon]:opacity-100 [&.error~.cnt]:text-design-red-0 [&.error~.cnt_.dot]:fill-design-red-0">
+                                                            
+                                                        <div class="cnt flex flex-col items-center gap-4 cursor-pointer h-full [&_.radio-icon]:hover:opacity-100">
+                                                            <div style="background-image: var(--purple-yellow-gradient);" class="radio-icon size-[3.75rem] lg:size-[6.25rem] rounded-full flex items-center justify-center png-center p-3 lg:p-4 transition duration-300 opacity-60">
+                                                                <img src="assets/images/quiz-icon-2.svg" alt="">
+                                                            </div>
+                                                            <div class="text-[1rem] text-center">
+                                                                לורם איפסום
+                                                            </div>
+                                                            <div class="indicator size-[0.875rem] mt-auto text-purple---main-0 [&_.dot]:fill-transparent">
+                                                                <img class="img-svg h-full w-auto" src="assets/images/icons/radio.svg" alt="">
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                    <label
+                                                        class="block basis-[calc(33.333%-(1.5rem*2/3))] md:basis-[calc(20%-(1.5rem*4/5))]">
+                                                        <input type="radio" name="radio-screen-4" data-validation="required" data-group="radio-screen-4"
+                                                            class="invisible opacity-0 absolute -z-1 [&:checked~.cnt_.dot]:fill-purple---main-0 [&:checked~.cnt_.radio-icon]:opacity-100 [&.error~.cnt]:text-design-red-0 [&.error~.cnt_.dot]:fill-design-red-0">
+                                                            
+                                                        <div class="cnt flex flex-col items-center gap-4 cursor-pointer h-full [&_.radio-icon]:hover:opacity-100">
+                                                            <div style="background-image: var(--purple-yellow-gradient);" class="radio-icon size-[3.75rem] lg:size-[6.25rem] rounded-full flex items-center justify-center png-center p-3 lg:p-4 transition duration-300 opacity-60">
+                                                                <img src="assets/images/quiz-icon-2.svg" alt="">
+                                                            </div>
+                                                            <div class="text-[1rem] text-center">
+                                                                לורם איפסום
+                                                            </div>
+                                                            <div class="indicator size-[0.875rem] mt-auto text-purple---main-0 [&_.dot]:fill-transparent">
+                                                                <img class="img-svg h-full w-auto" src="assets/images/icons/radio.svg" alt="">
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                    <label
+                                                        class="block basis-[calc(33.333%-(1.5rem*2/3))] md:basis-[calc(20%-(1.5rem*4/5))]">
+                                                        <input type="radio" name="radio-screen-4" data-validation="required" data-group="radio-screen-4"
+                                                            class="invisible opacity-0 absolute -z-1 [&:checked~.cnt_.dot]:fill-purple---main-0 [&:checked~.cnt_.radio-icon]:opacity-100 [&.error~.cnt]:text-design-red-0 [&.error~.cnt_.dot]:fill-design-red-0">
+                                                            
+                                                        <div class="cnt flex flex-col items-center gap-4 cursor-pointer h-full [&_.radio-icon]:hover:opacity-100">
+                                                            <div style="background-image: var(--purple-yellow-gradient);" class="radio-icon size-[3.75rem] lg:size-[6.25rem] rounded-full flex items-center justify-center png-center p-3 lg:p-4 transition duration-300 opacity-60">
+                                                                <img src="assets/images/quiz-icon-2.svg" alt="">
+                                                            </div>
+                                                            <div class="text-[1rem] text-center">
+                                                                לורם איפסום
+                                                            </div>
+                                                            <div class="indicator size-[0.875rem] mt-auto text-purple---main-0 [&_.dot]:fill-transparent">
+                                                                <img class="img-svg h-full w-auto" src="assets/images/icons/radio.svg" alt="">
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                    <label
+                                                        class="block basis-[calc(33.333%-(1.5rem*2/3))] md:basis-[calc(20%-(1.5rem*4/5))]">
+                                                        <input type="radio" name="radio-screen-4" data-validation="required" data-group="radio-screen-4"
+                                                            class="invisible opacity-0 absolute -z-1 [&:checked~.cnt_.dot]:fill-purple---main-0 [&:checked~.cnt_.radio-icon]:opacity-100 [&.error~.cnt]:text-design-red-0 [&.error~.cnt_.dot]:fill-design-red-0">
+                                                            
+                                                        <div class="cnt flex flex-col items-center gap-4 cursor-pointer h-full [&_.radio-icon]:hover:opacity-100">
+                                                            <div style="background-image: var(--purple-yellow-gradient);" class="radio-icon size-[3.75rem] lg:size-[6.25rem] rounded-full flex items-center justify-center png-center p-3 lg:p-4 transition duration-300 opacity-60">
+                                                                <img src="assets/images/quiz-icon-2.svg" alt="">
+                                                            </div>
+                                                            <div class="text-[1rem] text-center">
+                                                                לורם איפסום
+                                                            </div>
+                                                            <div class="indicator size-[0.875rem] mt-auto text-purple---main-0 [&_.dot]:fill-transparent">
+                                                                <img class="img-svg h-full w-auto" src="assets/images/icons/radio.svg" alt="">
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                    <label
+                                                        class="block basis-[calc(33.333%-(1.5rem*2/3))] md:basis-[calc(20%-(1.5rem*4/5))]">
+                                                        <input type="radio" name="radio-screen-4" data-validation="required" data-group="radio-screen-4"
+                                                            class="invisible opacity-0 absolute -z-1 [&:checked~.cnt_.dot]:fill-purple---main-0 [&:checked~.cnt_.radio-icon]:opacity-100 [&.error~.cnt]:text-design-red-0 [&.error~.cnt_.dot]:fill-design-red-0">
+                                                            
+                                                        <div class="cnt flex flex-col items-center gap-4 cursor-pointer h-full [&_.radio-icon]:hover:opacity-100">
+                                                            <div style="background-image: var(--purple-yellow-gradient);" class="radio-icon size-[3.75rem] lg:size-[6.25rem] rounded-full flex items-center justify-center png-center p-3 lg:p-4 transition duration-300 opacity-60">
+                                                                <img src="assets/images/quiz-icon-2.svg" alt="">
+                                                            </div>
+                                                            <div class="text-[1rem] text-center">
+                                                                לורם איפסום
+                                                            </div>
+                                                            <div class="indicator size-[0.875rem] mt-auto text-purple---main-0 [&_.dot]:fill-transparent">
+                                                                <img class="img-svg h-full w-auto" src="assets/images/icons/radio.svg" alt="">
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+    
+                                            <div class="mt-auto flex justify-center gap-4 lg:mt-10">
+                                                <button id="btn-continue-screen-4" type="button" data-action="next-quiz-screen"
+                                                    class=" btn-default text-white bg-purple---main-0 hover-default">
+                                                    המשך
+                                                </button>
+                                            </div>
+    
+                                            <div class="mt-6 lg:mt-10 w-full mx-auto max-w-[40rem]">
+                                                <div class="text-center text-[0.75rem] leading-[1.83em] tracking-[0.02em] text-app-gray-400-0">
+                                                    *דיסקליימר של 2 שורות טקסט דיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסט
+    דיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסט
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="quiz-screen pt-10 lg:pt-[3.75rem] flex flex-col mx-auto max-w-[51.125rem] lg-max:min-h-[calc(100dvh-4rem-3.25rem-2.5rem-2rem)]">
+                                            <h3 class="text-base font-semibold capitalize text-center lg:text-[1.5rem]">
+                                                לורם איפסום דולור סיט אמט 
+                                                <br>
+    לורם איפסום איפסום דולור סיט אמט?
+                                            </h3>
+                                            
+                                            <div class="mt-6 mb-6 lg:mt-10 lg:mb-0 w-full mx-auto max-w-[24.875rem] grid grid-cols-2 gap-4">
+                                                <div class="col-span-2">
+                                                    <label class="block cursor-pointer">
+                                                        <input type="radio" name="radio-screen-5" data-validation="required" data-group="radio-screen-5"
+                                                            class="invisible opacity-0 absolute -z-1 [&:checked~.cnt_.dot]:fill-purple---main-0 [&:checked~.cnt]:border-purple---main-0 [&.error~.cnt]:border-design-red-0 [&.error~.cnt]:text-design-red-0">
+                                                        
+                                                        <div class="cnt flex items-center gap-2 py-3 px-4 min-h-[3.125rem] text-[1rem] border border-transparent rounded-[calc(3.125rem/2)] bg-app-gray-100-0 transition hover:bg-app-gray-200-0">
+                                                            <div class="indicator size-[0.875rem] text-purple---main-0 [&_.dot]:fill-transparent shrink-0 grow-0">
+                                                                <img class="img-svg h-full w-auto" src="assets/images/icons/radio.svg" alt="">
+                                                            </div>
+                                                            לורם איפסום
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <label class="block cursor-pointer">
+                                                        <input type="radio" name="radio-screen-5" data-validation="required" data-group="radio-screen-5"
+                                                            class="invisible opacity-0 absolute -z-1 [&:checked~.cnt_.dot]:fill-purple---main-0 [&:checked~.cnt]:border-purple---main-0 [&.error~.cnt]:border-design-red-0 [&.error~.cnt]:text-design-red-0">
+                                                        
+                                                        <div class="cnt flex items-center gap-2 py-3 px-4 min-h-[3.125rem] text-[1rem] border border-transparent rounded-[calc(3.125rem/2)] bg-app-gray-100-0 transition hover:bg-app-gray-200-0">
+                                                            <div class="indicator size-[0.875rem] text-purple---main-0 [&_.dot]:fill-transparent shrink-0 grow-0">
+                                                                <img class="img-svg h-full w-auto" src="assets/images/icons/radio.svg" alt="">
+                                                            </div>
+                                                            לורם איפסום
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <label class="block cursor-pointer">
+                                                        <input type="radio" name="radio-screen-5" data-validation="required" data-group="radio-screen-5"
+                                                            class="invisible opacity-0 absolute -z-1 [&:checked~.cnt_.dot]:fill-purple---main-0 [&:checked~.cnt]:border-purple---main-0 [&.error~.cnt]:border-design-red-0 [&.error~.cnt]:text-design-red-0">
+                                                        
+                                                        <div class="cnt flex items-center gap-2 py-3 px-4 min-h-[3.125rem] text-[1rem] border border-transparent rounded-[calc(3.125rem/2)] bg-app-gray-100-0 transition hover:bg-app-gray-200-0">
+                                                            <div class="indicator size-[0.875rem] text-purple---main-0 [&_.dot]:fill-transparent shrink-0 grow-0">
+                                                                <img class="img-svg h-full w-auto" src="assets/images/icons/radio.svg" alt="">
+                                                            </div>
+                                                            לורם איפסום
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <label class="block cursor-pointer">
+                                                        <input type="radio" name="radio-screen-5" data-validation="required" data-group="radio-screen-5"
+                                                            class="invisible opacity-0 absolute -z-1 [&:checked~.cnt_.dot]:fill-purple---main-0 [&:checked~.cnt]:border-purple---main-0 [&.error~.cnt]:border-design-red-0 [&.error~.cnt]:text-design-red-0">
+                                                        
+                                                        <div class="cnt flex items-center gap-2 py-3 px-4 min-h-[3.125rem] text-[1rem] border border-transparent rounded-[calc(3.125rem/2)] bg-app-gray-100-0 transition hover:bg-app-gray-200-0">
+                                                            <div class="indicator size-[0.875rem] text-purple---main-0 [&_.dot]:fill-transparent shrink-0 grow-0">
+                                                                <img class="img-svg h-full w-auto" src="assets/images/icons/radio.svg" alt="">
+                                                            </div>
+                                                            לורם איפסום
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <label class="block cursor-pointer">
+                                                        <input type="radio" name="radio-screen-5" data-validation="required" data-group="radio-screen-5"
+                                                            class="invisible opacity-0 absolute -z-1 [&:checked~.cnt_.dot]:fill-purple---main-0 [&:checked~.cnt]:border-purple---main-0 [&.error~.cnt]:border-design-red-0 [&.error~.cnt]:text-design-red-0">
+                                                        
+                                                        <div class="cnt flex items-center gap-2 py-3 px-4 min-h-[3.125rem] text-[1rem] border border-transparent rounded-[calc(3.125rem/2)] bg-app-gray-100-0 transition hover:bg-app-gray-200-0">
+                                                            <div class="indicator size-[0.875rem] text-purple---main-0 [&_.dot]:fill-transparent shrink-0 grow-0">
+                                                                <img class="img-svg h-full w-auto" src="assets/images/icons/radio.svg" alt="">
+                                                            </div>
+                                                            לורם איפסום
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+    
+                                            <div class="mt-auto flex justify-center gap-4 lg:mt-10">
+                                                <button id="btn-continue-screen-5" type="button" data-action="next-quiz-screen"
+                                                    class=" btn-default text-white bg-purple---main-0 hover-default">
+                                                    המשך
+                                                </button>
+                                            </div>
+    
+                                            <div class="mt-6 lg:mt-10 w-full mx-auto max-w-[40rem]">
+                                                <div class="text-center text-[0.75rem] leading-[1.83em] tracking-[0.02em] text-app-gray-400-0">
+                                                    *דיסקליימר של 2 שורות טקסט דיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסט
+    דיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסט
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="quiz-screen pt-10 lg:pt-[3.75rem] flex flex-col mx-auto max-w-[51.125rem] lg-max:min-h-[calc(100dvh-4rem-3.25rem-2.5rem-2rem)]">
+                                            <h3 class="text-base font-semibold capitalize text-center lg:text-[1.5rem]">
+                                                לורם איפסום דולור סיט אמט 
+                                                <br>
+    לורם איפסום איפסום דולור סיט אמט?
+                                            </h3>
+                                            
+                                            <div class="mt-6 mb-6 lg:mt-10 lg:mb-0 w-full mx-auto max-w-[24.875rem] grid grid-cols-2 gap-4">
+                                                <div class="col-span-2">
+                                                    <label class="checkbox-wrap cursor-pointer select-none [&.checkbox-wrap]:pr-0">
+                                                        <input type="checkbox" data-validation="required" data-group="radio-screen-6" class="[&:checked~.checkbox-text]:border-purple---main-0 [&.error~.checkbox-text]:border-design-red-0 [&.error~.checkbox-text]:text-design-red-0">
+                                                        <div class="checkbox-indicator z-2 [&.checkbox-indicator]:top-1/2 [&.checkbox-indicator]:-translate-y-1/2 [&.checkbox-indicator]:right-4"></div>
+                                                        <div class="checkbox-text pr-10 relative z-1flex items-center gap-2 py-3 px-4 min-h-[3.125rem] text-[1rem] border border-transparent rounded-[calc(3.125rem/2)] bg-app-gray-100-0 transition hover:bg-app-gray-200-0">
+                                                            לורם איפסום
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <label class="checkbox-wrap cursor-pointer select-none [&.checkbox-wrap]:pr-0">
+                                                        <input type="checkbox" data-validation="required" data-group="radio-screen-6" class="[&:checked~.checkbox-text]:border-purple---main-0 [&.error~.checkbox-text]:border-design-red-0 [&.error~.checkbox-text]:text-design-red-0">
+                                                        <div class="checkbox-indicator z-2 [&.checkbox-indicator]:top-1/2 [&.checkbox-indicator]:-translate-y-1/2 [&.checkbox-indicator]:right-4"></div>
+                                                        <div class="checkbox-text pr-10 relative z-1flex items-center gap-2 py-3 px-4 min-h-[3.125rem] text-[1rem] border border-transparent rounded-[calc(3.125rem/2)] bg-app-gray-100-0 transition hover:bg-app-gray-200-0">
+                                                            לורם איפסום
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <label class="checkbox-wrap cursor-pointer select-none [&.checkbox-wrap]:pr-0">
+                                                        <input type="checkbox" data-validation="required" data-group="radio-screen-6" class="[&:checked~.checkbox-text]:border-purple---main-0 [&.error~.checkbox-text]:border-design-red-0 [&.error~.checkbox-text]:text-design-red-0">
+                                                        <div class="checkbox-indicator z-2 [&.checkbox-indicator]:top-1/2 [&.checkbox-indicator]:-translate-y-1/2 [&.checkbox-indicator]:right-4"></div>
+                                                        <div class="checkbox-text pr-10 relative z-1flex items-center gap-2 py-3 px-4 min-h-[3.125rem] text-[1rem] border border-transparent rounded-[calc(3.125rem/2)] bg-app-gray-100-0 transition hover:bg-app-gray-200-0">
+                                                            לורם איפסום
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <label class="checkbox-wrap cursor-pointer select-none [&.checkbox-wrap]:pr-0">
+                                                        <input type="checkbox" data-validation="required" data-group="radio-screen-6" class="[&:checked~.checkbox-text]:border-purple---main-0 [&.error~.checkbox-text]:border-design-red-0 [&.error~.checkbox-text]:text-design-red-0">
+                                                        <div class="checkbox-indicator z-2 [&.checkbox-indicator]:top-1/2 [&.checkbox-indicator]:-translate-y-1/2 [&.checkbox-indicator]:right-4"></div>
+                                                        <div class="checkbox-text pr-10 relative z-1flex items-center gap-2 py-3 px-4 min-h-[3.125rem] text-[1rem] border border-transparent rounded-[calc(3.125rem/2)] bg-app-gray-100-0 transition hover:bg-app-gray-200-0">
+                                                            לורם איפסום
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <label class="checkbox-wrap cursor-pointer select-none [&.checkbox-wrap]:pr-0">
+                                                        <input type="checkbox" data-validation="required" data-group="radio-screen-6" class="[&:checked~.checkbox-text]:border-purple---main-0 [&.error~.checkbox-text]:border-design-red-0 [&.error~.checkbox-text]:text-design-red-0">
+                                                        <div class="checkbox-indicator z-2 [&.checkbox-indicator]:top-1/2 [&.checkbox-indicator]:-translate-y-1/2 [&.checkbox-indicator]:right-4"></div>
+                                                        <div class="checkbox-text pr-10 relative z-1flex items-center gap-2 py-3 px-4 min-h-[3.125rem] text-[1rem] border border-transparent rounded-[calc(3.125rem/2)] bg-app-gray-100-0 transition hover:bg-app-gray-200-0">
+                                                            לורם איפסום
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+    
+                                            <div class="mt-auto flex justify-center gap-4 lg:mt-10">
+                                                <button id="btn-continue-screen-6" type="submit" data-action="submit"
+                                                    class=" btn-default text-white bg-purple---main-0 hover-default">
+                                                    המשך
+                                                </button>
+                                            </div>
+    
+                                            <div class="mt-6 lg:mt-10 w-full mx-auto max-w-[40rem]">
+                                                <div class="text-center text-[0.75rem] leading-[1.83em] tracking-[0.02em] text-app-gray-400-0">
+                                                    *דיסקליימר של 2 שורות טקסט דיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסט
+    דיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסטדיסקליימר של 2 שורות טקסט
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="quiz-loader [&:not(.active)]:hidden text-purple---main-0 absolute z-5 top-0 left-0 w-full h-full flex items-center justify-center bg-white/80">
+                            <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <script>
+            // EXAMPLE!!! Use case, you'll need to remove this code
+
+            const form = document.querySelector('#form-personal-quiz');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+ 
+                const quizContainer = document.querySelector('[data-quiz="personal-quiz"]');
+                quizContainer.quiz.toggleLoaderVisibility(true);
+
+                setTimeout(() => {
+                    document.location.href = './quiz-calendar.html';
+                }, 2000);
+            })
+        </script>
+    </main>
+
+  </body>
+</html>

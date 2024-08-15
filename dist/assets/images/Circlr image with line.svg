@@ -1,0 +1,18 @@
+<svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Design / Story / Circlr image with line">
+<circle id="Ellipse 22" cx="35" cy="35" r="32.25" stroke="url(#paint0_linear_7514_48749)" stroke-width="1.5"/>
+<g id="Deign / Story / Circle image instagram">
+<rect x="5" y="5" width="60" height="60" rx="30" fill="url(#pattern0_7514_48749)"/>
+</g>
+</g>
+<defs>
+<pattern id="pattern0_7514_48749" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_7514_48749" transform="matrix(0.00217551 0 0 0.00217297 -0.382889 -0.497772)"/>
+</pattern>
+<linearGradient id="paint0_linear_7514_48749" x1="4.5" y1="4" x2="113.261" y2="35.8834" gradientUnits="userSpaceOnUse">
+<stop stop-color="#6C3C87"/>
+<stop offset="0.869706" stop-color="#BEABCF"/>
+</linearGradient>
+<image id="image0_7514_48749" width="770" height="882" xlink:href=""/>
+</defs>
+</svg>

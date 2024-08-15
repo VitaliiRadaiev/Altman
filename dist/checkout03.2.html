@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Altman</title>
+
+    <script>
+        let element = document.querySelector('html');
+        if (element) {
+            let zoom = 1;
+            const setFontSize = () => {
+                let baseWidth = 1440;
+                let baseFontSize = 16;
+                let screenWidth = element.clientWidth;
+                let screenHeight = element.clientHeight;
+                let maxHeight = screenWidth * 0.4817;
+                let value;
+                let heightOffset = (screenHeight / maxHeight) > 1 ? 1 : screenHeight / maxHeight;
+
+                if (screenWidth <= baseWidth) {
+                    let scaleFactor = 10;
+                    value = (baseFontSize + (screenWidth - baseWidth) * scaleFactor / baseWidth) * zoom;
+                } else {
+                    let scaleFactor = 10;
+                    value = ((baseFontSize + (screenWidth - baseWidth) * scaleFactor / baseWidth) * heightOffset) * zoom;
+                    
+                    if(value < 16) value = 16;
+                }
+
+                element.style.fontSize = value + 'px';
+            }
+
+            setFontSize();
+            window.addEventListener('resize', setFontSize);
+
+            document.addEventListener('wheel', function (event) {
+                if (document.documentElement.clientWidth < 1024) return;
+
+                if (event.ctrlKey || event.metaKey) {
+                    if (event.deltaY < 0) {
+                        zoom += 0.1
+                        setFontSize();
+                    } else {
+                        zoom -= 0.1
+                        setFontSize();
+                    }
+                    event.preventDefault();
+                }
+            }, { passive: false });
+        }
+    </script>
+
+    <style>
+        .page-loaded .page-loader {
+            display: none;
+        }
+
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 100;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            color: #6c3c87;
+        }
+
+        .lds-roller,
+        .lds-roller div,
+        .lds-roller div:after {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .lds-roller {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .lds-roller div {
+            -webkit-animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            -webkit-transform-origin: 40px 40px;
+            -ms-transform-origin: 40px 40px;
+            transform-origin: 40px 40px;
+        }
+
+        .lds-roller div:after {
+            content: " ";
+            display: block;
+            position: absolute;
+            width: 7.2px;
+            height: 7.2px;
+            border-radius: 50%;
+            background: currentColor;
+            margin: -3.6px 0 0 -3.6px;
+        }
+
+        .lds-roller div:nth-child(1) {
+            -webkit-animation-delay: -0.036s;
+            animation-delay: -0.036s;
+        }
+
+        .lds-roller div:nth-child(1):after {
+            top: 62.62742px;
+            left: 62.62742px;
+        }
+
+        .lds-roller div:nth-child(2) {
+            -webkit-animation-delay: -0.072s;
+            animation-delay: -0.072s;
+        }
+
+        .lds-roller div:nth-child(2):after {
+            top: 67.71281px;
+            left: 56px;
+        }
+
+        .lds-roller div:nth-child(3) {
+            -webkit-animation-delay: -0.108s;
+            animation-delay: -0.108s;
+        }
+
+        .lds-roller div:nth-child(3):after {
+            top: 70.90963px;
+            left: 48.28221px;
+        }
+
+        .lds-roller div:nth-child(4) {
+            -webkit-animation-delay: -0.144s;
+            animation-delay: -0.144s;
+        }
+
+        .lds-roller div:nth-child(4):after {
+            top: 72px;
+            left: 40px;
+        }
+
+        .lds-roller div:nth-child(5) {
+            -webkit-animation-delay: -0.18s;
+            animation-delay: -0.18s;
+        }
+
+        .lds-roller div:nth-child(5):after {
+            top: 70.90963px;
+            left: 31.71779px;
+        }
+
+        .lds-roller div:nth-child(6) {
+            -webkit-animation-delay: -0.216s;
+            animation-delay: -0.216s;
+        }
+
+        .lds-roller div:nth-child(6):after {
+            top: 67.71281px;
+            left: 24px;
+        }
+
+        .lds-roller div:nth-child(7) {
+            -webkit-animation-delay: -0.252s;
+            animation-delay: -0.252s;
+        }
+
+        .lds-roller div:nth-child(7):after {
+            top: 62.62742px;
+            left: 17.37258px;
+        }
+
+        .lds-roller div:nth-child(8) {
+            -webkit-animation-delay: -0.288s;
+            animation-delay: -0.288s;
+        }
+
+        .lds-roller div:nth-child(8):after {
+            top: 56px;
+            left: 12.28719px;
+        }
+
+        @-webkit-keyframes lds-roller {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes lds-roller {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @media print {
+
+            header,
+            footer {
+                display: none;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
+    <script defer src="./assets/js/vendors.js"></script>
+    <script defer src="./assets/js/main.js"></script>
+</head>
+
+<body>
+    <div class="page-loader">
+    <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+</div>
+    <main class="relative">
+        <div class="absolute z-1 top-0 left-0 w-full h-full overflow-hidden hidden lg:block">
+            <div class="container h-full">
+                <div class="lg:flex lg:flex-row-reverse lg:gap-12 xl:gap-[6.25rem] h-full">
+                    <div class="shrink grow h-full relative">
+                        <div class="absolute top-0 right-0 h-full w-[60vw] bg-yellow-01-0"></div>
+                    </div>
+                    <div class="shrink-0 grow-0 lg:w-[49.35%]">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="relative z-2 py-[30px] pb-4 lg:pt-10 lg:pb-16">
+    <div class="container">
+        <!-- head -->
+        <div class="lg:flex lg:flex-row-reverse lg:gap-12 xl:gap-[6.25rem]">
+    <div class="shrink grow"></div>
+    <div class="shrink-0 grow-0 lg:w-[49.35%] xl:px-14">
+        <div class="relative flex justify-center py-3">
+            <a href="#">
+                <img class="h-9 w-auto block" src="assets/images/logos/title-logo.svg" alt="">
+            </a>
+
+            <a href="#"
+                class="absolute top-1/2 right-3 -translate-y-1/2 icon-chevron-right pl-[2px] flex items-center justify-center size-10 rounded-full bg-white shadow-default transition duration-300 text-[1.5rem] hover:text-white hover:bg-purple---main-0 hover:translate-x-[2px] lg:-right-10 xl:-right-24"></a>
+        </div>
+        <div class="mt-3">
+            <ul data-steps-nav class="flex justify-center gap-2 text-[1rem] text-app-gray-400-0 flex-wrap pointer-events-none">
+                <li class="cursor-pointer transition hover:text-purple---main-0 flex items-center gap-2 [&_.icon-chevron-left]:last:hidden">
+                    <div class="text-black-0">
+                        סל
+                    </div>
+                    <span class="icon-chevron-left"></span>
+                </li>
+                <li class="active step-van-item cursor-pointer transition hover:text-purple---main-0 [&.active]:text-black-0 [&.active]:font-semibold flex items-center gap-2 [&_.icon-chevron-left]:last:hidden">
+                    <div class="">
+                        פרטים אישיים
+                    </div>
+                    <span class="icon-chevron-left"></span>
+                </li>
+                <li class="step-van-item cursor-pointer transition hover:text-purple---main-0 [&.active]:text-black-0 [&.active]:font-semibold flex items-center gap-2 [&_.icon-chevron-left]:last:hidden">
+                    <div class="">
+                        בחירת סוג משלוח
+                    </div>
+                    <span class="icon-chevron-left"></span>
+                </li>
+                <li class="step-van-item cursor-pointer transition hover:text-purple---main-0 [&.active]:text-black-0 [&.active]:font-semibold flex items-center gap-2 [&_.icon-chevron-left]:last:hidden">
+                    <div class="">
+                        בחירת אמצעי תשלום
+                    </div>
+                    <span class="icon-chevron-left"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+        <!-- body -->
+        <div class="mt-4 lg:mt-10 lg:flex lg:flex-row-reverse lg:gap-12 xl:gap-[6.25rem]">
+            <!-- cart info -->
+            <div class="shrink grow lg:pr-10 xl:pr-[5.625rem]">
+                <div class="relative [&.active_.icon-chevron-down]:scale-y-[-1] lg:hidden [&.active_.text-hide-state]:hidden [&.active_.text-visible-state]:block [&:not(.active)_.text-hide-state]:block [&:not(.active)_.text-visible-state]:hidden"  data-toggle-collapse="#checkout-products">
+    <div class="absolute z-1 top-0 left-1/2 w-[100vw] h-full -translate-x-1/2 bg-yellow-02-0"></div>
+    
+    <div class="flex items-center justify-between gap-3 flex-wrap min-h-[3.75rem] relative z-2">
+        <div class="flex items-center gap-3 text-base relative pl-5">
+            <img class="w-6 h-auto shrink-0 grow-0" src="assets/images/icons/basket.svg" alt="">
+            <span class="text-visible-state">
+                הסתר סיכום הזמנה
+            </span>
+            <span class="text-hide-state">
+                הצג סיכום הזמנה
+            </span>
+            <span class="icon-chevron-down absolute left-0 top-1/2 -translate-y-1/2 text-[0.95em]"></span>
+        </div>
+        <div class="text-[1.125rem] leading-[1.69em] font-semibold">
+            333.60 ₪
+        </div>
+    </div>
+</div>
+<div id="checkout-products" class="relative hidden lg:!block -mx-4 px-4 lg:m-0 lg:p-0">
+    <div class="lg:hidden absolute z-1 top-0 left-1/2 w-[100vw] h-full -translate-x-1/2 bg-yellow-01-0"></div>
+    <div class="relative z-2 pt-2 pb-[30px] lg:p-0">
+        <ul>
+            <li class="border-b border-app-gray-300-0">
+                <div class="py-4 flex gap-4">
+    <a href="#" class="relative w-20 h-[6.125rem] shrink-0 grow-0 [&_.png-center]:hover:opacity-80">
+        
+            <span class="[&~.png-center]:bg-yellow-02-0 absolute z-2 top-0 left-0 -translate-x-2 -translate-y-2 h-6 min-w-6 flex items-center justify-center bg-black-0 rounded-full text-white pt-[1px] px-[2px] text-[1rem] leading-none">
+                2
+            </span>
+        
+        <div class="png-center relative z-1 h-full w-full rounded-[0.375rem] bg-white transition-opacity p-2">
+            <img src="assets/images/cart-product-sm-img.png" alt="">
+        </div>
+    </a>
+    <div class="shrink grow">
+        <a href="#" class="text-[1.125rem] leading-[1.69em] font-semibold transition hover:text-purple---main-0">
+            מולטי ויטמין לנשים
+        </a>
+        <div class="text-base text-app-gray-350-0">
+            60 כמוסות
+        </div>
+    </div>
+    <div class="shrink-0 grow-0">
+        <div class="text-[1.125rem] leading-[1.69em] font-semibold">
+            131.80 ₪
+        </div>
+    </div>
+</div>
+            </li>
+            <li class="border-b border-app-gray-300-0">
+                <div class="py-4 flex gap-4">
+    <a href="#" class="relative w-20 h-[6.125rem] shrink-0 grow-0 [&_.png-center]:hover:opacity-80">
+        
+        <div class="png-center relative z-1 h-full w-full rounded-[0.375rem] bg-white transition-opacity p-2">
+            <img src="assets/images/cart-product-sm-img.png" alt="">
+        </div>
+    </a>
+    <div class="shrink grow">
+        <a href="#" class="text-[1.125rem] leading-[1.69em] font-semibold transition hover:text-purple---main-0">
+            מולטי ויטמין לנשים
+        </a>
+        <div class="text-base text-app-gray-350-0">
+            60 כמוסות
+        </div>
+    </div>
+    <div class="shrink-0 grow-0">
+        <div class="text-[1.125rem] leading-[1.69em] font-semibold">
+            ₪69.90
+        </div>
+    </div>
+</div>
+            </li>
+            <li class="border-b border-app-gray-300-0">
+                <div class="py-4 flex gap-4">
+    <a href="#" class="relative w-20 h-[6.125rem] shrink-0 grow-0 [&_.png-center]:hover:opacity-80">
+        
+        <div class="png-center relative z-1 h-full w-full rounded-[0.375rem] bg-white transition-opacity p-2">
+            <img src="assets/images/cart-product-sm-img.png" alt="">
+        </div>
+    </a>
+    <div class="shrink grow">
+        <a href="#" class="text-[1.125rem] leading-[1.69em] font-semibold transition hover:text-purple---main-0">
+            מולטי ויטמין לנשים
+        </a>
+        <div class="text-base text-app-gray-350-0">
+            60 כמוסות
+        </div>
+    </div>
+    <div class="shrink-0 grow-0">
+        <div class="text-[1.125rem] leading-[1.69em] font-semibold">
+            ₪69.90
+        </div>
+    </div>
+</div>
+            </li>
+        </ul>
+
+        <div class="mt-4 lg:mt-10 flex gap-2 items-start">
+            <div class="shrink grow">
+                <div class="input-wrap" data-use-input-label data-action="toggle-class-by-match-req-exp" data-classes="disabled" data-reg-exp="^.{5,10}$" data-target="#coupon-submit">
+                    <input type="text" placeholder="קוד קופון" class="input" >
+                    <div class="input-label">
+                        <span>
+                            קוד קופון
+                        </span>
+                    </div>
+                </div>
+                <!-- <div class="mt-1 text-[1rem] flex items-center gap-1 px-4">
+                    <img class="h-4 w-auto" src="assets/images/icons/check-circle-green.svg" alt="">
+                    <div class="text-design-green-0">
+                        קופון פעיל
+                    </div>
+                    <button type="button" class="underline transition hover:text-purple---main-0">
+                        ביטול
+                    </button>
+                </div>
+                <div class="mt-1 text-[1rem] flex items-center gap-1 px-4">
+                    <div class="text-design-red-0">
+                        קוד הקופון לא תקין
+                    </div>
+                </div> -->
+            </div>
+            <button id="coupon-submit" class="disabled shrink-0 grow-0 btn-default text-white bg-purple---main-0 shadow-default min-w-[6.25rem] hover-default">
+                החל
+            </button>
+        </div>
+
+        <div class="mt-4 lg:mt-10 w-full grid grid-cols-[1fr_auto] gap-4 text-base">
+            <div>
+                סכום ביניים
+            </div>
+            <div class="text-end">
+                333.60 ₪
+            </div>
+
+            <div class="text-app-gray-400-0">
+                משלוח
+            </div>
+            <div class="text-app-gray-400-0 text-end">
+                יחושב בשלב הבא
+            </div>
+        </div>
+
+        <hr class="mt-4 border-purple---super-light-0">
+
+        <div class="mt-4 w-full grid grid-cols-[1fr_auto] gap-4 text-[1.125rem] font-semibold">
+            <div>
+                סך הכל
+            </div>
+            <div class="text-end">
+                333.60 ₪
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+
+            <!-- billing -->
+            <div class="mt-4 lg:mt-0 shrink-0 grow-0 lg:w-[49.35%] xl:px-14 text-base">
+
+                <div class="grid grid-cols-[auto_1fr_auto] border border-app-gray-300-0 rounded-[0.75rem]">
+                    <div
+                        class="p-[0.625rem] [&:not(:nth-last-child(-n+3))]:border-b border-app-gray-300-0 text-app-gray-400-0">
+                        חשבונית למייל
+                    </div>
+                    <div
+                        class="py-[0.625rem] px-4 [&:not(:nth-last-child(-n+3))]:border-b border-app-gray-300-0 truncate">
+                        test@gmail.com
+                    </div>
+                    <div class="p-[0.625rem] lg:pl-6 [&:not(:nth-last-child(-n+3))]:border-b border-app-gray-300-0">
+                        <a href="#"
+                            class="underline capitalize text-purple---main-0 transition hover:text-purple---main-hover-0">
+                            שינוי
+                        </a>
+                    </div>
+
+                    <div
+                        class="p-[0.625rem] [&:not(:nth-last-child(-n+3))]:border-b border-app-gray-300-0 text-app-gray-400-0">
+                        כתובת למשלוח
+                    </div>
+                    <div
+                        class="py-[0.625rem] px-4 [&:not(:nth-last-child(-n+3))]:border-b border-app-gray-300-0 truncate">
+                        תל אביב ,רחוב הציונות 123
+                    </div>
+                    <div class="p-[0.625rem] lg:pl-6 [&:not(:nth-last-child(-n+3))]:border-b border-app-gray-300-0">
+                        <a href="#"
+                            class="underline capitalize text-purple---main-0 transition hover:text-purple---main-hover-0">
+                            שינוי
+                        </a>
+                    </div>
+
+                    <div
+                        class="p-[0.625rem] [&:not(:nth-last-child(-n+3))]:border-b border-app-gray-300-0 text-app-gray-400-0">
+                        שיטת משלוח
+                    </div>
+                    <div
+                        class="py-[0.625rem] px-4 [&:not(:nth-last-child(-n+3))]:border-b border-app-gray-300-0 truncate">
+                        משלוח עד הבית עד 4 ימי עסקים
+                    </div>
+                    <div class="p-[0.625rem] lg:pl-6 [&:not(:nth-last-child(-n+3))]:border-b border-app-gray-300-0">
+                        <a href="#"
+                            class="underline capitalize text-purple---main-0 transition hover:text-purple---main-hover-0">
+                            שינוי
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <div class="text-[1.125rem] font-semibold">
+                        תשלום
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <ul class="flex flex-col gap-4">
+                        <li>
+                            <div class="relative">
+                                <label class="block cursor-pointer select-none">
+                                    <input type="radio" name="saved-card" class="absolute -z-1 opacity-0 invisible [&:checked~.saved-card_.dot]:fill-purple---main-0">
+                                    <div class="saved-card text-base pb-6 pt-4 pl-16 min-h-[7.875rem] border border-app-gray-200-0 rounded-[0.75rem] overflow-hidden transition hover:bg-app-gray-200-0">
+                                        <div class="grid grid-cols-[auto_1fr] items-center gap-2">
+                                            <svg class="size-[0.875rem] my-[0.3125rem] mr-[0.625rem]" xmlns="http://www.w3.org/2000/svg"
+                                                width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                class="_svg h-full w-auto">
+                                                <circle cx="7" cy="7" r="6.5" stroke="currentColor"></circle>
+                                                <circle class="dot" cx="7" cy="7" r="5" fill="transparent"></circle>
+                                            </svg>
+                                            <div class="flex items-center gap-2">
+                                                <img class="h-10 w-auto" src="assets/images/icons/MasterCard-payment.svg" alt="">
+                                                Mastercard
+                                            </div>
+                                        </div>
+
+                                        <div dir="ltr" class="pr-[1.875rem] text-[1rem] tracking-[0.32em] mt-3">
+                                            •••• •••• •••• 1009
+                                        </div>
+                                    </div>
+                                </label>
+                                <div class="absolute left-1 top-4 flex">
+                                    <button type="button" class="click flex items-center justify-center size-8 pr-[1px] rounded-full transition hover:bg-app-gray-200-0">
+                                        <img class="h-4 w-auto pointer-events-none" src="assets/images/icons/pencil.svg" alt="">
+                                    </button>
+                                    <button type="button" class="click flex items-center justify-center size-8 pr-[1px] rounded-full transition hover:bg-app-gray-200-0">
+                                        <img class="h-4 w-auto pointer-events-none" src="assets/images/icons/trash.svg" alt="">
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="mt-4">
+                    <ul data-radio-spoiler class="border border-app-gray-300-0 rounded-[0.75rem] overflow-hidden">
+                        <li class="[&:not(:last-child)]:border-b border-app-gray-300-0">
+                            <label data-radio-trigger class="block relative cursor-pointer select-none">
+                                <input type="radio" name="payment"
+                                    class="absolute -z-1 opacity-0 invisible [&:checked~.grid-radio_.dot]:fill-purple---main-0">
+                                <div
+                                    class="grid-radio grid grid-cols-[auto_1fr_auto] text-base items-center py-[0.625rem] transition hover:bg-app-gray-200-0">
+                                    <svg class="size-[0.875rem] mr-[0.625rem]" xmlns="http://www.w3.org/2000/svg"
+                                        width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                        class="_svg h-full w-auto">
+                                        <circle cx="7" cy="7" r="6.5" stroke="currentColor"></circle>
+                                        <circle class="dot" cx="7" cy="7" r="5" fill="transparent"></circle>
+                                    </svg>
+                                    <div class="pr-2 pl-4 truncate">
+                                        כרטיס אשראי
+                                    </div>
+                                    <div class="px-[0.625rem] text-end flex gap-[0.625rem] [&>img]:h-6 [&>img]:w-auto">
+                                        <img src="assets/images/icons/Visa-payment.svg" alt="">
+                                        <img src="assets/images/icons/Maestro.svg" alt="">
+                                        <img src="assets/images/icons/MasterCard-payment.svg" alt="">
+                                    </div>
+                                </div>
+                            </label>
+                            <div class="hidden">
+                                <div class="p-4 bg-gray-100">
+                                    <div class="grid grid-cols-6 gap-3">
+                                        <div class="col-span-6" data-mask="9999 9999 9999 9999">
+                                            <input type="text" class="input" placeholder="מספר כרטיס" required>
+                                        </div>
+                                        <div class="col-span-6">
+                                            <input type="text" class="input" placeholder="שם מלא (כפי שמופיע על הכרטיס)" required>
+                                        </div>
+                                        <div class="col-span-4" data-mask="99/99">
+                                            <input type="text" class="input" placeholder="תוקף (MM/YY)" required>
+                                        </div>
+                                        <div class="col-span-2" data-mask="9{3,4}">
+                                            <input type="text" class="input text-center" placeholder="CVC" required>
+                                        </div>
+                                        <div class="col-span-6">
+                                            <ul class="flex flex-wrap justify-end gap-2 [&_img]:h-[1.75rem] [&_img]:w-auto">
+                                                <li>
+                                                    <a href="#">
+                                                        <img src="assets/images/security-icon-1.png" alt="">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <img src="assets/images/security-icon-2.png" alt="">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <img src="assets/images/security-icon-3.png" alt="">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <img src="assets/images/security-icon-4.png" alt="">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <img src="assets/images/security-icon-5.png" alt="">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <img src="assets/images/security-icon-6.png" alt="">
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="[&:not(:last-child)]:border-b border-app-gray-300-0">
+                            <label data-radio-trigger class="block relative cursor-pointer select-none">
+                                <input type="radio" name="payment"
+                                    class="absolute -z-1 opacity-0 invisible [&:checked~.grid-radio_.dot]:fill-purple---main-0">
+                                <div
+                                    class="grid-radio grid grid-cols-[auto_1fr_auto] text-base items-center py-[0.625rem] transition hover:bg-app-gray-200-0">
+                                    <svg class="size-[0.875rem] mr-[0.625rem]" xmlns="http://www.w3.org/2000/svg"
+                                        width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                        class="_svg h-full w-auto">
+                                        <circle cx="7" cy="7" r="6.5" stroke="currentColor"></circle>
+                                        <circle class="dot" cx="7" cy="7" r="5" fill="transparent"></circle>
+                                    </svg>
+                                    <div class="pr-2 pl-4 truncate">
+                                        Apple Pay
+                                    </div>
+                                    <div class="px-[0.625rem] text-end flex gap-[0.625rem] [&>img]:h-6 [&>img]:w-auto">
+                                        <img src="assets/images/icons/apple-pay.svg" alt="">
+                                    </div>
+                                </div>
+                            </label>
+
+                            <div class="hidden">
+                                <div class="p-4 bg-gray-100">
+                                    <div class="text-base text-center px-6">
+                                        לאחר לחיצה על "תשלום״, תעברו ל-PayPal בכדי להשלים את הרכישה בצורה מאובטחת.
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="[&:not(:last-child)]:border-b border-app-gray-300-0">
+                            <label data-radio-trigger class="block relative cursor-pointer select-none">
+                                <input type="radio" name="payment"
+                                    class="absolute -z-1 opacity-0 invisible [&:checked~.grid-radio_.dot]:fill-purple---main-0">
+                                <div
+                                    class="grid-radio grid grid-cols-[auto_1fr_auto] text-base items-center py-[0.625rem] transition hover:bg-app-gray-200-0">
+                                    <svg class="size-[0.875rem] mr-[0.625rem]" xmlns="http://www.w3.org/2000/svg"
+                                        width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                        class="_svg h-full w-auto">
+                                        <circle cx="7" cy="7" r="6.5" stroke="currentColor"></circle>
+                                        <circle class="dot" cx="7" cy="7" r="5" fill="transparent"></circle>
+                                    </svg>
+                                    <div class="pr-2 pl-4 truncate">
+                                        Google Pay
+                                    </div>
+                                    <div class="px-[0.625rem] text-end flex gap-[0.625rem] [&>img]:h-6 [&>img]:w-auto">
+                                        <img src="assets/images/icons/Google_Pay.svg" alt="">
+                                    </div>
+                                </div>
+                            </label>
+
+                            <div class="hidden">
+                                <div class="p-4 bg-gray-100">
+                                    <div class="grid grid-cols-6 gap-3">
+                                        <div class="col-span-6" data-mask="9999 9999 9999 9999">
+                                            <input type="text" class="input" placeholder="מספר כרטיס" required>
+                                        </div>
+                                        <div class="col-span-6">
+                                            <input type="text" class="input" placeholder="שם מלא (כפי שמופיע על הכרטיס)" required>
+                                        </div>
+                                        <div class="col-span-4" data-mask="99/99">
+                                            <input type="text" class="input" placeholder="תוקף (MM/YY)" required>
+                                        </div>
+                                        <div class="col-span-2" data-mask="9{3,4}">
+                                            <input type="text" class="input text-center" placeholder="CVC" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="[&:not(:last-child)]:border-b border-app-gray-300-0">
+                            <label data-radio-trigger class="block relative cursor-pointer select-none">
+                                <input type="radio" name="payment"
+                                    class="absolute -z-1 opacity-0 invisible [&:checked~.grid-radio_.dot]:fill-purple---main-0">
+                                <div
+                                    class="grid-radio grid grid-cols-[auto_1fr_auto] text-base items-center py-[0.625rem] transition hover:bg-app-gray-200-0">
+                                    <svg class="size-[0.875rem] mr-[0.625rem]" xmlns="http://www.w3.org/2000/svg"
+                                        width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                        class="_svg h-full w-auto">
+                                        <circle cx="7" cy="7" r="6.5" stroke="currentColor"></circle>
+                                        <circle class="dot" cx="7" cy="7" r="5" fill="transparent"></circle>
+                                    </svg>
+                                    <div class="pr-2 pl-4 truncate">
+                                        Bit
+                                    </div>
+                                    <div class="px-[0.625rem] text-end flex gap-[0.625rem] [&>img]:h-6 [&>img]:w-auto">
+                                        <img src="assets/images/icons/BIT_LOGO.png" alt="">
+                                    </div>
+                                </div>
+                            </label>
+
+                            <div class="hidden">
+                                <div class="p-4 bg-gray-100">
+                                    <div class="grid grid-cols-6 gap-3">
+                                        <div class="col-span-6" data-mask="9999 9999 9999 9999">
+                                            <input type="text" class="input" placeholder="מספר כרטיס" required>
+                                        </div>
+                                        <div class="col-span-6">
+                                            <input type="text" class="input" placeholder="שם מלא (כפי שמופיע על הכרטיס)" required>
+                                        </div>
+                                        <div class="col-span-4" data-mask="99/99">
+                                            <input type="text" class="input" placeholder="תוקף (MM/YY)" required>
+                                        </div>
+                                        <div class="col-span-2" data-mask="9{3,4}">
+                                            <input type="text" class="input text-center" placeholder="CVC" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="mt-10 flex flex-col gap-4 items-center lg:flex-row-reverse lg:justify-between">
+                    <button class="btn-default text-white bg-purple---main-0 hover-default min-w-[12.625rem] w-full lg:w-auto">
+                        תשלום
+                    </button>
+                    <a href="#" class="text-base inline-flex items-center gap-2 transition hover:text-purple---main-0">
+                        <span class="icon-chevron-right text-[0.8em]"></span>
+                        חזרה לשיטת המשלוח
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </main>
+
+    <section style="background: var(--purple-yellow-gradient);" class="subscription-block">
+    <div class="container-sm !max-w-[47.25rem]">
+        <div class="flex flex-col items-center gap-[10px] min-h-[7.875rem] py-4 lg:flex-row lg:gap-4 lg:py-[1.875rem]">
+            <div class="text-center lg:shrink lg:grow lg:text-start">
+                <h2 class="text-[18px] font-semibold capitalize leading-normal lg:text-[1.875rem] lg:leading-[1.27em]"> 
+                    הצטרפו לניוזלטר שלנו
+                </h2>
+                <div class="text-[14px] lg:text-base">
+                    לקבלת עדכונים על אורח חיים בריא ומבצעים ייחודיים
+                </div>
+            </div>
+            <a href="#" class="btn-default bg-white hover-default min-w-[160px] lg:shrink-0 lg:grow-0 lg:min-w-[18.75rem]">
+                הרשמה
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer class="footer pt-2 pb-6 lg:pt-[3.125rem]">
+    <div class="container">
+
+        <nav class="lg:flex lg:gap-10 lg:flex-wrap" data-footer-nav>
+            <div class="footer-nav-item shrink-0 grow-0 lg:w-[16.25rem]">
+                <div class="footer-nav-head min-h-[49px] flex items-center text-[14px] font-semibold capitalize lg:text-[1.125rem] leading-[1.69em] pr-[13.5px] lg:min-h-[1.6875rem] lg:pr-0">
+                    תחומים
+                </div>
+                <div class="footer-nav-list hidden px-[13.5px] pb-[16px] lg:!block lg:px-0 lg:pb-0 lg:py-[0.625rem] lg:border-t lg:border-app-gray-200-0 lg:mt-[0.625rem]">
+                    <ul class="grid gap-y-2 gap-x-10 lg:grid-cols-2">
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                שיער
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                גברים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                חורף
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                נשים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                פרוביוטיקה ועיכול
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                ילדים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מולטי ויטמין
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                הריון
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                ויטמינים ומינרלים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                גילאי 50+
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                אומגה 3
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                בריאות העור
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מגנזיום
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                הרגעה
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                ברזל
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                צמחים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                טראומיל
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מפרקים ותנועה
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-nav-item shrink grow lg:max-w-[12.8125rem]">
+                <div class="footer-nav-head min-h-[49px] flex items-center text-[14px] font-semibold capitalize lg:text-[1.125rem] leading-[1.69em] pr-[13.5px] lg:min-h-[1.6875rem] lg:pr-0">
+                    תוכן
+                </div>
+                <div class="footer-nav-list hidden px-[13.5px] pb-[16px] lg:!block lg:px-0 lg:pb-0 lg:py-[0.625rem] lg:border-t lg:border-app-gray-200-0 lg:mt-[0.625rem]">
+                    <ul class="grid gap-y-2 gap-x-10">
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                כתבות
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מוצרים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                תחומים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מתכונים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                המומחים של אלטמן
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מועדון אלטמן
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מועדון הריון
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-nav-item shrink grow lg:max-w-[12.8125rem]">
+                <div class="footer-nav-head min-h-[49px] flex items-center text-[14px] font-semibold capitalize lg:text-[1.125rem] leading-[1.69em] pr-[13.5px] lg:min-h-[1.6875rem] lg:pr-0">
+                    כלים ושירותים
+                </div>
+                <div class="footer-nav-list hidden px-[13.5px] pb-[16px] lg:!block lg:px-0 lg:pb-0 lg:py-[0.625rem] lg:border-t lg:border-app-gray-200-0 lg:mt-[0.625rem]">
+                    <ul class="grid gap-y-2 gap-x-10">
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                התאמת מוצרים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מחשבון ויטמינים ומינרלים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מחשבון הריון
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מחשבון BMI
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מחשבון BMR
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מחשבון קלוריות
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-nav-item shrink grow lg:max-w-[12.8125rem]">
+                <div class="footer-nav-head min-h-[49px] flex items-center text-[14px] font-semibold capitalize lg:text-[1.125rem] leading-[1.69em] pr-[13.5px] lg:min-h-[1.6875rem] lg:pr-0">
+                    מידע כללי
+                </div>
+                <div class="footer-nav-list hidden px-[13.5px] pb-[16px] lg:!block lg:px-0 lg:pb-0 lg:py-[0.625rem] lg:border-t lg:border-app-gray-200-0 lg:mt-[0.625rem]">
+                    <ul class="grid gap-y-2 gap-x-10">
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                הצהרת נגישות
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                תנאי שימוש
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מדיניות פרטיות
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מדיניות פרטיות
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מדיניות החזרות והחלפות
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מדיניות משלוחים
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                ביטול עסקה
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-nav-item shrink grow lg:max-w-[12.8125rem]">
+                <div class="footer-nav-head min-h-[49px] flex items-center text-[14px] font-semibold capitalize lg:text-[1.125rem] leading-[1.69em] pr-[13.5px] lg:min-h-[1.6875rem] lg:pr-0">
+                    אודות
+                </div>
+                <div class="footer-nav-list hidden px-[13.5px] pb-[16px] lg:!block lg:px-0 lg:pb-0 lg:py-[0.625rem] lg:border-t lg:border-app-gray-200-0 lg:mt-[0.625rem]">
+                    <ul class="grid gap-y-2 gap-x-10">
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                מי אנחנו
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                איתור חנויות
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center min-h-[1.875rem] text-[1rem] text-app-gray-400-0 transition duration-300 hover:text-purple---main-0 hover:underline hover:-translate-y-[2px]">
+                                קריירה
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="mt-9 flex flex-col items-center gap-9 lg:mt-6 lg:border-t lg:border-app-gray-200-0 lg:pt-6 lg:flex-row lg:justify-between">
+
+            <ul class="flex flex-wrap justify-center gap-3 lg:gap-4">
+                <li class="lg-max:order-1 lg-max:basis-full">
+                    <a href="#" class="h-[3.125rem] png-center">
+                        <img src="assets/images/logos/title-logo.svg" alt="">
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="size-[3.125rem] rounded-full shadow-default text-purple---main-0 bg-white hover-default flex items-center justify-center">
+                        <img class="img-svg h-[1.875rem] w-auto" src="assets/images/icons/instagram.svg" alt="">
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="size-[3.125rem] rounded-full shadow-default text-purple---main-0 bg-white hover-default flex items-center justify-center">
+                        <img class="img-svg h-[1.875rem] w-auto" src="assets/images/icons/facebook.svg" alt="">
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="size-[3.125rem] rounded-full shadow-default text-purple---main-0 bg-white hover-default flex items-center justify-center">
+                        <img class="img-svg h-[1.875rem] w-auto" src="assets/images/icons/tiktok.svg" alt="">
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="size-[3.125rem] rounded-full shadow-default text-purple---main-0 bg-white hover-default flex items-center justify-center">
+                        <img class="img-svg h-[1.875rem] w-auto" src="assets/images/icons/youtube.svg" alt="">
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="btn-default bg-white hover-default">
+                        צרו קשר
+                    </a>
+                </li>
+            </ul>
+
+            <div>
+                <div class="text-[1rem] text-app-gray-400-0">
+                    הקנייה באתר מאובטחת על פי תקן                
+                </div>
+                <ul class="flex justify-center gap-2 flex-wrap mt-1">
+                    <li>
+                        <a href="#">
+                            <img class="h-7 w-auto" src="assets/images/icons/paypal.svg" alt="">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img class="h-7 w-auto" src="assets/images/icons/mastercard.svg" alt="">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img class="h-7 w-auto" src="assets/images/icons/visa.svg" alt="">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img class="h-7 w-auto" src="assets/images/icons/american-express.svg" alt="">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-9 border-t border-app-gray-200-0 pt-4 lg:border-none lg:mt-[3.25rem] lg:pt-0">
+            <div class="text-[1rem] text-app-gray-500-0 lg:flex lg:items-center lg:justify-between">
+                <div class="text-center">
+                    © כל הזכויות שמורות לאלטמן בריאות
+                </div>
+                <div class="flex items-center justify-center gap-2 mt-2">
+                    <a href="#">
+                        <img class="h-[1.07em] w-auto" src="assets/images/logos/purple-logo.svg" alt="">
+                    </a>
+                    <span>powered by</span>
+                </div>
+            </div>
+            <div class="text-[1rem] text-app-gray-400-0 text-justify mt-4">
+                המידע המפורט להלן הינו מידע מקצועי כללי, לצרכי העשרה, בהסתמך על מחקרים קיימים, שניתן בידי איש מקצוע בשיתוף עם אלטמן בריאות. אין המדובר בהמלצה לרכישת מוצר כלשהו ממוצריה של אלטמן, או בהצהרה לגבי יעילותם או תכונותיהם. מוצריה של אלטמן הם אינם תרופה ואינם מיועדים לרפא מחלה כלשהי. ההסתמכות על המידע המפורט להלן היא על אחריות הקורא בלבד ומומלץ להתייעץ עם רופא מוסמך טרם רכישת מוצר כלשהו.
+            </div>
+        </div>
+
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Altman</title>
+
+    <script>
+        let element = document.querySelector('html');
+        if (element) {
+            let zoom = 1;
+            const setFontSize = () => {
+                let baseWidth = 1440;
+                let baseFontSize = 16;
+                let screenWidth = element.clientWidth;
+                let screenHeight = element.clientHeight;
+                let maxHeight = screenWidth * 0.4817;
+                let value;
+                let heightOffset = (screenHeight / maxHeight) > 1 ? 1 : screenHeight / maxHeight;
+
+                if (screenWidth <= baseWidth) {
+                    let scaleFactor = 10;
+                    value = (baseFontSize + (screenWidth - baseWidth) * scaleFactor / baseWidth) * zoom;
+                } else {
+                    let scaleFactor = 10;
+                    value = ((baseFontSize + (screenWidth - baseWidth) * scaleFactor / baseWidth) * heightOffset) * zoom;
+                    
+                    if(value < 16) value = 16;
+                }
+
+                element.style.fontSize = value + 'px';
+            }
+
+            setFontSize();
+            window.addEventListener('resize', setFontSize);
+
+            document.addEventListener('wheel', function (event) {
+                if (document.documentElement.clientWidth < 1024) return;
+
+                if (event.ctrlKey || event.metaKey) {
+                    if (event.deltaY < 0) {
+                        zoom += 0.1
+                        setFontSize();
+                    } else {
+                        zoom -= 0.1
+                        setFontSize();
+                    }
+                    event.preventDefault();
+                }
+            }, { passive: false });
+        }
+    </script>
+
+    <style>
+        .page-loaded .page-loader {
+            display: none;
+        }
+
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 100;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            color: #6c3c87;
+        }
+
+        .lds-roller,
+        .lds-roller div,
+        .lds-roller div:after {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .lds-roller {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .lds-roller div {
+            -webkit-animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            -webkit-transform-origin: 40px 40px;
+            -ms-transform-origin: 40px 40px;
+            transform-origin: 40px 40px;
+        }
+
+        .lds-roller div:after {
+            content: " ";
+            display: block;
+            position: absolute;
+            width: 7.2px;
+            height: 7.2px;
+            border-radius: 50%;
+            background: currentColor;
+            margin: -3.6px 0 0 -3.6px;
+        }
+
+        .lds-roller div:nth-child(1) {
+            -webkit-animation-delay: -0.036s;
+            animation-delay: -0.036s;
+        }
+
+        .lds-roller div:nth-child(1):after {
+            top: 62.62742px;
+            left: 62.62742px;
+        }
+
+        .lds-roller div:nth-child(2) {
+            -webkit-animation-delay: -0.072s;
+            animation-delay: -0.072s;
+        }
+
+        .lds-roller div:nth-child(2):after {
+            top: 67.71281px;
+            left: 56px;
+        }
+
+        .lds-roller div:nth-child(3) {
+            -webkit-animation-delay: -0.108s;
+            animation-delay: -0.108s;
+        }
+
+        .lds-roller div:nth-child(3):after {
+            top: 70.90963px;
+            left: 48.28221px;
+        }
+
+        .lds-roller div:nth-child(4) {
+            -webkit-animation-delay: -0.144s;
+            animation-delay: -0.144s;
+        }
+
+        .lds-roller div:nth-child(4):after {
+            top: 72px;
+            left: 40px;
+        }
+
+        .lds-roller div:nth-child(5) {
+            -webkit-animation-delay: -0.18s;
+            animation-delay: -0.18s;
+        }
+
+        .lds-roller div:nth-child(5):after {
+            top: 70.90963px;
+            left: 31.71779px;
+        }
+
+        .lds-roller div:nth-child(6) {
+            -webkit-animation-delay: -0.216s;
+            animation-delay: -0.216s;
+        }
+
+        .lds-roller div:nth-child(6):after {
+            top: 67.71281px;
+            left: 24px;
+        }
+
+        .lds-roller div:nth-child(7) {
+            -webkit-animation-delay: -0.252s;
+            animation-delay: -0.252s;
+        }
+
+        .lds-roller div:nth-child(7):after {
+            top: 62.62742px;
+            left: 17.37258px;
+        }
+
+        .lds-roller div:nth-child(8) {
+            -webkit-animation-delay: -0.288s;
+            animation-delay: -0.288s;
+        }
+
+        .lds-roller div:nth-child(8):after {
+            top: 56px;
+            left: 12.28719px;
+        }
+
+        @-webkit-keyframes lds-roller {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes lds-roller {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @media print {
+
+            header,
+            footer {
+                display: none;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
+    <script defer src="./assets/js/vendors.js"></script>
+    <script defer src="./assets/js/main.js"></script>
+</head>
+
+<body>
+    <div class="page-loader">
+    <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+</div>
+
+    <button data-scroll-up class="hidden fixed z-10 bottom-20 right-[1.875rem] lg:flex flex-col items-center gap-1 text-purple---main-0 [&:not(.active)]:invisible [&:not(.active)]:opacity-0 [&_.icon-arrow-up]:hover:bg-purple---main-0 [&_.icon-arrow-up]:hover:text-white [&_.text-up]:hover:-translate-y-[2px]">
+    <span class="text-up text-[1rem] leading-[1.14em] transition-transform duration-300">
+        חזרו<br>למעלה
+    </span>
+    <span class="icon-arrow-up size-10 rounded-full flex items-center justify-center border border-current transition duration-300"></span>
+</button>
+    <button data-scroll-up class="hidden fixed z-10 bottom-20 left-[1.875rem] lg:flex flex-col items-center gap-1 text-purple---main-0 [&_.icon-message]:hover:bg-purple---main-0 [&_.icon-message]:hover:text-white [&_.text-up]:hover:-translate-y-[2px]">
+    <span class="text-up text-[1rem] leading-[1.14em] transition-transform duration-300">
+        צרו<br>קשר
+    </span>
+    <span class="icon-message size-10 rounded-full flex items-center justify-center border border-current text-[1.125rem] transition duration-300"></span>
+</button>
+
+    <header class="header-simple absolute z-10 top-0 left-0 w-full">
+        <div class="container">
+            <div class="flex flex-wrap justify-between items-center pt-[5px] gap-x-2 lg:flex-nowrap lg:px-0 lg:pt-5">
+                <a href="#" class="flex items-center justify-center h-[28px] lg:order-1 lg:h-10">
+                    <img class="h-full w-auto" src="assets/images/logos/Logo-white.png" alt="">
+                </a>
+                <a dir="ltr" href="./contact-us.html" class="flex items-center justify-center min-w-10 h-10 rounded-full transition hover:text-white px-1 text-white leading-[1.5em] tracking-[0.01em] lg:order-4">
+                    *6505
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="relative min-h-[520px] md:min-h-[31.25rem] flex flex-col bg-white md:justify-center">
+            <div
+                class="first-banner-image absolute z-1 top-0 left-0 w-full h-full [&_img]:h-full [&_img]:w-full [&_img]:block [&_img]:object-cover [&_img]:object-bottom">
+                <picture>
+                    <source srcset="assets/images/landing-product-first-banner-1-desk.jpg" media="(min-width: 768px)">
+                    <img src="assets/images/landing-product-first-banner-1-desk.jpg" alt="img">
+                </picture>
+            </div>
+            <div
+                class="container py-8 relative z-2 text-white text-center flex flex-col items-center md:text-start md:items-start">
+                <h1
+                    class="font-semibold text-[40px] capitalize leading-none lg:text-[4.375rem] lg:leading-[0.83em]">
+                    לורם איפסום
+                    <br>
+                    דולור סיט אמט
+                </h1>
+                <div class="prose text-white text-base max-w-[400px] mt-2 lg:mt-3 lg:max-w-[32.375rem]">
+                    <p>
+                        לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולורס מונפרד אדנדום סילקוף, מרגשי ומרגשח. עמחליף קונסקטורר אדיפיסינג אלית.
+                    </p>
+                </div>
+                <div class="mt-4 lg:mt-8">
+                    <a href="#" class="btn-default bg-white text-black-0 hover-default">
+                        לחצו לקבלת ההטבה
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="product-image-with-benefits bg-yellow-03-0 py-[30px] lg:py-10">
+    <div class="container">
+        <h2 class="text-center text-[1.875rem] leading-[1.2em] font-semibold capitalize title-with-logo lg:text-[2.5rem] lg:leading-[1.27em]">
+            לורם איפסום דולור סיט אמט
+        </h2>
+
+        <div class="mt-4">
+            <div class="relative benefits-wrapper" data-scroll-trigger data-root-margin="-50% 0px 0px 0px" data-threshold="0.5">
+                <div 
+                    style="--position-x: 60%; --position-y: 23%; --position-mob-x: 77%; --position-mob-y: 21%;" 
+                    class="benefit-item right anim-order-1"                                             
+                    data-tooltip-mobile 
+                    data-tooltip="לורם איפסום דולוראמט קונסקטורר אדיפיסינג"
+                >
+                    <img src="assets/images/icons/benefit-icon.png" alt="">
+
+                    <div class="benefit-item-text-box">
+                        לורם איפסום דולוראמט קונסקטורר אדיפיסינג
+                    </div>
+                </div>
+                <div 
+                    style="--position-x: 60%; --position-y: 64%; --position-mob-x: 77%; --position-mob-y: 64%;" 
+                    class="benefit-item right anim-order-2"                                             
+                    data-tooltip-mobile 
+                    data-tooltip="לורם איפסום דולוראמט קונסקטורר אדיפיסינג"
+                >
+                    <img src="assets/images/icons/benefit-icon.png" alt="">
+
+                    <div class="benefit-item-text-box">
+                        לורם איפסום דולוראמט קונסקטורר אדיפיסינג
+                    </div>
+                </div>
+                <div 
+                    style="--position-x: 41%; --position-y: 23%; --position-mob-x: 21%; --position-mob-y: 23%;" 
+                    class="benefit-item left anim-order-3"                                             
+                    data-tooltip-mobile 
+                    data-tooltip="לורם איפסום דולוראמט קונסקטורר אדיפיסינג"
+                >
+                    <img src="assets/images/icons/benefit-icon.png" alt="">
+
+                    <div class="benefit-item-text-box">
+                        לורם איפסום דולוראמט קונסקטורר אדיפיסינג
+                    </div>
+                </div>
+                <div 
+                    style="--position-x: 34%; --position-y: 77%; --position-mob-x: 4%; --position-mob-y: 77%;" 
+                    class="benefit-item left anim-order-4"                                             
+                    data-tooltip-mobile 
+                    data-tooltip="לורם איפסום דולוראמט קונסקטורר אדיפיסינג"
+                >
+                    <img src="assets/images/icons/benefit-icon.png" alt="">
+
+                    <div class="benefit-item-text-box">
+                        לורם איפסום דולוראמט קונסקטורר אדיפיסינג
+                    </div>
+                </div>
+
+                <div class="h-[18rem] lg:h-[27.25rem] png-center relative z-1">
+                    <img src="assets/images/product-benefits-img.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <section class="bg-yellow-01-0 py-[30px] lg:py-[3.75rem]">
+            <div class="container">
+                <h2 class="text-center text-[1.875rem] leading-[1.67em] font-semibold capitalize title-with-logo lg:text-[2.5rem] lg:leading-[1.27em]">
+                    לורם איפסום דולור סיט אמט
+                </h2>
+                <div class="mt-2 text-center text-base mx-auto max-w-[34rem]">
+                    לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולורס מונפרד אדנדום סילקוף, מרגשי ומרגשח. עמחליף קונסקטו.
+                </div>
+                <div class="mt-6 text-center">
+                    <a href="#" class="btn-default text-white bg-purple---main-0 hover-default">
+                        לורם איפסום דולור
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-yellow-01-0 py-[30px] lg:py-[3.75rem]">
+            <div class="container lg:px-20">
+                <div class="flex flex-col gap-10 lg:flex-row lg:flex-wrap lg:justify-evenly">
+                    <div class="w-full md:max-w-[13.375rem]">
+                        <div class="h-12 w-12 png-center rounded-full mx-auto bg-[#E8DFDA]">
+                            <img class="h-6 w-auto" src="assets/images/icons/hat.svg" alt="">
+                        </div>
+                        <div class="text-center mt-2 text-base">
+                            <div class="font-semibold">
+                                לורם איפסום
+                            </div>
+                            <div>
+                                לורם איפסום דולור סיט אמט
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full md:max-w-[13.375rem]">
+                        <div class="h-12 w-12 png-center rounded-full mx-auto bg-[#E8DFDA]">
+                            <img class="h-6 w-auto" src="assets/images/icons/hat.svg" alt="">
+                        </div>
+                        <div class="text-center mt-2 text-base">
+                            <div class="font-semibold">
+                                לורם איפסום
+                            </div>
+                            <div>
+                                לורם איפסום דולור סיט אמט
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full md:max-w-[13.375rem]">
+                        <div class="h-12 w-12 png-center rounded-full mx-auto bg-[#E8DFDA]">
+                            <img class="h-6 w-auto" src="assets/images/icons/hat.svg" alt="">
+                        </div>
+                        <div class="text-center mt-2 text-base">
+                            <div class="font-semibold">
+                                לורם איפסום
+                            </div>
+                            <div>
+                                לורם איפסום דולור סיט אמט
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-[30px] lg:py-10">
+            <div class="container-sm">
+                <form action="/">
+                    <div class="flex flex-col gap-[30px] md:flex-row-reverse lg:gap-[3.125rem]">
+                        <div class="md:basis-[48%] md:shrink-0 md:grow-0 lg:basis-[30.5rem] md:p-4 lg:p-6 md:rounded-[0.75rem] md:border md:border-purple---super-light-0">
+                            <h3 class="text-[1.5rem] font-semibold leading-normal text-center">
+                                מלאו את הפרטים וקבלו קופון הטבה למייל
+                            </h3>
+
+                            <div class="mt-6 relative z-10 grid grid-cols-2 gap-4 reverse-z-index">
+                                <div class="lg-max:col-span-2">
+                                    <div class="input-wrap " data-use-input-label>
+                                        <input type="text" placeholder="*שם פרטי" class="input" data-validation="required">
+                                        <div class="input-label">
+                                            <span>
+                                                *שם פרטי
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="lg-max:col-span-2">
+                                    <div class="input-wrap " data-use-input-label>
+                                        <input type="text" placeholder="*שם משפחה" class="input" data-validation="required">
+                                        <div class="input-label">
+                                            <span>
+                                                *שם משפחה
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-span-2">
+                                    <div class="input-wrap " data-use-input-label>
+                                        <input type="email" placeholder="*אימייל" class="input" data-validation="email">
+                                        <div class="input-label">
+                                            <span>
+                                                *אימייל
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-span-2">
+                                    <div class="input-wrap " data-use-input-label data-mask="9{*}">
+                                        <input type="text" placeholder="*טלפון נייד" class="input" data-validation="required">
+                                        <div class="input-label">
+                                            <span>
+                                                *טלפון נייד
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-span-2 relative">
+                                    <div data-use-select-label class="select-wrap">
+                                        <div class="select-label">
+                                            <span>
+                                                *אני
+                                            </span>
+                                        </div>
+                                    
+                                        <div class="select-border-wrap">
+                                            <div class="select-label">
+                                                <span>
+                                                    *אני
+                                                </span>
+                                            </div>
+                                        </div>
+                                    
+                                        <select name="" class="_select" data-validation="required" data-action="remove-class-by-option" data-option-value="1" data-classes="hidden" data-target=".is-pregnant-checkbox">
+                                            <option value="" selected>
+                                                *אני
+                                            </option>
+                                            <option value="1">
+                                                נקבה
+                                            </option>
+                                            <option value="2">
+                                                זכר
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-span-2 is-pregnant-checkbox hidden">
+                                    <label class="checkbox-wrap checkbox-wrap-default cursor-pointer select-none">
+    <input type="checkbox" >
+    <div class="checkbox-indicator"></div>
+    <div class="checkbox-text">
+        האם את בהריון
+    </div>
+</label>
+                                </div>
+                                <div class="col-span-2">
+                                    <div class="text-[0.875rem] font-semibold leading-[1.93em]">
+                                        *תאריך הלידה שלך
+                                    </div>
+                                    <div class="text-[0.875rem]">
+                                        כדי שנוכל לפנק אותך ביום ההולדת
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-4 mt-1">
+                                        <div>
+                                            <div class="input-wrap " data-use-input-label data-mask="9999">
+                                                <input type="text" placeholder="שנה" class="input" data-validation="required">
+                                                <div class="input-label">
+                                                    <span>
+                                                        שנה
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="input-wrap " data-use-input-label data-mask="99">
+                                                <input type="text" placeholder="חודש" class="input" data-validation="required">
+                                                <div class="input-label">
+                                                    <span>
+                                                        חודש
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="input-wrap " data-use-input-label data-mask="99">
+                                                <input type="text" placeholder="יום" class="input" data-validation="required">
+                                                <div class="input-label">
+                                                    <span>
+                                                        יום
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 text-[0.875rem] [&_.checkbox-wrap]:text-[1em]">
+                                <label class="checkbox-wrap checkbox-wrap-default cursor-pointer select-none">
+    <input type="checkbox" checked>
+    <div class="checkbox-indicator"></div>
+    <div class="checkbox-text">
+        אני מאשר.ת קבלת חומר פרסומי מאלטמן, הכולל עדכונים על מבצעים והטבות בדוא`ל/SMS. ניתן להסיר את הרישום למועדון בכל זמן ובקלות.
+    </div>
+</label>
+                            </div>
+
+                            <div class="mt-6 text-center">
+                                <button data-validate-form class="btn-default text-white bg-purple---main-0 hover-default w-full">
+                                    הרשמה
+                                </button>
+                            </div>
+                        
+                        </div>
+
+                        <div class="md:shrink md:grow">
+                            <div class="ibg h-0 pb-[100%] overflow-hidden rounded-[0.75rem] md:h-full md:pb-0 md:min-h-[36.125rem]">
+                                <img src="assets/images/lp-product-form-img.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section class="py-[30px] lg:py-10">
+            <div class="container">
+                <h2 class="text-[1.5rem] font-semibold capitalize title-with-logo text-purple---main-0 text-center [&_img]:mr-0">
+                    גם לשיער שלך, ברור ש-<img src="assets/images/logos/title-logo.svg" alt="">
+                </h2>
+                <ul class="flex flex-wrap justify-center gap-3 lg:gap-4 mt-6 mx-auto">
+                    <li>
+                        <a href="#" class="size-[3.125rem] rounded-full shadow-default text-purple---main-0 bg-white hover-default flex items-center justify-center">
+                            <img class="img-svg h-[1.875rem] w-auto" src="assets/images/icons/instagram.svg" alt="">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="size-[3.125rem] rounded-full shadow-default text-purple---main-0 bg-white hover-default flex items-center justify-center">
+                            <img class="img-svg h-[1.875rem] w-auto" src="assets/images/icons/facebook.svg" alt="">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="size-[3.125rem] rounded-full shadow-default text-purple---main-0 bg-white hover-default flex items-center justify-center">
+                            <img class="img-svg h-[1.875rem] w-auto" src="assets/images/icons/tiktok.svg" alt="">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="size-[3.125rem] rounded-full shadow-default text-purple---main-0 bg-white hover-default flex items-center justify-center">
+                            <img class="img-svg h-[1.875rem] w-auto" src="assets/images/icons/youtube.svg" alt="">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="btn-default bg-white hover-default">
+                            צרו קשר
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>
